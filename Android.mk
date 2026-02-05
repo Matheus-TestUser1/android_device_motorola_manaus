@@ -7,6 +7,6 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(TARGET_DEVICE),manaus)
+ifeq ($(TARGET_DEVICE),edge40neo)
 include $(call all-subdir-makefiles,$(LOCAL_PATH))
 endif
