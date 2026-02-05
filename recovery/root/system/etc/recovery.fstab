@@ -36,3 +36,4 @@
 
 # --- Removable Storage ---
 /auto                                                  /external_sd          auto    defaults                                      voldmanaged=sdcard1:auto,noemulatedsd
+/auto                                                  /usb-otg              auto    defaults                                      voldmanaged=usbotg:auto
