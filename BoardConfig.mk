@@ -85,6 +85,8 @@ BOARD_SUPER_PARTITION_SIZE := 9126805504
 BOARD_SUPER_PARTITION_GROUPS := motorola_dynamic_partitions
 BOARD_MOTOROLA_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext product vendor vendor_dlkm
 BOARD_MOTOROLA_DYNAMIC_PARTITIONS_SIZE := 9122611200
+BOARD_CUSTOM_BOOTIMG := true
+BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_PATH)/bootimg.mk
 
 # ============================================================================
 # SISTEMA DE ARQUIVOS
