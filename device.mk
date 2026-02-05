@@ -15,15 +15,15 @@ AB_OTA_POSTINSTALL_CONFIG += \
     POSTINSTALL_OPTIONAL_system=true
 
 # Boot control HAL (shared module; PRODUCT_STATIC_BOOT_CONTROL_HAL is obsolete)
-# PRODUCT_PACKAGES += \
-#    android.hardware.boot@1.0-impl \
-#    android.hardware.boot@1.0-service \
-#    bootctrl.mt6879
+PRODUCT_PACKAGES += \
+    android.hardware.boot@1.0-impl \
+    android.hardware.boot@1.0-service \
+    bootctrl.mt6879
 
 # A/B update engine bits (TWRP/OMNI usually keeps these)
-PRODUCT_PACKAGES += \
-    otapreopt_script \
-    cppreopts.sh \
-    update_engine \
-    update_verifier \
-    update_engine_sideload
+# PRODUCT_PACKAGES += \
+#     otapreopt_script \
+#     cppreopts.sh \
+#     update_engine \
+#     update_verifier \
+#     update_engine_sideload
