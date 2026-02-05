@@ -1,4 +1,4 @@
-# TWRP Flags for MT6879 (Dimensity 900)
+# TWRP Flags for MT6879 (Dimensity 900) - NO ENCRYPTION
 # Generated from fstab.in.mt6879
 
 # System partitions - Logical partitions (A/B)
@@ -8,8 +8,8 @@
 /product_image    emmc    /dev/block/mapper/product       flags=backup=1;flashimg=1
 /vendor_dlkm_image emmc   /dev/block/mapper/vendor_dlkm   flags=backup=1;flashimg=1
 
-# Data partitions
-/data             f2fs    /dev/block/by-name/userdata     flags=backup=1;wipeingui;canbewiped;storage;encryptable=/metadata/vold/metadata_encryption
+# Data partitions (SEM CRIPTOGRAFIA)
+/data             f2fs    /dev/block/by-name/userdata     flags=backup=1;wipeingui;canbewiped;storage;formattable
 /metadata         ext4    /dev/block/by-name/metadata     flags=backup=1;display="Metadata"
 
 # Boot partitions
@@ -27,50 +27,6 @@
 /protect_s        ext4    /dev/block/by-name/protect2     flags=backup=1;display="Protect2"
 /persist          ext4    /dev/block/by-name/persist      flags=backup=1;display="Persist"
 /prodpersist      ext4    /dev/block/by-name/prodpersist  flags=backup=1;display="Product Persist"
-
-# Bootloader
-/bootloader       emmc    /dev/block/by-name/lk           flags=backup=1;flashimg=1;display="LK (Bootloader)"
-/bootloader2      emmc    /dev/block/by-name/lk2          flags=backup=1;flashimg=1;display="LK2"
-/para             emmc    /dev/block/by-name/para         flags=backup=1;display="Para"
-
-# TrustZone and Security
-/tee1             emmc    /dev/block/by-name/tee1         flags=backup=1;display="TEE1"
-/tee2             emmc    /dev/block/by-name/tee2         flags=backup=1;display="TEE2"
-/tzapp            ext4    /dev/block/by-name/tzapp_a      flags=backup=1;display="TZApp"
-/seccfg           emmc    /dev/block/by-name/seccfg       flags=backup=1;display="SecCfg"
-
-# SCP/SSPM/DPM firmware
-/scp1             emmc    /dev/block/by-name/scp1         flags=backup=1;display="SCP1"
-/scp2             emmc    /dev/block/by-name/scp2         flags=backup=1;display="SCP2"
-/sspm_1           emmc    /dev/block/by-name/sspm_1       flags=backup=1;display="SSPM1"
-/sspm_2           emmc    /dev/block/by-name/sspm_2       flags=backup=1;display="SSPM2"
-/dpm_1            emmc    /dev/block/by-name/dpm_1        flags=backup=1;display="DPM1"
-/dpm_2            emmc    /dev/block/by-name/dpm_2        flags=backup=1;display="DPM2"
-/mcupm_1          emmc    /dev/block/by-name/mcupm_1      flags=backup=1;display="MCUPM1"
-/mcupm_2          emmc    /dev/block/by-name/mcupm_2      flags=backup=1;display="MCUPM2"
-
-# Modem partitions
-/md1img           emmc    /dev/block/by-name/md1img       flags=backup=1;display="Modem"
-/md1dsp           emmc    /dev/block/by-name/md1dsp       flags=backup=1;display="Modem DSP"
-/md1arm7          emmc    /dev/block/by-name/md1arm7      flags=backup=1;display="Modem ARM7"
-/md3img           emmc    /dev/block/by-name/md3img       flags=backup=1;display="Modem3"
-
-# Other firmware
-/gz1              emmc    /dev/block/by-name/gz1          flags=backup=1;display="GZ1"
-/gz2              emmc    /dev/block/by-name/gz2          flags=backup=1;display="GZ2"
-/spmfw            emmc    /dev/block/by-name/spmfw        flags=backup=1;display="SPMFW"
-/audio_dsp        emmc    /dev/block/by-name/audio_dsp    flags=backup=1;display="Audio DSP"
-
-# Misc partitions
-/misc             emmc    /dev/block/by-name/misc         flags=backup=1;display="Misc"
-/frp              emmc    /dev/block/by-name/frp          flags=backup=1;display="FRP"
-/logo             emmc    /dev/block/by-name/logo         flags=backup=1;display="Logo"
-/expdb            emmc    /dev/block/by-name/expdb        flags=backup=1;display="ExpDB"
-/efuse            emmc    /dev/block/by-name/efuse        flags=backup=1;display="EFuse"
-/otp              emmc    /dev/block/by-name/otp          flags=backup=1;display="OTP"
-/pi_img           emmc    /dev/block/by-name/pi_img       flags=backup=1;display="PI Image"
-/boot_para        emmc    /dev/block/by-name/boot_para    flags=backup=1;display="Boot Para"
-/odmdtbo          emmc    /dev/block/by-name/odmdtbo      flags=backup=1;display="ODM DTBO"
 
 # USB OTG
 /external_sd      vfat    /dev/block/mmcblk1p1            /dev/block/mmcblk1      flags=storage;wipeingui;removable
