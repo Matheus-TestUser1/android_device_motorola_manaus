@@ -1,6 +1,5 @@
 PRODUCT_MAKEFILES := \
     $(LOCAL_DIR)/twrp_manaus.mk
 
-COMMON_LUNCH_CHOICES := \
-    twrp_manaus-eng \
-    twrp_manaus-userdebug
+COMMON_LUNCH_CHOICES :=   twrp_manaus-eng 
+
