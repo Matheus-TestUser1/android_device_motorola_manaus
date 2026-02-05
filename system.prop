@@ -1,9 +1,30 @@
-# System properties for Motorola Edge 40 Neo (manaus)
+# system.prop - TWRP - Motorola Edge 40 Neo (manaus) - MT6879
+# Minimalista, mas com dados CORRETOS do hardware real.
 
+# --- IDENTIFICAÇÃO DO HARDWARE (IMUTÁVEL) ---
+ro.product.brand=motorola
+ro.product.device=manaus           # Codenome interno
+ro.product.manufacturer=motorola
+ro.product.model=moto edge (2022)  # Nome comercial correto
 ro.product.board=manaus
-ro.board.platform=mt6879
-ro.hardware.soc.manufacturer=mtk
+ro.board.platform=mt6879           # CHIPSET CORRETO
+ro.hardware=mt6879                 # CHIPSET CORRETO
 
-# USB
+# --- CONFIGURAÇÕES BÁSICAS DE INICIALIZAÇÃO ---
+ro.boot.dynamic_partitions=true    # Sim, use esta (está correta)
+
+# --- USB PARA O MODO RECOVERY ---
+persist.sys.usb.config=mtp,adb     # Habilita MTP e ADB no recovery
+ro.adb.secure=0                    # Permite ADB root (crítico para debugging)
+ro.secure=0
+ro.debuggable=1
 sys.usb.controller=11201000.usb0
 sys.usb.configfs=1
+
+# --- DISPLAY (Básico, para o recovery) ---
+ro.sf.lcd_density=400              # Densidade da tela REAL do dispositivo
+ro.minui.pixel_format=BGRA_8888    # Formato de pixel comum em recoveries
+
+# --- GERENCIAMENTO DE MEMÓRIA (Opcional, mas seguro) ---
+dalvik.vm.heapgrowthlimit=256m
+dalvik.vm.heapsize=512m
