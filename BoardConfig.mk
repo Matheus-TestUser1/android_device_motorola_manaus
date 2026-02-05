@@ -119,7 +119,7 @@ TW_PREPARE_DATA_MEDIA_EARLY := true
 # Workaround for copying vendor files (✅ CRÍTICO)
 TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_PRODUCT := product
-
+TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
 # Metadata (✅ VERIFICADO)
 BOARD_USES_METADATA_PARTITION := true
 BOARD_ROOT_EXTRA_FOLDERS += metadata
