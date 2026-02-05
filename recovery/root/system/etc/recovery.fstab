@@ -1,0 +1,42 @@
+# Android fstab file - MediaTek MT6879
+# mount point       fstype    device                                                                flags
+
+# Core partitions
+/boot               emmc      /dev/block/by-name/boot                                               flags=slotselect;display="Boot";backup=1;flashimg=1
+/vendor_boot        emmc      /dev/block/by-name/vendor_boot                                        flags=slotselect;display="Vendor Boot";backup=1;flashimg=1
+/dtbo               emmc      /dev/block/by-name/dtbo                                               flags=slotselect;display="DTBO";backup=1;flashimg=1
+/vbmeta             emmc      /dev/block/by-name/vbmeta                                             flags=slotselect;display="VBMeta";backup=1;flashimg=1
+/vbmeta_system      emmc      /dev/block/by-name/vbmeta_system                                      flags=slotselect;display="VBMeta System";backup=1;flashimg=1
+/vbmeta_vendor      emmc      /dev/block/by-name/vbmeta_vendor                                      flags=slotselect;display="VBMeta Vendor";backup=1;flashimg=1
+
+# Data partition
+/data               f2fs      /dev/block/by-name/userdata                                           flags=fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized+wrappedkey_v0,keydirectory=/metadata/vold/metadata_encryption,metadata_encryption=aes-256-xts:wrappedkey_v0,fscompress
+
+# System partitions (dynamic)
+/system_root        erofs     /dev/block/mapper/system                                              flags=display="System";logical;slotselect
+/system_ext         erofs     /dev/block/mapper/system_ext                                          flags=display="System_EXT";logical;slotselect
+/vendor             erofs     /dev/block/mapper/vendor                                              flags=display="Vendor";logical;slotselect
+/product            erofs     /dev/block/mapper/product                                             flags=display="Product";logical;slotselect
+
+# Metadata and misc
+/metadata           ext4      /dev/block/by-name/metadata                                           flags=display="Metadata";backup=1
+/misc               emmc      /dev/block/by-name/misc                                               flags=display="Misc"
+
+# MediaTek specific partitions
+/protect_f          ext4      /dev/block/by-name/protect1                                           flags=display="Protect";backup=1
+/protect_s          ext4      /dev/block/by-name/protect2                                           flags=backup=1;subpartitionof=/protect_f
+/nvdata             ext4      /dev/block/by-name/nvdata                                             flags=display="NvData";backup=1
+/nvcfg              ext4      /dev/block/by-name/nvcfg                                              flags=display="NvCfg";backup=1
+/nvram              emmc      /dev/block/by-name/nvram                                              flags=display="NvRam";backup=1;flashimg=1
+/persist            ext4      /dev/block/by-name/persist                                            flags=display="Persist";backup=1
+
+# Firmware
+/boot_para          emmc      /dev/block/by-name/boot_para                                          flags=display="Boot Para";backup=1
+/logo               emmc      /dev/block/by-name/logo                                               flags=slotselect;display="Logo";backup=1;flashimg=1
+
+# Modem
+/md1img             emmc      /dev/block/by-name/md1img                                             flags=slotselect;display="Modem";backup=1;flashimg=1
+
+# Removable storage
+/external_sd        auto      /dev/block/mmcblk0p1         /dev/block/mmcblk0                       flags=display="MicroSD";storage;wipeingui;removable
+/usb_otg            auto      /dev/block/sda1              /dev/block/sda                           flags=display="USB-OTG";storage;wipeingui;removable
