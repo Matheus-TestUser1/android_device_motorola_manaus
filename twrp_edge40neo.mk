@@ -8,7 +8,7 @@ $(call inherit-product, vendor/twrp/config/common.mk)
 # Inherit from manaus device
 $(call inherit-product, device/motorola/edge40neo/device.mk)
 
-PRODUCT_DEVICE := manaus
+PRODUCT_DEVICE := edge40neo
 PRODUCT_NAME := twrp_edge40neo
 PRODUCT_BRAND := motorola
 PRODUCT_MODEL := moto edge (2022)
