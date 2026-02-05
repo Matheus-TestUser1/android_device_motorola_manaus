@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-DEVICE_PATH := device/motorola/manaus
+DEVICE_PATH := device/motorola/edge40neo
 
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
