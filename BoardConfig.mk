@@ -40,6 +40,7 @@ TARGET_BOARD_PLATFORM := mt6879
 TARGET_BOARD_PLATFORM_GPU := mali-g57mc2
 BOARD_USES_MTK_HARDWARE := true
 MTK_HARDWARE := true
+PLATAFORM_VERSION := 13
 
 # ============================================================================
 # KERNEL
