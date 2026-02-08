@@ -177,7 +177,7 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.
 TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
-TW_NO_SCREEN_BLANK := true
+TW_NO_SCREEN_BLANK := false
 TW_NO_SCREEN_TIMEOUT := true
 TW_DEVICE_VERSION := manaus_MT6879_stable
 
