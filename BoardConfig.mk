@@ -276,6 +276,11 @@ VENDOR_SECURITY_PATCH := 2099-12-31
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 
+# ✅ RECOVERY_RAMDISK do vendor_boot stock (61KB - correto!)
+# O TWRP vai injetar seus binários neste ramdisk
+BOARD_PREBUILT_RECOVERY_RAMDISK := $(DEVICE_PATH)/prebuilt/ramdisk.cpio
+BOARD_USES_VENDOR_BOOT := true
+BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
 # ============================================================================
 # DEBUG
 # ============================================================================
