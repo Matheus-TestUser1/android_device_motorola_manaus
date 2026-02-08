@@ -1,82 +1,25 @@
-# TWRP Flags for MT6879 (Dimensity 900) - NO ENCRYPTION
-# Generated from fstab.in.mt6879
+# TWRP Flags for Motorola Edge 40 Neo (manaus) - MT6879
+# These override/add to recovery.fstab for TWRP GUI
 
-# System partitions - Logical partitions (A/B)
-#/system_image     emmc    /dev/block/mapper/system        flags=backup=1;flashimg=1
-#/system_ext_image emmc    /dev/block/mapper/system_ext    flags=backup=1;flashimg=1
-#/vendor_image     emmc    /dev/block/mapper/vendor        flags=backup=1;flashimg=1
-#/product_image    emmc    /dev/block/mapper/product       flags=backup=1;flashimg=1
-#/vendor_dlkm_image emmc   /dev/block/mapper/vendor_dlkm   flags=backup=1;flashimg=1
-
-# Data partitions (SEM CRIPTOGRAFIA)
-#/data             f2fs    /dev/block/by-name/userdata     flags=backup=1;wipeingui;canbewiped;storage;formattable
-#/metadata         ext4    /dev/block/by-name/metadata     flags=backup=1;display="Metadata"
+# System partitions
+/system_image     emmc    /dev/block/mapper/system        flags=backup=1;flashimg=1;display="System Image"
+/system_ext_image emmc    /dev/block/mapper/system_ext    flags=backup=1;flashimg=1;display="System Ext Image"
+/vendor_image     emmc    /dev/block/mapper/vendor        flags=backup=1;flashimg=1;display="Vendor Image"
+/product_image    emmc    /dev/block/mapper/product       flags=backup=1;flashimg=1;display="Product Image"
+/vendor_dlkm_image emmc   /dev/block/mapper/vendor_dlkm   flags=backup=1;flashimg=1;display="Vendor DLKM Image"
 
 # Boot partitions
-#/boot             emmc    /dev/block/by-name/boot         flags=backup=1;flashimg=1
-#/dtbo             emmc    /dev/block/by-name/dtbo         flags=backup=1;flashimg=1;display="DTBO"
-#/vbmeta           emmc    /dev/block/by-name/vbmeta       flags=backup=1;flashimg=1;display="VBMeta"
-#/vbmeta_system    emmc    /dev/block/by-name/vbmeta_system flags=backup=1;flashimg=1;display="VBMeta System"
+/boot             emmc    /dev/block/by-name/boot         flags=backup=1;flashimg=1;display="Boot"
+/dtbo             emmc    /dev/block/by-name/dtbo         flags=backup=1;flashimg=1;display="DTBO"
+/vbmeta           emmc    /dev/block/by-name/vbmeta       flags=backup=1;flashimg=1;display="VBMeta"
+/vbmeta_system    emmc    /dev/block/by-name/vbmeta_system flags=backup=1;flashimg=1;display="VBMeta System"
 
-# MTK Partitions - Important for device functionality
-3/nvram            emmc    /dev/block/by-name/nvram        flags=backup=1;display="NVRAM"
-#/nvdata           ext4    /dev/block/by-name/nvdata       flags=backup=1;display="NVData"
-#/nvcfg            ext4    /dev/block/by-name/nvcfg        flags=backup=1;display="NVCfg"
-#/proinfo          emmc    /dev/block/by-name/proinfo      flags=backup=1;display="Proinfo"
-#/protect_f        ext4    /dev/block/by-name/protect1     flags=backup=1;display="Protect1"
-#/protect_s        ext4    /dev/block/by-name/protect2     flags=backup=1;display="Protect2"
-#/persist          ext4    /dev/block/by-name/persist      flags=backup=1;display="Persist"
-#/prodpersist      ext4    /dev/block/by-name/prodpersist  flags=backup=1;display="Product Persist"
+# MTK Partitions
+/nvram            emmc    /dev/block/by-name/nvram        flags=backup=1;display="NVRAM"
+/nvdata           ext4    /dev/block/by-name/nvdata       flags=backup=1;display="NVData"
+/nvcfg            ext4    /dev/block/by-name/nvcfg        flags=backup=1;display="NVCfg"
+/persist          ext4    /dev/block/by-name/persist      flags=backup=1;display="Persist"
 
-# USB OTG
-#/external_sd      vfat    /dev/block/mmcblk1p1            /dev/block/mmcblk1      flags=storage;wipeingui;removable
-#/usb_otg          vfat    /dev/block/sda1                 /dev/block/sda          flags=storage;wipeingui;removable
-
-# Android fstab file for Motorola Edge 40 Neo (manaus)
-# MediaTek MT6879 platform
-
-# Dynamic partitions (Android 12+)
-/system_root    ext4    /dev/block/mapper/system    flags=display="System";backup=1;wipeingui;flashimg=1
-/vendor         ext4    /dev/block/mapper/vendor    flags=display="Vendor";backup=1;wipeingui;flashimg=1
-/product        ext4    /dev/block/mapper/product   flags=display="Product";backup=1;wipeingui;flashimg=1
-/system_ext     ext4    /dev/block/mapper/system_ext flags=display="System Ext";backup=1;wipeingui;flashimg=1
-/vendor_dlkm    ext4    /dev/block/mapper/vendor_dlkm flags=display="Vendor DLKM";backup=1;wipeingui;flashimg=1
-
-# Data partition (F2FS preferred)
-/data           f2fs    /dev/block/by-name/userdata flags=display="Data";backup=1;wipeingui;length=-16384;fileencryption=none;fsflags="discard,noatime,nosuid,nodev"
-/data           ext4    /dev/block/by-name/userdata flags=display="Data";backup=1;wipeingui;length=-16384;fileencryption=none
-
-# Metadata partition (required for Android 12+)
-/metadata       ext4    /dev/block/by-name/metadata flags=display="Metadata";backup=1;wipeingui
-
-# Boot partitions
-/boot           emmc    /dev/block/by-name/boot     flags=display="Boot";backup=1;flashimg=1
-/vendor_boot    emmc    /dev/block/by-name/vendor_boot flags=display="Vendor Boot";backup=1;flashimg=1
-/dtbo           emmc    /dev/block/by-name/dtbo     flags=display="DTBO";backup=1;flashimg=1
-
-# Recovery partition
-/recovery       emmc    /dev/block/by-name/recovery flags=display="Recovery";backup=1;flashimg=1
-
-# Persistent storage
-/persist        ext4    /dev/block/by-name/persist  flags=display="Persist";backup=1;fsflags=ro
-/persistent     emmc    /dev/block/by-name/persistent flags=display="Persistent";backup=1
-
-# Modem/firmware
-/modem          emmc    /dev/block/by-name/modem    flags=display="Modem";backup=1;flashimg=1
-/bluetooth      emmc    /dev/block/by-name/bluetooth flags=display="Bluetooth";backup=1;flashimg=1
-
-# Misc
-/misc           emmc    /dev/block/by-name/misc     flags=display="Misc";backup=1
-
-# Logo
-/logo           emmc    /dev/block/by-name/logo     flags=display="Logo";backup=1;flashimg=1
-
-# External storage
-/external_sd    vfat    /dev/block/mmcblk1p1        flags=display="Micro SD";storage;wipeingui;removable
-/external_sd    vfat    /dev/block/mmcblk1          flags=display="Micro SD";storage;wipeingui;removable
-
-# USB OTG
-/usb_otg        vfat    /dev/block/sda1             flags=display="USB OTG";storage;wipeingui;removable
-/usb_otg        vfat    /dev/block/sda              flags=display="USB OTG";storage;wipeingui;removable
-/usb_otg        ntfs    /dev/block/sda1             flags=display="USB OTG (NTFS)";storage;wipeingui;removable
-/usb_otg        exfat   /dev/block/sda1             flags=display="USB OTG (exFAT)";storage;wipeingui;removable
+# Storage
+/external_sd      vfat    /dev/block/mmcblk1p1            /dev/block/mmcblk1  flags=storage;wipeingui;removable;display="Micro SD"
+/usb_otg          vfat    /dev/block/sda1                 /dev/block/sda      flags=storage;wipeingui;removable;display="USB OTG"
