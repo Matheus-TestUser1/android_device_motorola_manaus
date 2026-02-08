@@ -52,8 +52,14 @@ MTK_HARDWARE := true
 # ============================================================================
 # KERNEL
 # ============================================================================
+# vendor_boot must exist
 BOARD_BOOT_HEADER_VERSION := 4
-BOARD_BOOTIMG_HEADER_VERSION := $(BOARD_BOOT_HEADER_VERSION)
+BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 67108864
+
+# only move resources when vendor_boot exists
+ifneq ($(strip $(BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE)),)
+  BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
+endif
 BOARD_KERNEL_BASE := 0x40078000
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_RAMDISK_OFFSET := 0x11088000
