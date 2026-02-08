@@ -7,74 +7,69 @@
 
 LOCAL_PATH := device/motorola/manaus
 
+# ============================================================================
+# ARCHITECTURE & BASE
+# ============================================================================
+# Herda configurações base de 64 bits (Necessário)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
+
+# Define API Level (Android 13)
 PRODUCT_SHIPPING_API_LEVEL := 33
 
-# ✅ ESSENCIAL: Inherit TWRP common
+# ============================================================================
+# TWRP CONFIGURATION
+# ============================================================================
+# Herda configurações comuns do TWRP
 $(call inherit-product, vendor/twrp/config/common.mk)
 
-# A/B OTA CONFIG
+# ============================================================================
+# A/B OTA / DYNAMIC PARTITIONS
+# ============================================================================
+AB_OTA_UPDATER := true
+
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
     POSTINSTALL_PATH_system=system/bin/otapreopt_script \
     FILESYSTEM_TYPE_system=ext4 \
     POSTINSTALL_OPTIONAL_system=true
 
-# ============================================================================
-# BOOT CONTROL HAL (CORRIGIDO: mt6879, não mt6895!)
-# ============================================================================
-PRODUCT_PACKAGES += \
-    android.hardware.boot@1.0-service \
-    android.hardware.boot@1.0-impl \
-    android.hardware.boot@1.0-impl.recovery \
-    bootctrl.mt6879 \
-    bootctrl.mt6879.recovery \
-    bootctrl
-
-PRODUCT_SHIPPING_API_LEVEL := 33  # Android 13
-
+# Ferramentas necessárias para A/B e Partições Dinâmicas
 PRODUCT_PACKAGES += \
     otapreopt_script \
     cppreopts.sh \
     update_engine \
-    update_verifier
+    update_engine_sideload \
+    update_verifier \
+    checkpoint_gc \
+    fastbootd
 
 # ============================================================================
-# KERNEL & RECOVERY_RAMDISK (VENDOR_BOOT V4)
+# BOOT CONTROL HAL
 # ============================================================================
+# Usamos a implementação HIDL padrão/genérica.
+# Se falhar, você precisará dos prebuilts da Motorola (bootctrl.mt6879.so)
+PRODUCT_PACKAGES += \
+    android.hardware.boot@1.2-impl \
+    android.hardware.boot@1.2-service \
+    android.hardware.boot@1.2-impl.recovery \
+    bootctrl.mt6879
 
-# Kernel (from boot.img stock)
-TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/Image
-
-# DTB (from vendor_boot stock)
+# ============================================================================
+# INIT SCRIPTS & FSTAB
+# ============================================================================
+# Copia o fstab para a raiz do ramdisk (CRÍTICO para montar partições)
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/dtb:$(TARGET_COPY_OUT_RECOVERY)/root/prebuilt/dtb
+    $(LOCAL_PATH)/recovery/root/system/etc/recovery.fstab:$(TARGET_COPY_OUT_RECOVERY)/root/system/etc/recovery.fstab
 
-# DTBO (from stock)
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/dtbo.img:$(TARGET_COPY_OUT_RECOVERY)/root/prebuilt/dtbo.img
-
-# ✅ RECOVERY_RAMDISK (from vendor_boot stock - TWRP will inject binaries here)
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/ramdisk.cpio:$(TARGET_COPY_OUT_RECOVERY)/root/prebuilt/ramdisk.cpio
-
-# ============================================================================
-# RECOVERY INIT SCRIPTS
-# ============================================================================
+# Scripts de inicialização específicos do MT6879
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/init.recovery.mt6879.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.mt6879.rc \
     $(LOCAL_PATH)/recovery/root/init.recovery.usb.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.usb.rc
 
-# ============================================================================
-# RECOVERY BINARIES & RESOURCES (TWRP INJECTION)
-# ============================================================================
-
-# TWRP resources (serão injetados no ramdisk.cpio durante o build)
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/sbin/postrecoveryboot.sh:$(TARGET_COPY_OUT_RECOVERY)/root/sbin/postrecoveryboot.sh
-
-# TWRP theme and graphics
+# Se você tiver módulos de kernel (ko), copie-os aqui (Opcional, mas recomendado para Touch/Tela)
 # PRODUCT_COPY_FILES += \
-#     $(LOCAL_PATH)/recovery/root/res/images:$(TARGET_COPY_OUT_RECOVERY)/root/res/images
+#     $(LOCAL_PATH)/recovery/root/vendor/lib/modules/mmi_annotate.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules/mmi_annotate.ko
 
 # ============================================================================
 # SYSTEM PROPERTIES
@@ -88,43 +83,29 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.platform=mt6879 \
     ro.board.platform=mt6879
 
-# TWRP properties
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.twrp.boot=true \
-    ro.twrp.version=3.7.0_12 \
-    twrp.version=3.7.0_12
-
-# Disable encryption in recovery
+# Encryption (Desabilitada conforme seu pedido)
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.crypto.state=unsupported \
     ro.crypto.type=none
 
-# MediaTek properties (CORRIGIDO: Android 13)
+# MediaTek properties
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.mediatek.platform=MT6879 \
     ro.mediatek.chip_ver=S01 \
     ro.mediatek.version.release=13 \
     ro.mediatek.version.sdk=4
 
-# Debug properties
+# USB Controller (Confirmado MT6879)
+PRODUCT_PROPERTY_OVERRIDES += \
+    sys.usb.controller=11201000.usb0 \
+    sys.usb.ffs.aio_compat=true
+
+# Outras propriedades úteis
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.debuggable=1 \
     ro.secure=0 \
     ro.adb.secure=0 \
     persist.sys.usb.config=mtp,adb \
-    persist.service.adb.enable=1 \
-    persist.service.debuggable=1
-
-# USB properties (CORRIGIDO: controller do MT6879)
-PRODUCT_PROPERTY_OVERRIDES += \
-    sys.usb.controller=11201000.usb0 \
-    sys.usb.ffs.aio_compat=true
-
-# Disable APEX in recovery (causes issues)
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.apex.updatable=false
-
-# Heap limits
-PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.heapgrowthlimit=256m \
-    dalvik.vm.heapsize=512m
+    dalvik.vm.heapsize=512m \
+    ro.apex.updatable=false
