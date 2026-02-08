@@ -40,10 +40,10 @@ TARGET_BOARD_PLATFORM := mt6879
 TARGET_BOARD_PLATFORM_GPU := mali-g57mc2
 BOARD_USES_MTK_HARDWARE := true
 MTK_HARDWARE := true
-PLATFORM_VERSION := 13  # ❌ Corrigido: era PLATAFORM_VERSION
+PLATFORM_VERSION := 13
 
 # ============================================================================
-# KERNEL - CORRIGIDO PARA VENDOR_BOOT V4
+# KERNEL - VENDOR_BOOT V4
 # ============================================================================
 BOARD_BOOTIMG_HEADER_VERSION := 4
 BOARD_KERNEL_BASE := 0x40078000
@@ -69,26 +69,29 @@ BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
 # ============================================================================
-# VENDOR_BOOT V4 - CONFIGURAÇÕES CRÍTICAS ADICIONADAS
+# VENDOR_BOOT V4 - CONFIGURAÇÕES CRÍTICAS
 # ============================================================================
 
-# ✅ ADICIONAR: Tamanho do vendor_boot
+# Tamanho do vendor_boot
 BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 67108864
 
-# ✅ ADICIONAR: Fragmentos de ramdisk (ESSENCIAL para v4)
+# Fragmentos de ramdisk (ESSENCIAL para v4)
 BOARD_VENDOR_RAMDISK_FRAGMENTS := recovery
 BOARD_VENDOR_RAMDISK_FRAGMENT.recovery.PARTITION_NAME := vendor_boot
 BOARD_VENDOR_RAMDISK_FRAGMENT.recovery.RAMDISK_NAME := recovery_ramdisk
 BOARD_VENDOR_RAMDISK_FRAGMENT.recovery.KERNEL_MODULE_DIRS := top
 
-# ✅ ADICIONAR: Mover recursos do recovery para vendor_boot
+# Mover recursos do recovery para vendor_boot
 BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
 
-# ✅ ADICIONAR: Usar recovery ramdisk do vendor_boot
-BOARD_USES_RECOVERY_AS_BOOT := false  # Não usar recovery como boot
-BOARD_USES_VENDOR_BOOT := true  # ✅ ESSENCIAL: Indicar que usa vendor_boot
+# Usar vendor_boot
+BOARD_USES_RECOVERY_AS_BOOT := false
+BOARD_USES_VENDOR_BOOT := true
 
-# Argumentos mkbootimg - CORRIGIDO
+# Recovery ramdisk do vendor_boot stock (TWRP vai injetar binários aqui)
+BOARD_PREBUILT_RECOVERY_RAMDISK := $(DEVICE_PATH)/prebuilt/ramdisk.cpio
+
+# Argumentos mkbootimg
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --base $(BOARD_KERNEL_BASE)
 BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE)
@@ -105,11 +108,6 @@ BOARD_SUPER_PARTITION_SIZE := 9126805504
 BOARD_SUPER_PARTITION_GROUPS := motorola_dynamic_partitions
 BOARD_MOTOROLA_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext product vendor vendor_dlkm
 BOARD_MOTOROLA_DYNAMIC_PARTITIONS_SIZE := 9122611200
-
-# ❌ REMOVER: BOARD_CUSTOM_BOOTIMG e BOARD_CUSTOM_BOOTIMG_MK
-# A menos que você tenha um bootimg.mk realmente customizado
-# BOARD_CUSTOM_BOOTIMG := true
-# BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_PATH)/bootimg.mk
 
 # ============================================================================
 # SISTEMA DE ARQUIVOS
@@ -135,21 +133,19 @@ TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
 BOARD_AVB_ENABLE := true
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 
-# Sistema
 BOARD_AVB_VBMETA_SYSTEM := system system_ext product
 BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 1
 
-# Recovery
 BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
 BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA4096
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 
 # ============================================================================
-# RECOVERY - CORRIGIDO
+# RECOVERY
 # ============================================================================
 BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_HAS_NO_REAL_SDCARD := true
@@ -160,16 +156,12 @@ TW_PREPARE_DATA_MEDIA_EARLY := true
 BOARD_USES_METADATA_PARTITION := true
 BOARD_ROOT_EXTRA_FOLDERS += metadata
 
-# ❌ REMOVER ESTA LINHA! É o que está quebrando o boot!
-# TARGET_NO_RECOVERY := true
-
 # ============================================================================
-# A/B - CORRIGIDO
+# A/B
 # ============================================================================
 AB_OTA_UPDATER := true
 TW_INCLUDE_REPACKTOOLS := true
 
-# ✅ CORRIGIR: Lista de partições A/B (remover duplicatas se houver)
 AB_OTA_PARTITIONS := \
     boot \
     vendor_boot \
@@ -202,12 +194,10 @@ TW_NO_SCREEN_BLANK := true
 TW_NO_SCREEN_TIMEOUT := true
 TW_DEVICE_VERSION := manaus_MT6879_stable
 
-# Brilho
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_MAX_BRIGHTNESS := 2047
 TW_DEFAULT_BRIGHTNESS := 1200
 
-# Armazenamento
 TW_HAS_MTP := true
 TW_MTP_DEVICE := /dev/mtp_usb
 TW_INTERNAL_STORAGE_PATH := "/data/media/0"
@@ -268,19 +258,12 @@ TARGET_OTA_ASSERT_DEVICE := manaus,manaus_g,edge40neo
 PLATFORM_SECURITY_PATCH := 2099-12-31
 VENDOR_SECURITY_PATCH := 2099-12-31
 
-# ❌ REMOVIDO: TARGET_NO_RECOVERY := true
-
 # ============================================================================
 # PROPRIEDADES
 # ============================================================================
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 
-# ✅ RECOVERY_RAMDISK do vendor_boot stock (61KB - correto!)
-# O TWRP vai injetar seus binários neste ramdisk
-BOARD_PREBUILT_RECOVERY_RAMDISK := $(DEVICE_PATH)/prebuilt/ramdisk.cpio
-BOARD_USES_VENDOR_BOOT := true
-BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
 # ============================================================================
 # DEBUG
 # ============================================================================
