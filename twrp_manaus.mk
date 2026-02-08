@@ -14,11 +14,11 @@ $(call inherit-product, device/motorola/manaus/device.mk)
 
 
 PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/motorola/manaus/recovery/root,recovery/root)
-# Device identifier - USAR CODENAME REAL
+
+# Device identifier - DEVE bater com o nome do arquivo
 PRODUCT_DEVICE := manaus
 PRODUCT_NAME := twrp_manaus
 PRODUCT_BRAND := motorola
 PRODUCT_MODEL := motorola edge 40 neo
 PRODUCT_MANUFACTURER := motorola
-
 TARGET_OTA_ASSERT_DEVICE := manaus,manaus_g,edge40neo
