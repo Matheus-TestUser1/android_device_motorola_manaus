@@ -6,57 +6,75 @@
 #
 
 LOCAL_PATH := device/motorola/manaus
-# A/B
+
+# ============================================================================
+# A/B OTA CONFIG
+# ============================================================================
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
     POSTINSTALL_PATH_system=system/bin/otapreopt_script \
     FILESYSTEM_TYPE_system=ext4 \
     POSTINSTALL_OPTIONAL_system=true
 
-# Boot control HAL
+# ============================================================================
+# BOOT CONTROL HAL
+# ============================================================================
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-service \
     android.hardware.boot@1.0-impl \
     android.hardware.boot@1.0-impl.recovery \
-    bootctrl.mt6895 \
-    bootctrl.mt6895.recovery \
-    bootctrl 
+    bootctrl.mt6879 \
+    bootctrl.mt6879.recovery \
+    bootctrl
+
 PRODUCT_SHIPPING_API_LEVEL := 31
+
 PRODUCT_PACKAGES += \
     otapreopt_script \
     cppreopts.sh \
     update_engine \
-    update_verifier \
-#
-# Copyright (C) 2024 The Android Open Source Project
-#
-# SPDX-License-Identifier: Apache-2.0
-#
+    update_verifier
 
-# Kernel
+# ============================================================================
+# KERNEL & RAMDISK (VENDOR_BOOT V4)
+# ============================================================================
+
+# Kernel (from boot.img)
 TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/Image
 
-# DTBO
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/dtbo.img:$(TARGET_COPY_OUT_RECOVERY)/root/prebuilt/dtbo.img
-
-# DTB (if separate)
+# DTB (from vendor_boot)
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/dtb:$(TARGET_COPY_OUT_RECOVERY)/root/prebuilt/dtb
 
-# Recovery init scripts
+# DTBO (from dtbo.img)
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/init.recovery.mt6879.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.mt6879.rc
+    $(LOCAL_PATH)/prebuilt/dtbo.img:$(TARGET_COPY_OUT_RECOVERY)/root/prebuilt/dtbo.img
 
-# Recovery binaries
+# ✅ RECOVERY_RAMDISK (CRITICAL for vendor_boot v4!)
+# This is the ramdisk.cpio extracted from vendor_boot
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/ramdisk.cpio:$(TARGET_COPY_OUT_RECOVERY)/root/prebuilt/ramdisk.cpio
+
+# Alternative: If you want to use the extracted ramdisk folder instead
+# PRODUCT_COPY_FILES += \
+#     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/prebuilt/ramdisk,$(TARGET_COPY_OUT_RECOVERY)/root)
+
+# ============================================================================
+# RECOVERY INIT SCRIPTS
+# ============================================================================
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/root/init.recovery.mt6879.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.mt6879.rc \
+    $(LOCAL_PATH)/recovery/root/init.recovery.usb.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.usb.rc
+
+# ============================================================================
+# RECOVERY BINARIES
+# ============================================================================
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/sbin/postrecoveryboot.sh:$(TARGET_COPY_OUT_RECOVERY)/root/sbin/postrecoveryboot.sh
 
-# Vendor modules (if needed for touch/display)
-# PRODUCT_COPY_FILES += \
-#     $(LOCAL_PATH)/recovery/root/vendor/lib/modules/mtk_panel_drv.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules/mtk_panel_drv.ko
-
-# System properties
+# ============================================================================
+# SYSTEM PROPERTIES
+# ============================================================================
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.product.device=manaus \
     ro.product.name=manaus \
@@ -81,7 +99,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.mediatek.platform=MT6879 \
     ro.mediatek.chip_ver=S01 \
-    ro.mediatek.version.release=12 \
+    ro.mediatek.version.release=13 \
     ro.mediatek.version.sdk=4
 
 # Debug properties
@@ -95,7 +113,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # USB properties
 PRODUCT_PROPERTY_OVERRIDES += \
-    sys.usb.controller=musb-hdrc \
+    sys.usb.controller=11201000.usb0 \
     sys.usb.ffs.aio_compat=true
 
 # Disable APEX in recovery (causes issues)
