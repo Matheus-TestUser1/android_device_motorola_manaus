@@ -17,7 +17,7 @@ AB_OTA_POSTINSTALL_CONFIG += \
     POSTINSTALL_OPTIONAL_system=true
 
 # ============================================================================
-# BOOT CONTROL HAL
+# BOOT CONTROL HAL (CORRIGIDO: mt6879, não mt6895!)
 # ============================================================================
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-service \
@@ -27,7 +27,7 @@ PRODUCT_PACKAGES += \
     bootctrl.mt6879.recovery \
     bootctrl
 
-PRODUCT_SHIPPING_API_LEVEL := 31
+PRODUCT_SHIPPING_API_LEVEL := 33  # Android 13
 
 PRODUCT_PACKAGES += \
     otapreopt_script \
@@ -36,28 +36,23 @@ PRODUCT_PACKAGES += \
     update_verifier
 
 # ============================================================================
-# KERNEL & RAMDISK (VENDOR_BOOT V4)
+# KERNEL & RECOVERY_RAMDISK (VENDOR_BOOT V4)
 # ============================================================================
 
-# Kernel (from boot.img)
+# Kernel (from boot.img stock)
 TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/Image
 
-# DTB (from vendor_boot)
+# DTB (from vendor_boot stock)
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/dtb:$(TARGET_COPY_OUT_RECOVERY)/root/prebuilt/dtb
 
-# DTBO (from dtbo.img)
+# DTBO (from stock)
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/dtbo.img:$(TARGET_COPY_OUT_RECOVERY)/root/prebuilt/dtbo.img
 
-# ✅ RECOVERY_RAMDISK (CRITICAL for vendor_boot v4!)
-# This is the ramdisk.cpio extracted from vendor_boot
+# ✅ RECOVERY_RAMDISK (from vendor_boot stock - TWRP will inject binaries here)
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/ramdisk.cpio:$(TARGET_COPY_OUT_RECOVERY)/root/prebuilt/ramdisk.cpio
-
-# Alternative: If you want to use the extracted ramdisk folder instead
-# PRODUCT_COPY_FILES += \
-#     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/prebuilt/ramdisk,$(TARGET_COPY_OUT_RECOVERY)/root)
 
 # ============================================================================
 # RECOVERY INIT SCRIPTS
@@ -67,10 +62,16 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/init.recovery.usb.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.usb.rc
 
 # ============================================================================
-# RECOVERY BINARIES
+# RECOVERY BINARIES & RESOURCES (TWRP INJECTION)
 # ============================================================================
+
+# TWRP resources (serão injetados no ramdisk.cpio durante o build)
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/sbin/postrecoveryboot.sh:$(TARGET_COPY_OUT_RECOVERY)/root/sbin/postrecoveryboot.sh
+
+# TWRP theme and graphics
+# PRODUCT_COPY_FILES += \
+#     $(LOCAL_PATH)/recovery/root/res/images:$(TARGET_COPY_OUT_RECOVERY)/root/res/images
 
 # ============================================================================
 # SYSTEM PROPERTIES
@@ -95,7 +96,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.crypto.state=unsupported \
     ro.crypto.type=none
 
-# MediaTek properties
+# MediaTek properties (CORRIGIDO: Android 13)
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.mediatek.platform=MT6879 \
     ro.mediatek.chip_ver=S01 \
@@ -111,7 +112,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.service.adb.enable=1 \
     persist.service.debuggable=1
 
-# USB properties
+# USB properties (CORRIGIDO: controller do MT6879)
 PRODUCT_PROPERTY_OVERRIDES += \
     sys.usb.controller=11201000.usb0 \
     sys.usb.ffs.aio_compat=true
@@ -120,7 +121,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.apex.updatable=false
 
-# Override heap growth limit
+# Heap limits
 PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.heapgrowthlimit=256m \
     dalvik.vm.heapsize=512m
