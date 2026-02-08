@@ -1,9 +1,6 @@
-# $(DEVICE_PATH)/bootimg.mk
+# bootimg.mk - Minimal para vendor_boot v4
+
 LOCAL_PATH := $(call my-dir)
 
-ifneq ($(strip $(TARGET_PREBUILT_DTB)),)
-    BOARD_PREBUILT_DTBIMAGE_DIR := $(TARGET_PREBUILT_DTB)
-endif
-
-$(INSTALLED_DTBOIMAGE_TARGET):
-	@cp $(BOARD_PREBUILT_DTBOIMAGE) $@
+# Não precisa de regras complexas, o sistema de build do TWRP já lida com vendor_boot v4
+# Este arquivo só é necessário se você precisar de customizações especiais
