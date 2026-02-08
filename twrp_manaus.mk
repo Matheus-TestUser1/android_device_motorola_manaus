@@ -13,7 +13,7 @@ $(call inherit-product, vendor/twrp/config/common.mk)
 $(call inherit-product, device/motorola/edge40neo/device.mk)
 
 
-PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/motorola/edge40neo/recovery/root,recovery/root)
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/motorola/manaus/recovery/root,recovery/root)
 # Device identifier - USAR CODENAME REAL
 PRODUCT_DEVICE := manaus
 PRODUCT_NAME := twrp_manaus
