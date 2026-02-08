@@ -262,7 +262,8 @@ VENDOR_SECURITY_PATCH := 2099-12-31
 # PROPRIEDADES
 # ============================================================================
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
-TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true 
+TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
+ BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true 
 # ============================================================================
 # DEBUG
 # ============================================================================
