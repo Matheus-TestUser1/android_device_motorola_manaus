@@ -125,3 +125,4 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.heapgrowthlimit=256m \
     dalvik.vm.heapsize=512m
+chmod 755 device/motorola/manaus/recovery/root/sbin/postrecoveryboot.sh
