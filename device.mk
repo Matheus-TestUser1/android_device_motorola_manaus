@@ -5,13 +5,6 @@
 
 LOCAL_PATH := device/motorola/manaus
 
-# ============================================================================
-# BASE CONFIGURATION
-# ============================================================================
-$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
-$(call inherit-product, vendor/twrp/config/common.mk)
-
 PRODUCT_SHIPPING_API_LEVEL := 33
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
