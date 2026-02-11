@@ -1,3 +1,4 @@
+#
 # Copyright (C) 2024 The Android Open Source Project
 # Copyright (C) 2024 TeamWin Recovery Project
 #
@@ -24,12 +25,13 @@ BOARD_USES_MTK_HARDWARE := true
 MTK_HARDWARE := true
 
 # ============================================================================
-# VENDOR_BOOT / BOOT HEADER (V4)
+# VENDOR_BOOT / BOOT HEADER (V4) - CRITICAL FOR EDGE 40 NEO
 # ============================================================================
 BOARD_BOOT_HEADER_VERSION := 4
 BOARD_USES_VENDOR_BOOTIMAGE := true
 BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 67108864
 BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
+BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT := true
 
 # ============================================================================
 # ARCH
@@ -48,7 +50,7 @@ TARGET_2ND_CPU_VARIANT := generic
 TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a55
 
 # ============================================================================
-# KERNEL / MKBOOTIMG
+# KERNEL / MKBOOTIMG - VENDOR_BOOT CONFIGURATION
 # ============================================================================
 BOARD_KERNEL_BASE := 0x40078000
 BOARD_KERNEL_PAGESIZE := 4096
@@ -67,12 +69,12 @@ BOARD_KERNEL_SEPARATED_DTBO := true
 BOARD_RAMDISK_USE_LZ4 := true
 LZMA_RAMDISK_TARGETS := recovery
 
-# Prebuilts
+# Prebuilts - Kernel e DTB para vendor_boot
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 
-# mkbootimg args
+# mkbootimg args - CRITICAL FOR VENDOR_BOOT
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --base $(BOARD_KERNEL_BASE)
 BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE)
@@ -81,6 +83,18 @@ BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
 
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+BOARD_INCLUDE_RECOVERY_DTBO := true
+
+# ============================================================================
+# KERNEL MODULES - REQUIRED FOR VENDOR_BOOT
+# ============================================================================
+# Carregar módulos do kernel no primeiro estágio
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilt/modules.load 2>/dev/null))
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES := $(wildcard $(DEVICE_PATH)/prebuilt/modules/*.ko)
+
+# Módulos para recovery
+BOARD_RECOVERY_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilt/modules.load.recovery 2>/dev/null))
+RECOVERY_KERNEL_MODULES := $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES)
 
 # ============================================================================
 # PARTITIONS / DYNAMIC
@@ -183,7 +197,7 @@ TW_EXTRA_LANGUAGES := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 
 TW_NO_SCREEN_TIMEOUT := true
-TW_DEVICE_VERSION := manaus_MT6879_stable
+TW_DEVICE_VERSION := manaus_MT6879_vendor_boot
 
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_MAX_BRIGHTNESS := 2047

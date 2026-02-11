@@ -1,2 +1,28 @@
+# Git attributes for TWRP device tree
+
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Source code
+*.c text
+*.cc text
+*.cpp text
+*.h text
+*.java text
+*.mk text
+*.bp text
+*.rc text
+*.prop text
+*.sh text eol=lf
+*.fstab text
+
+# Documentation
+*.md text
+*.txt text
+
+# Binary files
+*.img binary
+*.dtb binary
+*.dtbo binary
+*.ko binary
+*.cpio binary

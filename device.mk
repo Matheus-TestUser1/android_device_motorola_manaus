@@ -71,15 +71,21 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     e2fsck \
     resize2fs \
-    tune2fs
+    tune2fs \
+    fsck.f2fs \
+    mkfs.f2fs
 
 # ============================================================================
-# RECOVERY FILES
+# RECOVERY FILES - CRITICAL FOR VENDOR_BOOT
 # ============================================================================
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/etc/recovery.fstab:$(TARGET_COPY_OUT_RECOVERY)/root/system/etc/recovery.fstab \
+    $(LOCAL_PATH)/recovery/root/system/etc/twrp.flags:$(TARGET_COPY_OUT_RECOVERY)/root/system/etc/twrp.flags \
     $(LOCAL_PATH)/recovery/root/init.recovery.mt6879.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.mt6879.rc \
-    $(LOCAL_PATH)/recovery/root/init.recovery.usb.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.usb.rc
+    $(LOCAL_PATH)/recovery/root/init.recovery.usb.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.usb.rc \
+    $(LOCAL_PATH)/recovery/root/mtk-plpath-utils.rc:$(TARGET_COPY_OUT_RECOVERY)/root/mtk-plpath-utils.rc \
+    $(LOCAL_PATH)/recovery/root/ueventd.rc:$(TARGET_COPY_OUT_RECOVERY)/root/ueventd.rc \
+    $(LOCAL_PATH)/recovery/root/sbin/postrecoveryboot.sh:$(TARGET_COPY_OUT_RECOVERY)/root/sbin/postrecoveryboot.sh
 
 # ============================================================================
 # SYSTEM PROPERTIES
@@ -93,7 +99,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     sys.usb.controller=11201000.usb0 \
     sys.usb.ffs.aio_compat=true \
     ro.adb.secure=0 \
-    persist.sys.usb.config=mtp,adb
+    persist.sys.usb.config=mtp,adb \
+    ro.boot.dynamic_partitions=true \
+    ro.boot.bootdevice=bootdevice
 
 # ============================================================================
 # SOONG NAMESPACES

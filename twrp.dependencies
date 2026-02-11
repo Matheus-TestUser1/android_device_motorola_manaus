@@ -1,2 +1,8 @@
 [
+  {
+    "remote": "github",
+    "repository": "TeamWin/android_device_motorola_manaus",
+    "target_path": "device/motorola/manaus",
+    "branch": "android-12.1"
+  }
 ]

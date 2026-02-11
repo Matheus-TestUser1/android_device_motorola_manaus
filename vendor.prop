@@ -1,9 +1,28 @@
-# Vendor properties for Motorola Edge 40 Neo (manaus)
+# vendor.prop - Motorola Edge 40 Neo (manaus) - MT6879
+# VENDOR_BOOT VERSION
 
 # MediaTek
 ro.vendor.mediatek.platform=MT6879
 ro.vendor.mtk.bt_sap_enable=true
+ro.vendor.mtk_protocol1_rat_config=N/Lf/Lt/W/G
+ro.vendor.mtk_ps1_rat=N/Lf/Lt/W/G
+ro.vendor.mtk_f2fs_enable=1
+ro.vendor.mtk_emmc_support=1
 
 # USB
 persist.sys.usb.config=mtp,adb
 persist.vendor.usb.config=mtp
+persist.vendor.usb.config.extra=none
+
+# Graphics
+ro.vendor.graphics.memory=4096
+ro.vendor.mtk_gpu_support=1
+
+# Performance
+ro.vendor.mtk_perf_simple_start_win=1
+ro.vendor.mtk_perf_fast_start_win=1
+ro.vendor.mtk_perf_response_time=1
+
+# Security
+ro.vendor.boot.warranty_bit=0
+ro.vendor.warranty_bit=0

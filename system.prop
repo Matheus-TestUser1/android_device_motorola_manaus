@@ -1,30 +1,44 @@
 # system.prop - TWRP - Motorola Edge 40 Neo (manaus) - MT6879
-# Minimalista, mas com dados CORRETOS do hardware real.
+# VENDOR_BOOT VERSION - Configurado para boot via vendor_boot
 
-# --- IDENTIFICAÇÃO DO HARDWARE (IMUTÁVEL) ---
+# --- IDENTIFICAÇÃO DO HARDWARE ---
 ro.product.brand=motorola
-ro.product.device=manaus           # Codenome interno
+ro.product.device=manaus
 ro.product.manufacturer=motorola
-ro.product.model=moto edge (2022)  # Nome comercial correto
+ro.product.model=moto edge 40 neo
 ro.product.board=manaus
-ro.board.platform=mt6879           # CHIPSET CORRETO
-ro.hardware=mt6879                 # CHIPSET CORRETO
+ro.board.platform=mt6879
+ro.hardware=mt6879
 
-# --- CONFIGURAÇÕES BÁSICAS DE INICIALIZAÇÃO ---
-ro.boot.dynamic_partitions=true    # Sim, use esta (está correta)
+# --- CONFIGURAÇÕES DE INICIALIZAÇÃO ---
+ro.boot.dynamic_partitions=true
+ro.boot.bootdevice=bootdevice
 
 # --- USB PARA O MODO RECOVERY ---
-persist.sys.usb.config=mtp,adb     # Habilita MTP e ADB no recovery
-ro.adb.secure=0                    # Permite ADB root (crítico para debugging)
+persist.sys.usb.config=mtp,adb
+ro.adb.secure=0
 ro.secure=0
 ro.debuggable=1
 sys.usb.controller=11201000.usb0
 sys.usb.configfs=1
+sys.usb.ffs.aio_compat=true
 
-# --- DISPLAY (Básico, para o recovery) ---
-ro.sf.lcd_density=400              # Densidade da tela REAL do dispositivo
-ro.minui.pixel_format=BGRA_8888    # Formato de pixel comum em recoveries
+# --- DISPLAY ---
+ro.sf.lcd_density=400
+ro.minui.pixel_format=BGRA_8888
 
-# --- GERENCIAMENTO DE MEMÓRIA (Opcional, mas seguro) ---
+# --- GERENCIAMENTO DE MEMÓRIA ---
 dalvik.vm.heapgrowthlimit=256m
 dalvik.vm.heapsize=512m
+
+# --- TWRP ---
+ro.twrp.boot=true
+ro.twrp.version=3.7.0_12
+
+# --- MediaTek ---
+ro.mediatek.platform=MT6879
+ro.vendor.mediatek.platform=MT6879
+
+# --- AVB ---
+ro.boot.verifiedbootstate=orange
+ro.boot.vbmeta.device_state=unlocked
