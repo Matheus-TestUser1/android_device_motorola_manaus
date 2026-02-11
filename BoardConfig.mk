@@ -45,7 +45,7 @@ TARGET_CPU_VARIANT := generic
 TARGET_CPU_VARIANT_RUNTIME := cortex-a55
 
 TARGET_2ND_ARCH := arm
-TARGET_2ND_ARCH_VARIANT := armv8-2a
+TARGET_2ND_ARCH_VARIANT := armv8-a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
@@ -93,10 +93,12 @@ BOARD_INCLUDE_RECOVERY_DTBO := true
 # KERNEL MODULES - REQUIRED FOR VENDOR_BOOT
 # ============================================================================
 # Carregar módulos do kernel no primeiro estágio
+TW_LOAD_VENDOR_BOOT_MODULES := true
+# Lista de módulos para carregar (do vendor_ramdisk)
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilt/modules.load 2>/dev/null))
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES := $(wildcard $(DEVICE_PATH)/prebuilt/modules/*.ko)
 
-# Módulos para recovery
+# Módulos para recovery (mesmos do vendor_ramdisk)
 BOARD_RECOVERY_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilt/modules.load.recovery 2>/dev/null))
 RECOVERY_KERNEL_MODULES := $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES)
 
