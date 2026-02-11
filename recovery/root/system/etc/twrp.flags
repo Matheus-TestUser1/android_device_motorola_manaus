@@ -1,24 +1,27 @@
 # TWRP Flags for Motorola Edge 40 Neo (manaus) - MT6879
-# These override/add to recovery.fstab for TWRP GUI
+# VENDOR_BOOT VERSION - Configurado para boot via vendor_boot
 
 # System partitions
-/system_image     emmc    /dev/block/mapper/system        flags=backup=1;flashimg=1;display="System Image"
-/system_ext_image emmc    /dev/block/mapper/system_ext    flags=backup=1;flashimg=1;display="System Ext Image"
-/vendor_image     emmc    /dev/block/mapper/vendor        flags=backup=1;flashimg=1;display="Vendor Image"
-/product_image    emmc    /dev/block/mapper/product       flags=backup=1;flashimg=1;display="Product Image"
-/vendor_dlkm_image emmc   /dev/block/mapper/vendor_dlkm   flags=backup=1;flashimg=1;display="Vendor DLKM Image"
+/system_image     emmc    /dev/block/mapper/system        flags=backup=1;flashimg=1;display="System Image";slotselect
+/system_ext_image emmc    /dev/block/mapper/system_ext    flags=backup=1;flashimg=1;display="System Ext Image";slotselect
+/vendor_image     emmc    /dev/block/mapper/vendor        flags=backup=1;flashimg=1;display="Vendor Image";slotselect
+/product_image    emmc    /dev/block/mapper/product       flags=backup=1;flashimg=1;display="Product Image";slotselect
+/vendor_dlkm_image emmc   /dev/block/mapper/vendor_dlkm   flags=backup=1;flashimg=1;display="Vendor DLKM Image";slotselect
 
 # Boot partitions
-/boot             emmc    /dev/block/by-name/boot         flags=backup=1;flashimg=1;display="Boot"
-/dtbo             emmc    /dev/block/by-name/dtbo         flags=backup=1;flashimg=1;display="DTBO"
+/boot             emmc    /dev/block/by-name/boot         flags=backup=1;flashimg=1;display="Boot";slotselect
+/vendor_boot      emmc    /dev/block/by-name/vendor_boot  flags=backup=1;flashimg=1;display="Vendor Boot";slotselect
+/dtbo             emmc    /dev/block/by-name/dtbo         flags=backup=1;flashimg=1;display="DTBO";slotselect
 /vbmeta           emmc    /dev/block/by-name/vbmeta       flags=backup=1;flashimg=1;display="VBMeta"
-/vbmeta_system    emmc    /dev/block/by-name/vbmeta_system flags=backup=1;flashimg=1;display="VBMeta System"
+/vbmeta_system    emmc    /dev/block/by-name/vbmeta_system flags=backup=1;flashimg=1;display="VBMeta System";slotselect
 
 # MTK Partitions
 /nvram            emmc    /dev/block/by-name/nvram        flags=backup=1;display="NVRAM"
 /nvdata           ext4    /dev/block/by-name/nvdata       flags=backup=1;display="NVData"
 /nvcfg            ext4    /dev/block/by-name/nvcfg        flags=backup=1;display="NVCfg"
 /persist          ext4    /dev/block/by-name/persist      flags=backup=1;display="Persist"
+/protect1         ext4    /dev/block/by-name/protect1     flags=backup=1;display="Protect1"
+/protect2         ext4    /dev/block/by-name/protect2     flags=backup=1;display="Protect2"
 
 # Storage
 /external_sd      vfat    /dev/block/mmcblk1p1            /dev/block/mmcblk1  flags=storage;wipeingui;removable;display="Micro SD"

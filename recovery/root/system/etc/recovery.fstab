@@ -1,17 +1,24 @@
 # Android fstab for Motorola Edge 40 Neo (manaus) - MT6879
-# NO FBE VERSION - For basic mounting tests
+# VENDOR_BOOT VERSION - Configurado para boot via vendor_boot
 #<src>                                                  <mnt_point>         <type>    <mnt_flags and options>                       <fs_mgr_flags>
 
 # --- Dynamic/Logical Partitions ---
-/dev/block/mapper/system                                /system             erofs     ro,noatime,nodiscard                          wait,slotselect,logical
-/dev/block/mapper/system_ext                            /system_ext         erofs     ro,noatime,nodiscard                          wait,slotselect,logical
-/dev/block/mapper/vendor                                /vendor             erofs     ro,noatime,nodiscard                          wait,slotselect,logical
-/dev/block/mapper/product                               /product            erofs     ro,noatime,nodiscard                          wait,slotselect,logical
-/dev/block/mapper/vendor_dlkm                           /vendor_dlkm        erofs     ro,noatime,nodiscard                          wait,slotselect,logical
+/dev/block/mapper/system                                /system             erofs     ro,noatime,nodiscard                          wait,slotselect,logical,first_stage_mount
+/dev/block/mapper/system_ext                            /system_ext         erofs     ro,noatime,nodiscard                          wait,slotselect,logical,first_stage_mount
+/dev/block/mapper/vendor                                /vendor             erofs     ro,noatime,nodiscard                          wait,slotselect,logical,first_stage_mount
+/dev/block/mapper/product                               /product            erofs     ro,noatime,nodiscard                          wait,slotselect,logical,first_stage_mount
+/dev/block/mapper/vendor_dlkm                           /vendor_dlkm        erofs     ro,noatime,nodiscard                          wait,slotselect,logical,first_stage_mount
 
-# --- Data and Metadata (SEM CRIPTOGRAFIA) ---
-/dev/block/by-name/userdata                             /data               f2fs      noatime,nosuid,nodev,errors=panic             wait,check,formattable,resize,quota
-/dev/block/by-name/metadata                             /metadata           ext4      noatime,nosuid,nodev,discard                  wait,check,formattable
+# --- Data and Metadata ---
+/dev/block/by-name/userdata                             /data               f2fs      noatime,nosuid,nodev,errors=panic             wait,check,formattable,resize,quota,latemount
+/dev/block/by-name/metadata                             /metadata           ext4      noatime,nosuid,nodev,discard                  wait,check,formattable,first_stage_mount
+
+# --- Boot Partitions ---
+/dev/block/by-name/boot                                 /boot               emmc      defaults                                      defaults,slotselect,first_stage_mount
+/dev/block/by-name/vendor_boot                          /vendor_boot        emmc      defaults                                      defaults,slotselect,first_stage_mount
+/dev/block/by-name/dtbo                                 /dtbo               emmc      defaults                                      defaults,slotselect,first_stage_mount
+/dev/block/by-name/vbmeta                               /vbmeta             emmc      defaults                                      defaults,first_stage_mount
+/dev/block/by-name/vbmeta_system                        /vbmeta_system      emmc      defaults                                      defaults,slotselect,first_stage_mount
 
 # --- Vendor Partitions ---
 /dev/block/by-name/protect1                             /mnt/vendor/protect_f  ext4   noatime,nosuid,nodev,noauto_da_alloc          wait,check,formattable
@@ -21,18 +28,12 @@
 /dev/block/by-name/persist                              /mnt/vendor/persist    ext4   noatime,nosuid,nodev,noauto_da_alloc          wait,check,formattable
 /dev/block/by-name/prodpersist                          /mnt/product/persist   ext4   noatime,nosuid,nodev,noauto_da_alloc          wait,check,formattable
 
-# --- Boot/Recovery Partitions ---
-/dev/block/by-name/boot                                 /boot                 emmc    defaults                                      defaults,slotselect
-/dev/block/by-name/vendor_boot                          /vendor_boot          emmc    defaults                                      defaults,slotselect
-/dev/block/by-name/dtbo                                 /dtbo                 emmc    defaults                                      defaults,slotselect
-/dev/block/by-name/vbmeta                               /vbmeta               emmc    defaults                                      defaults
-/dev/block/by-name/vbmeta_system                        /vbmeta_system        emmc    defaults                                      defaults,slotselect
-
 # --- Other Partitions ---
 /dev/block/by-name/logo                                 /logo                 emmc    defaults                                      defaults
 /dev/block/by-name/misc                                 /misc                 emmc    defaults                                      defaults
 /dev/block/by-name/frp                                  /persistent           emmc    defaults                                      defaults
 /dev/block/by-name/nvram                                /nvram                emmc    defaults                                      defaults
+/dev/block/by-name/para                                 /para                 emmc    defaults                                      defaults
 
 # --- Removable Storage ---
 /auto                                                  /external_sd          auto    defaults                                      voldmanaged=sdcard1:auto,noemulatedsd
