@@ -71,7 +71,7 @@ BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_SEPARATED_DTBO := true
 
 BOARD_RAMDISK_USE_LZ4 := true
-LZMA_RAMDISK_TARGETS := recovery
+#LZMA_RAMDISK_TARGETS := recovery
 
 # Prebuilts - Kernel e DTB para vendor_boot
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image
