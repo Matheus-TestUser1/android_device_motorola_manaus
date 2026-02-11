@@ -1,4 +1,6 @@
-# ueventd.rc
+# ueventd.rc for Motorola Edge 40 Neo (manaus) - MT6879
+# VENDOR_BOOT VERSION
+
 firmware_directories /etc/firmware/ /odm/firmware/ /vendor/firmware/ /firmware/image/
 uevent_socket_rcvbuf_size 16M
 
@@ -31,27 +33,39 @@ subsystem sound
 /dev/hwbinder             0666   root       root
 /dev/vndbinder            0666   root       root
 
-# Framebuffer - CRÍTICO
+# Framebuffer - CRITICAL
 /dev/graphics/fb0         0666   root       graphics
 /dev/graphics/*           0666   root       graphics
 
 # Input
 /dev/input/*              0666   root       input
 /dev/uinput               0666   root       uhid
+/dev/event*               0666   root       input
 
 # USB
 /dev/bus/usb/*            0660   root       usb
 /dev/mtp_usb              0660   root       mtp
 /dev/usb_accessory        0660   root       usb
+/dev/usb-ffs/*            0660   root       usb
 
 # Som
 /dev/snd/*                0660   system     audio
+/dev/audio*               0660   system     audio
 
 # DRM/GPU
 /dev/dri/*                0666   root       graphics
+/dev/mali*                0666   root       graphics
+/dev/graphics/mali*       0666   root       graphics
 
 # Outros
 /dev/rtc0                 0640   system     system
 /dev/tty0                 0660   root       system
 /dev/tun                  0660   system     vpn
 /dev/ppp                  0660   radio      vpn
+/dev/block/*              0660   root       disk
+
+# MediaTek específico
+/dev/mtk_*                0660   root       system
+/dev/imgsys*              0660   root       system
+/dev/videox*              0660   root       system
+/dev/camera*              0660   root       system

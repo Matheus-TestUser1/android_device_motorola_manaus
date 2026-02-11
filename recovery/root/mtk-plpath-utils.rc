@@ -1,15 +1,22 @@
+# mtk-plpath-utils.rc
+# MediaTek plpath utilities for Motorola Edge 40 Neo (manaus) - MT6879
+# VENDOR_BOOT VERSION
+
 on boot
     start mtk.plpath.utils.link
 
 on property:persist.vendor.mtk.pl_lnk=1
+    # Preloader symlinks
     symlink /dev/block/mapper/pl_a /dev/block/by-name/preloader_raw_a
     symlink /dev/block/mapper/pl_b /dev/block/by-name/preloader_raw_b
     symlink /dev/block/mapper/pl_a /dev/block/platform/bootdevice/by-name/preloader_raw_a
     symlink /dev/block/mapper/pl_b /dev/block/platform/bootdevice/by-name/preloader_raw_b
-
-# FSTAB_RAW2(lk2,bootloader2) of fstab.in.emmc, but without bootloader2 mount point
+    
+    # Bootloader symlinks
     symlink /dev/block/by-name/lk1 /dev/block/by-name/bootloader1
     symlink /dev/block/by-name/lk2 /dev/block/by-name/bootloader2
+    symlink /dev/block/by-name/lk1 /dev/block/platform/bootdevice/by-name/bootloader1
+    symlink /dev/block/by-name/lk2 /dev/block/platform/bootdevice/by-name/bootloader2
 
 # Fix ro.vendor.mtk_ufs_support remove issue of recovery mode
 on property:vendor.mtk.boot0_linka=1
@@ -36,3 +43,4 @@ service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
     group root system
     oneshot
     disabled
+    seclabel u:r:recovery:s0

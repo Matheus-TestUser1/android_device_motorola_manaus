@@ -1,6 +1,6 @@
 # init.recovery.usb.rc
 # USB configuration for Motorola Edge 40 Neo (manaus) - MT6879
-# ConfigFS and legacy USB support for TWRP
+# ConfigFS e legacy USB support para TWRP com vendor_boot
 
 on early-init
     setprop sys.usb.configfs 1
@@ -12,6 +12,10 @@ on init
     setprop ro.usb.id.product.adb 2e81
     setprop ro.usb.id.product.fastboot 2e80
     setprop ro.usb.id.product.mtp 2e82
+    
+    # Product info
+    setprop ro.product.manufacturer motorola
+    setprop ro.product.model "motorola edge 40 neo"
 
 on fs && property:sys.usb.configfs=1
     # Mount configfs
@@ -23,15 +27,16 @@ on fs && property:sys.usb.configfs=1
     write /config/usb_gadget/g1/idProduct 0x2e81
     
     # Create strings
-    mkdir /config/usb_gadget/g1/strings/0x409 0770
+    mkdir /config/usb_gadget/g1/strings/0x409 0770 shell shell
     write /config/usb_gadget/g1/strings/0x409/serialnumber ${ro.serialno}
     write /config/usb_gadget/g1/strings/0x409/manufacturer ${ro.product.manufacturer}
     write /config/usb_gadget/g1/strings/0x409/product ${ro.product.model}
     
     # Create functions
-    mkdir /config/usb_gadget/g1/functions/ffs.adb
-    mkdir /config/usb_gadget/g1/functions/ffs.fastboot
-    mkdir /config/usb_gadget/g1/functions/mass_storage.0
+    mkdir /config/usb_gadget/g1/functions/ffs.adb 0770 shell shell
+    mkdir /config/usb_gadget/g1/functions/ffs.fastboot 0770 shell shell
+    mkdir /config/usb_gadget/g1/functions/mass_storage.0 0770 shell shell
+    mkdir /config/usb_gadget/g1/functions/mtp.gs0 0770 shell shell
     
     # Create config
     mkdir /config/usb_gadget/g1/configs/b.1 0777 shell shell
@@ -54,6 +59,9 @@ on fs
     
     mkdir /dev/usb-ffs/fastboot 0770 system system
     mount functionfs fastboot /dev/usb-ffs/fastboot rmode=0770,fmode=0660,uid=1000,gid=1000
+    
+    mkdir /dev/usb-ffs/mtp 0770 shell shell
+    mount functionfs mtp /dev/usb-ffs/mtp uid=1024,gid=1024
 
 # ADB Mode
 on property:sys.usb.config=adb
@@ -69,6 +77,8 @@ on property:sys.usb.config=adb && property:sys.usb.ffs.ready=1 && property:sys.u
     write /config/usb_gadget/g1/idVendor 0x22b8
     write /config/usb_gadget/g1/idProduct 0x2e81
     write /config/usb_gadget/g1/configs/b.1/strings/0x409/configuration "adb"
+    rm /config/usb_gadget/g1/configs/b.1/f1 2>/dev/null
+    rm /config/usb_gadget/g1/configs/b.1/f2 2>/dev/null
     symlink /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/b.1/f1
     write /config/usb_gadget/g1/UDC ${sys.usb.controller}
     setprop sys.usb.state ${sys.usb.config}
@@ -87,11 +97,13 @@ on property:sys.usb.config=fastboot && property:sys.usb.ffs.ready=1 && property:
     write /config/usb_gadget/g1/idVendor 0x22b8
     write /config/usb_gadget/g1/idProduct 0x2e80
     write /config/usb_gadget/g1/configs/b.1/strings/0x409/configuration "fastboot"
+    rm /config/usb_gadget/g1/configs/b.1/f1 2>/dev/null
+    rm /config/usb_gadget/g1/configs/b.1/f2 2>/dev/null
     symlink /config/usb_gadget/g1/functions/ffs.fastboot /config/usb_gadget/g1/configs/b.1/f1
     write /config/usb_gadget/g1/UDC ${sys.usb.controller}
     setprop sys.usb.state ${sys.usb.config}
 
-# MTP Mode (TWRP specific)
+# MTP + ADB Mode (TWRP default)
 on property:sys.usb.config=mtp,adb
     start adbd
 
@@ -99,7 +111,9 @@ on property:sys.usb.config=mtp,adb && property:sys.usb.ffs.ready=1 && property:s
     write /config/usb_gadget/g1/idVendor 0x22b8
     write /config/usb_gadget/g1/idProduct 0x2e82
     write /config/usb_gadget/g1/configs/b.1/strings/0x409/configuration "mtp,adb"
-    symlink /config/usb_gadget/g1/functions/ffs.mtp /config/usb_gadget/g1/configs/b.1/f1
+    rm /config/usb_gadget/g1/configs/b.1/f1 2>/dev/null
+    rm /config/usb_gadget/g1/configs/b.1/f2 2>/dev/null
+    symlink /config/usb_gadget/g1/functions/mtp.gs0 /config/usb_gadget/g1/configs/b.1/f1
     symlink /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/b.1/f2
     write /config/usb_gadget/g1/UDC ${sys.usb.controller}
     setprop sys.usb.state ${sys.usb.config}
@@ -118,6 +132,8 @@ on property:sys.usb.config=sideload && property:sys.usb.ffs.ready=1 && property:
     write /config/usb_gadget/g1/idVendor 0x22b8
     write /config/usb_gadget/g1/idProduct 0x2e81
     write /config/usb_gadget/g1/configs/b.1/strings/0x409/configuration "sideload"
+    rm /config/usb_gadget/g1/configs/b.1/f1 2>/dev/null
+    rm /config/usb_gadget/g1/configs/b.1/f2 2>/dev/null
     symlink /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/b.1/f1
     write /config/usb_gadget/g1/UDC ${sys.usb.controller}
     setprop sys.usb.state ${sys.usb.config}
@@ -134,8 +150,8 @@ on property:sys.usb.config=none && property:sys.usb.configfs=1
     stop adbd
     stop fastbootd
     setprop sys.usb.ffs.ready 0
-    rm /config/usb_gadget/g1/configs/b.1/f1
-    rm /config/usb_gadget/g1/configs/b.1/f2
+    rm /config/usb_gadget/g1/configs/b.1/f1 2>/dev/null
+    rm /config/usb_gadget/g1/configs/b.1/f2 2>/dev/null
     setprop sys.usb.state ${sys.usb.config}
 
 # Restart adbd as root

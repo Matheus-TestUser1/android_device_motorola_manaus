@@ -1,7 +1,9 @@
 # init.recovery.mt6879.rc
 # Main recovery init for Motorola Edge 40 Neo (manaus) - MT6879
+# CONFIGURADO PARA VENDOR_BOOT - NAO FICA NO RECOVERY TRADICIONAL
 
 import /init.recovery.usb.rc
+import /mtk-plpath-utils.rc
 
 on early-init
     # Set up recovery environment
@@ -14,9 +16,12 @@ on early-init
     mkdir /dev/block/platform 0755 root root
     mkdir /dev/block/platform/bootdevice 0755 root root
     mkdir /dev/block/platform/bootdevice/by-name 0755 root root
+    mkdir /dev/block/mapper 0755 root root
+    mkdir /dev/block/by-name 0755 root root
     
     # Symlinks for compatibility
     symlink /dev/block/platform/bootdevice /dev/block/bootdevice
+    symlink /dev/block/platform/bootdevice/by-name /dev/block/by-name
     
     # Create mount points
     mkdir /metadata 0771 root root
@@ -25,6 +30,7 @@ on early-init
     mkdir /external_sd 0771 root root
     mkdir /usb_otg 0771 root root
     mkdir /tmp 0775 root shell
+    mkdir /system_root 0771 root root
     
     # Framebuffer permissions - CRITICAL FOR DISPLAY
     chown root root /dev/graphics/fb0
@@ -63,10 +69,28 @@ on init
     # Disable verified boot checks
     setprop ro.boot.verifiedbootstate orange
     setprop ro.boot.vbmeta.device_state unlocked
+    
+    # Dynamic partitions
+    setprop ro.boot.dynamic_partitions true
+    
+    # USB
+    setprop sys.usb.controller 11201000.usb0
+    setprop sys.usb.configfs 1
 
 on fs
-    # Mount metadata
+    # Mount metadata first
     mount ext4 /dev/block/by-name/metadata /metadata rw nosuid nodev noatime
+    
+    # Create mapper directory if not exists
+    mkdir /dev/block/mapper 0755 root root
+    
+    # Setup dynamic partitions
+    exec u:r:recovery:s0 -- /system/bin/mtk_plpath_utils
+    
+    # Wait for mapper devices
+    wait /dev/block/mapper/system 5
+    wait /dev/block/mapper/vendor 5
+    wait /dev/block/mapper/product 5
     
     # Try to mount data (may fail if encrypted - that's OK)
     mount f2fs /dev/block/by-name/userdata /data rw nosuid nodev noatime || \
@@ -79,36 +103,39 @@ on post-fs
     symlink /dev/block/mapper/vendor /dev/block/vendor
     symlink /dev/block/mapper/product /dev/block/product
     symlink /dev/block/mapper/system_ext /dev/block/system_ext
+    symlink /dev/block/mapper/vendor_dlkm /dev/block/vendor_dlkm
+    
+    # Start post recovery boot script
+    exec u:r:recovery:s0 -- /sbin/postrecoveryboot.sh
+
+on post-fs-data
+    # Ensure data directories exist
+    mkdir /data/media 0770 media_rw media_rw
+    mkdir /data/media/0 0770 media_rw media_rw
+    
+    # Set up adb
+    mkdir /data/adb 0700 root root
 
 on boot
-    # Input
-    chown root root /dev/input/event*
-    chmod 0666 /dev/input/event*
+    # Start essential services
+    start health-hal-2-1
     
-    # Uinput
-    chown root root /dev/uinput
-    chmod 0666 /dev/uinput
-    
-    # LEDs
-    chown root root /sys/class/leds/*/brightness
-    chmod 0666 /sys/class/leds/*/brightness
-    
-    # Battery
-    chown root root /sys/class/power_supply/battery/capacity
-    chmod 0444 /sys/class/power_supply/battery/capacity
-    
-    # Force backlight on
-    write /sys/class/leds/lcd-backlight/brightness 1200
+    # Set USB to mtp,adb mode
+    setprop sys.usb.config mtp,adb
     
     # Start ADB
     start adbd
 
-service adbd /system/bin/adbd --root_seclabel=u:r:su:s0
-    class core
-    socket adbd stream 660 root system
-    disabled
-    seclabel u:r:adbd:s0
-
-service recovery /system/bin/recovery
-    socket recovery stream 422 system system
+# Service definitions
+service health-hal-2-1 /system/bin/hw/android.hardware.health@2.1-service
+    class hal
+    user root
+    group root
     seclabel u:r:recovery:s0
+
+service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
+    class main
+    user root
+    group root system
+    oneshot
+    disabled

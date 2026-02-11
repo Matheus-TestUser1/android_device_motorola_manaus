@@ -1,7 +1,11 @@
+# snapuserd.rc
+# Snapuserd service for Motorola Edge 40 Neo (manaus) - MT6879
+# VENDOR_BOOT VERSION
+
 service snapuserd /system/bin/snapuserd
     socket snapuserd stream 0660 system system
-    oneshot
-    disabled
+    socket snapuserd_worker stream 0660 system system
+    class core
     user root
     group root system
     seclabel u:r:snapuserd:s0
