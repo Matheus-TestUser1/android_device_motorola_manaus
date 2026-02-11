@@ -1,0 +1,9 @@
+# Kernel modules to load in vendor ramdisk
+# Motorola Edge 40 Neo (manaus) - MT6879
+# VENDOR_BOOT VERSION
+#
+# Adicione os módulos necessários aqui, um por linha
+# Exemplo:
+# mtk_wdt.ko
+# mtk-uart.ko
+# etc.

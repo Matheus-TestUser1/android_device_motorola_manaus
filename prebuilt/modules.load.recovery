@@ -1,0 +1,6 @@
+# Kernel modules to load in recovery
+# Motorola Edge 40 Neo (manaus) - MT6879
+# VENDOR_BOOT VERSION
+#
+# Adicione os módulos necessários para o recovery aqui
+# Normalmente os mesmos do vendor ramdisk
