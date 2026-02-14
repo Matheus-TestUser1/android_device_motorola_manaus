@@ -36,18 +36,22 @@ BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT := true
 # ============================================================================
 # ARCH
 # ============================================================================
+# Architecture (64-bit)
 TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv8-2a
+TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
+TARGET_CPU_ABI2 :=
 TARGET_CPU_VARIANT := generic
-TARGET_CPU_VARIANT_RUNTIME := cortex-a78
+TARGET_CPU_VARIANT_RUNTIME := cortex-a55
 
 TARGET_2ND_ARCH := arm
-TARGET_2ND_ARCH_VARIANT := armv7-a-neon
+TARGET_2ND_ARCH_VARIANT := armv8-a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
 TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a55
+# 64-bit support
+TARGET_SUPPORTS_64_BIT_APPS := true
 TARGET_IS_64_BIT := true
 # ============================================================================
 # KERNEL / MKBOOTIMG - VENDOR_BOOT CONFIGURATION
@@ -61,13 +65,12 @@ BOARD_DTB_OFFSET := 0x07c08000
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2
 BOARD_KERNEL_CMDLINE += loglevel=4
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
-BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
 
 BOARD_KERNEL_IMAGE_NAME := Image
-BOARD_KERNEL_SEPARATED_DTBO := true
+#BOARD_KERNEL_SEPARATED_DTBO := true
 
 BOARD_RAMDISK_USE_LZ4 := true
-LZMA_RAMDISK_TARGETS := recovery
+#LZMA_RAMDISK_TARGETS := recovery
 
 # Prebuilts - Kernel e DTB para vendor_boot
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image
@@ -81,18 +84,20 @@ BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE)
 BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
-
+BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
-BOARD_INCLUDE_RECOVERY_DTBO := true
+#BOARD_INCLUDE_RECOVERY_DTBO := true
 
 # ============================================================================
 # KERNEL MODULES - REQUIRED FOR VENDOR_BOOT
 # ============================================================================
 # Carregar módulos do kernel no primeiro estágio
+TW_LOAD_VENDOR_BOOT_MODULES := true
+# Lista de módulos para carregar (do vendor_ramdisk)
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilt/modules.load 2>/dev/null))
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES := $(wildcard $(DEVICE_PATH)/prebuilt/modules/*.ko)
 
-# Módulos para recovery
+# Módulos para recovery (mesmos do vendor_ramdisk)
 BOARD_RECOVERY_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilt/modules.load.recovery 2>/dev/null))
 RECOVERY_KERNEL_MODULES := $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES)
 
@@ -151,7 +156,9 @@ BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_HAS_NO_REAL_SDCARD := true
 RECOVERY_SDCARD_ON_DATA := true
-
+TW_SUPPORT_INPUT_AIDL_HAPTICS := true
+TW_EXCLUDE_DEFAULT_USB_INIT := true
+MTK_PLPATH_UTILS := true
 TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 
