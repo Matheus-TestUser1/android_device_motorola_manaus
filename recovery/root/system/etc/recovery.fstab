@@ -1,40 +1,101 @@
-# Android fstab for Motorola Edge 40 Neo (manaus) - MT6879
-# VENDOR_BOOT VERSION - Configurado para boot via vendor_boot
-#<src>                                                  <mnt_point>         <type>    <mnt_flags and options>                       <fs_mgr_flags>
+# recovery.fstab - Motorola Edge 40 Neo (manaus) - MT6879
+# TWRP Recovery - NO ENCRYPTION
 
-# --- Dynamic/Logical Partitions ---
-/dev/block/mapper/system                                /system             erofs     ro,noatime,nodiscard                          wait,slotselect,logical,first_stage_mount
-/dev/block/mapper/system_ext                            /system_ext         erofs     ro,noatime,nodiscard                          wait,slotselect,logical,first_stage_mount
-/dev/block/mapper/vendor                                /vendor             erofs     ro,noatime,nodiscard                          wait,slotselect,logical,first_stage_mount
-/dev/block/mapper/product                               /product            erofs     ro,noatime,nodiscard                          wait,slotselect,logical,first_stage_mount
-/dev/block/mapper/vendor_dlkm                           /vendor_dlkm        erofs     ro,noatime,nodiscard                          wait,slotselect,logical,first_stage_mount
+# ════════════════════════════════════════════════════════════════════════
+# SYSTEM PARTITIONS (Dynamic - Super)
+# ════════════════════════════════════════════════════════════════════════
 
-# --- Data and Metadata ---
-/dev/block/by-name/userdata                             /data               f2fs      noatime,nosuid,nodev,errors=panic             wait,check,formattable,resize,quota,latemount
-/dev/block/by-name/metadata                             /metadata           ext4      noatime,nosuid,nodev,discard                  wait,check,formattable,first_stage_mount
+system         /system              erofs    ro                                                    display="System";logical;slotselect
+system         /system              ext4     ro                                                    display="System";logical;slotselect
+system_ext     /system_ext          erofs    ro                                                    display="System_EXT";logical;slotselect
+vendor         /vendor              erofs    ro                                                    display="Vendor";logical;slotselect
+product        /product             erofs    ro                                                    display="Product";logical;slotselect
+vendor_dlkm    /vendor_dlkm         erofs    ro                                                    display="Vendor_DLKM";logical;slotselect
 
-# --- Boot Partitions ---
-/dev/block/by-name/boot                                 /boot               emmc      defaults                                      defaults,slotselect,first_stage_mount
-/dev/block/by-name/vendor_boot                          /vendor_boot        emmc      defaults                                      defaults,slotselect,first_stage_mount
-/dev/block/by-name/dtbo                                 /dtbo               emmc      defaults                                      defaults,slotselect,first_stage_mount
-/dev/block/by-name/vbmeta                               /vbmeta             emmc      defaults                                      defaults,first_stage_mount
-/dev/block/by-name/vbmeta_system                        /vbmeta_system      emmc      defaults                                      defaults,slotselect,first_stage_mount
+# ════════════════════════════════════════════════════════════════════════
+# DATA PARTITION (NO ENCRYPTION!)
+# ════════════════════════════════════════════════════════════════════════
 
-# --- Vendor Partitions ---
-/dev/block/by-name/protect1                             /mnt/vendor/protect_f  ext4   noatime,nosuid,nodev,noauto_da_alloc          wait,check,formattable
-/dev/block/by-name/protect2                             /mnt/vendor/protect_s  ext4   noatime,nosuid,nodev,noauto_da_alloc          wait,check,formattable
-/dev/block/by-name/nvdata                               /mnt/vendor/nvdata     ext4   noatime,nosuid,nodev,noauto_da_alloc          wait,check,formattable
-/dev/block/by-name/nvcfg                                /mnt/vendor/nvcfg      ext4   noatime,nosuid,nodev,noauto_da_alloc          wait,check,formattable
-/dev/block/by-name/persist                              /mnt/vendor/persist    ext4   noatime,nosuid,nodev,noauto_da_alloc          wait,check,formattable
-/dev/block/by-name/prodpersist                          /mnt/product/persist   ext4   noatime,nosuid,nodev,noauto_da_alloc          wait,check,formattable
+/dev/block/by-name/userdata    /data    f2fs    noatime,nosuid,nodev,discard                       flags=display="Data";backup=1;wipeingui;wipeduringfactoryreset
+/dev/block/by-name/userdata    /data    ext4    noatime,nosuid,nodev,noauto_da_alloc               flags=display="Data";backup=1;wipeingui;wipeduringfactoryreset
 
-# --- Other Partitions ---
-/dev/block/by-name/logo                                 /logo                 emmc    defaults                                      defaults
-/dev/block/by-name/misc                                 /misc                 emmc    defaults                                      defaults
-/dev/block/by-name/frp                                  /persistent           emmc    defaults                                      defaults
-/dev/block/by-name/nvram                                /nvram                emmc    defaults                                      defaults
-/dev/block/by-name/para                                 /para                 emmc    defaults                                      defaults
+# ════════════════════════════════════════════════════════════════════════
+# METADATA
+# ════════════════════════════════════════════════════════════════════════
 
-# ---------- USB OTG (voldmanaged) ----------
-/devices/platform/usb_xhci*                                 auto vfat defaults voldmanaged=usbotg:auto
-/devices/platform/soc/11201000.usb0/11200000.xhci*          auto vfat defaults voldmanaged=usbotg:auto
+/dev/block/by-name/metadata    /metadata    ext4    noatime,nosuid,nodev,discard                   flags=display="Metadata";backup=1;wipeingui
+
+# ════════════════════════════════════════════════════════════════════════
+# CACHE / DALVIK (on /data)
+# ════════════════════════════════════════════════════════════════════════
+
+/data/cache                    /cache       ext4    noatime,nosuid,nodev                            flags=display="Cache";backup=1;wipeingui;wipeduringfactoryreset
+
+# ════════════════════════════════════════════════════════════════════════
+# BOOT PARTITIONS (A/B)
+# ════════════════════════════════════════════════════════════════════════
+
+/dev/block/by-name/boot        /boot        emmc    defaults                                        flags=display="Boot";backup=1;flashimg=1;slotselect
+/dev/block/by-name/vendor_boot /vendor_boot emmc    defaults                                        flags=display="Vendor_Boot";backup=1;flashimg=1;slotselect
+/dev/block/by-name/dtbo        /dtbo        emmc    defaults                                        flags=display="DTBO";backup=1;flashimg=1;slotselect
+
+# ════════════════════════════════════════════════════════════════════════
+# VENDOR-SPECIFIC PARTITIONS (MediaTek)
+# ════════════════════════════════════════════════════════════════════════
+
+/dev/block/by-name/nvdata      /nvdata      ext4    noatime,nosuid,nodev                            flags=display="NVData";backup=1;wipeingui
+/dev/block/by-name/nvcfg       /nvcfg       ext4    noatime,nosuid,nodev                            flags=display="NVCfg";backup=1;wipeingui
+/dev/block/by-name/persist     /persist     ext4    noatime,nosuid,nodev                            flags=display="Persist";backup=1;wipeingui
+/dev/block/by-name/prodpersist /prodpersist ext4    noatime,nosuid,nodev                            flags=display="ProdPersist";backup=1
+/dev/block/by-name/protect1    /protect_f   ext4    noatime,nosuid,nodev                            flags=display="Protect_F";backup=1
+/dev/block/by-name/protect2    /protect_s   ext4    noatime,nosuid,nodev                            flags=display="Protect_S";backup=1
+
+# ════════════════════════════════════════════════════════════════════════
+# FIRMWARE PARTITIONS (Backup/Flash)
+# ════════════════════════════════════════════════════════════════════════
+
+/dev/block/by-name/vbmeta        /vbmeta        emmc    defaults                                    flags=display="VBMeta";backup=1;flashimg=1;slotselect
+/dev/block/by-name/vbmeta_system /vbmeta_system emmc    defaults                                    flags=display="VBMeta_System";backup=1;flashimg=1;slotselect
+
+# ════════════════════════════════════════════════════════════════════════
+# PERSISTENT DATA
+# ════════════════════════════════════════════════════════════════════════
+
+/dev/block/by-name/misc        /misc        emmc    defaults                                        flags=display="Misc"
+/dev/block/by-name/frp         /persistent  emmc    defaults                                        flags=display="FRP"
+/dev/block/by-name/nvram       /nvram       emmc    defaults                                        flags=display="NVRAM";backup=1;flashimg=1
+/dev/block/by-name/proinfo     /proinfo     emmc    defaults                                        flags=display="Proinfo";backup=1
+
+# ════════════════════════════════════════════════════════════════════════
+# BOOTLOADER
+# ════════════════════════════════════════════════════════════════════════
+
+/dev/block/by-name/lk          /bootloader  emmc    defaults                                        flags=display="Bootloader";backup=1;flashimg=1
+/dev/block/by-name/lk2         /bootloader2 emmc    defaults                                        flags=display="Bootloader2";backup=1;flashimg=1
+
+# ════════════════════════════════════════════════════════════════════════
+# MODEM / DSP
+# ════════════════════════════════════════════════════════════════════════
+
+/dev/block/by-name/md1img      /md1img      emmc    defaults                                        flags=display="Modem";backup=1;flashimg=1
+/dev/block/by-name/md1dsp      /md1dsp      emmc    defaults                                        flags=display="Modem_DSP";backup=1;flashimg=1
+
+# ════════════════════════════════════════════════════════════════════════
+# USB OTG
+# ════════════════════════════════════════════════════════════════════════
+
+/devices/platform/usb_xhci*                           auto    vfat    defaults                      flags=storage;wipeingui;removable;fsflags=utf8
+/devices/platform/soc/11201000.usb0/11200000.xhci*    auto    vfat    defaults                      flags=storage;wipeingui;removable;fsflags=utf8
+
+# ════════════════════════════════════════════════════════════════════════
+# EXTERNAL STORAGE
+# ════════════════════════════════════════════════════════════════════════
+
+# USB OTG - Método 1 (específico MT6879)
+/devices/platform/soc/11201000.usb0/11200000.xhci*    auto    vfat    defaults    flags=storage;wipeingui;removable;fsflags=utf8
+
+# USB OTG - Método 2 (genérico MTK)
+/devices/platform/usb_xhci*                           auto    vfat    defaults    flags=storage;wipeingui;removable;fsflags=utf8
+
+# USB OTG - Método 3 (fallback universal)
+/devices/*/*/xhci-hcd.*.auto/usb*                     auto    auto    defaults    flags=storage;wipeingui;removable
