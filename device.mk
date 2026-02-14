@@ -4,6 +4,26 @@
 #
 
 LOCAL_PATH := device/motorola/manaus
+# Device specific overlays
+DEVICE_PACKAGE_OVERLAYS += $(DEVICE_PATH)/overlay
+
+# ============================================================================
+# A/B SUPPORT (CRÍTICO! NÃO REMOVA!)
+# ============================================================================
+# Habilita compressão de OTA e suporte A/B
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression.mk)
+
+# Recovery no vendor_boot com ramdisk separado (ESSENCIAL!)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch_with_vendor_ramdisk.mk)
+
+# ============================================================================
+# ANDROID 12+ SUPPORT
+# ============================================================================
+# Suporte a módulos APEX (Android 12+)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
+
+# Armazenamento emulado moderno (FUSE ao invés de SDCardFS)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
 PRODUCT_SHIPPING_API_LEVEL := 33
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
