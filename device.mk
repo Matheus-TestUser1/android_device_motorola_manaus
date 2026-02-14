@@ -88,7 +88,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/sbin/postrecoveryboot.sh:$(TARGET_COPY_OUT_RECOVERY)/root/sbin/postrecoveryboot.sh
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/dtb.img:dtb.img \
-    $(DEVICE_PATH)/prebuilt/dtbo.img:dtbo.img
+   # $(DEVICE_PATH)/prebuilt/dtbo.img:dtbo.img
 # ============================================================================
 # SYSTEM PROPERTIES
 # ============================================================================
