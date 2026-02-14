@@ -1,28 +1,33 @@
-# TWRP Flags for Motorola Edge 40 Neo (manaus) - MT6879
-# VENDOR_BOOT VERSION - Configurado para boot via vendor_boot
+# twrp.flags - Motorola Edge 40 Neo (manaus) - MT6879
 
-# System partitions
-/system_image     emmc    /dev/block/mapper/system        flags=backup=1;flashimg=1;display="System Image";slotselect
-/system_ext_image emmc    /dev/block/mapper/system_ext    flags=backup=1;flashimg=1;display="System Ext Image";slotselect
-/vendor_image     emmc    /dev/block/mapper/vendor        flags=backup=1;flashimg=1;display="Vendor Image";slotselect
-/product_image    emmc    /dev/block/mapper/product       flags=backup=1;flashimg=1;display="Product Image";slotselect
-/vendor_dlkm_image emmc   /dev/block/mapper/vendor_dlkm   flags=backup=1;flashimg=1;display="Vendor DLKM Image";slotselect
+# Main partitions
+/boot              emmc     /dev/block/by-name/boot              flags=display="Boot";slotselect;backup=1;flashimg=1
+/vendor_boot       emmc     /dev/block/by-name/vendor_boot       flags=display="Vendor Boot (Recovery)";slotselect;backup=1;flashimg=1
+/dtbo              emmc     /dev/block/by-name/dtbo              flags=display="DTBO";slotselect;backup=1;flashimg=1
+/vbmeta            emmc     /dev/block/by-name/vbmeta            flags=display="VBMeta";slotselect;backup=1;flashimg=1
+/vbmeta_system     emmc     /dev/block/by-name/vbmeta_system     flags=display="VBMeta System";slotselect;backup=1;flashimg=1
 
-# Boot partitions
-/boot             emmc    /dev/block/by-name/boot         flags=backup=1;flashimg=1;display="Boot";slotselect
-/vendor_boot      emmc    /dev/block/by-name/vendor_boot  flags=backup=1;flashimg=1;display="Vendor Boot";slotselect
-/dtbo             emmc    /dev/block/by-name/dtbo         flags=backup=1;flashimg=1;display="DTBO";slotselect
-/vbmeta           emmc    /dev/block/by-name/vbmeta       flags=backup=1;flashimg=1;display="VBMeta"
-/vbmeta_system    emmc    /dev/block/by-name/vbmeta_system flags=backup=1;flashimg=1;display="VBMeta System";slotselect
+# Data
+/data              f2fs     /dev/block/by-name/userdata          flags=display="Data";backup=1
+/metadata          ext4     /dev/block/by-name/metadata          flags=display="Metadata";backup=1
 
-# MTK Partitions
-/nvram            emmc    /dev/block/by-name/nvram        flags=backup=1;display="NVRAM"
-/nvdata           ext4    /dev/block/by-name/nvdata       flags=backup=1;display="NVData"
-/nvcfg            ext4    /dev/block/by-name/nvcfg        flags=backup=1;display="NVCfg"
-/persist          ext4    /dev/block/by-name/persist      flags=backup=1;display="Persist"
-/protect1         ext4    /dev/block/by-name/protect1     flags=backup=1;display="Protect1"
-/protect2         ext4    /dev/block/by-name/protect2     flags=backup=1;display="Protect2"
+# Dynamic partitions (read-only)
+/system_image      emmc     /dev/block/mapper/system             flags=display="System Image";backup=0;flashimg=1
+/vendor_image      emmc     /dev/block/mapper/vendor             flags=display="Vendor Image";backup=0;flashimg=1
+/product_image     emmc     /dev/block/mapper/product            flags=display="Product Image";backup=0;flashimg=1
 
-# Storage
-/external_sd      vfat    /dev/block/mmcblk1p1            /dev/block/mmcblk1  flags=storage;wipeingui;removable;display="Micro SD"
-/usb_otg          vfat    /dev/block/sda1                 /dev/block/sda      flags=storage;wipeingui;removable;display="USB OTG"
+# MediaTek specific
+/nvdata            ext4     /dev/block/by-name/nvdata            flags=display="NVData";backup=1
+/nvram             emmc     /dev/block/by-name/nvram             flags=display="NVRAM";backup=1;flashimg=1
+/persist           ext4     /dev/block/by-name/persist           flags=display="Persist";backup=1
+/proinfo           emmc     /dev/block/by-name/proinfo           flags=display="Proinfo";backup=1
+
+# Bootloader
+/bootloader        emmc     /dev/block/by-name/lk                flags=display="Bootloader";backup=1;flashimg=1
+/bootloader2       emmc     /dev/block/by-name/lk2               flags=display="Bootloader2";backup=1;flashimg=1
+
+# Modem
+/modem             emmc     /dev/block/by-name/md1img            flags=display="Modem";backup=1;flashimg=1
+
+# USB OTG (Edge 40 Neo suporta)
+/usb-otg    auto    /dev/block/sda1    flags=display="USB OTG";storage;wipeingui;removable;fsflags=utf8
