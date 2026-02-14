@@ -35,6 +35,6 @@
 /dev/block/by-name/nvram                                /nvram                emmc    defaults                                      defaults
 /dev/block/by-name/para                                 /para                 emmc    defaults                                      defaults
 
-# --- Removable Storage ---
-/auto                                                  /external_sd          auto    defaults                                      voldmanaged=sdcard1:auto,noemulatedsd
-/auto                                                  /usb-otg              auto    defaults                                      voldmanaged=usbotg:auto
+# ---------- USB OTG (voldmanaged) ----------
+/devices/platform/usb_xhci*                                 auto vfat defaults voldmanaged=usbotg:auto
+/devices/platform/soc/11201000.usb0/11200000.xhci*          auto vfat defaults voldmanaged=usbotg:auto
