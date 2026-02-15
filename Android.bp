@@ -6,7 +6,7 @@
 //
 
 cc_prebuilt_binary {
-    name: "plpath_utils_manaus",
+    name: "prebuilt/bin/plpath_utils",
     srcs: ["plpath_utils"],
     device_specific: true,
     recovery: true,
