@@ -109,8 +109,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/dtb.img:dtb.img \
    # $(DEVICE_PATH)/prebuilt/dtbo.img:dtbo.img
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:recovery/root/system/bin/plpath_utils
+#PRODUCT_COPY_FILES += \
+#    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:recovery/root/system/bin/plpath_utils
 # ============================================================================
 # SYSTEM PROPERTIES
 # ============================================================================
