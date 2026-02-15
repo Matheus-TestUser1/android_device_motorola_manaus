@@ -242,7 +242,8 @@ TW_INCLUDE_CRYPTO := false
 TW_INCLUDE_CRYPTO_FBE := false
 TW_INCLUDE_FBE_METADATA_DECRYPT := false
 BOARD_USES_QCOM_FBE_DECRYPTION := false
-
+BOARD_SURFACE_FLINGER_USE_PHASE_OFFSETS := false
+TARGET_SURFACE_FLINGER_MAX_FRAME_BUFFERS := 4
 # ============================================================================
 # ASSERT
 # ============================================================================
