@@ -86,6 +86,7 @@ BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 #BOARD_INCLUDE_RECOVERY_DTBO := true
 
 # ============================================================================
