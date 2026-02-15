@@ -107,7 +107,7 @@ on property:sys.usb.ffs.ready=1 && property:sys.usb.config=adb && property:sys.u
     write /config/usb_gadget/g1/UDC ${sys.usb.controller}
     setprop sys.usb.state ${sys.usb.config}
 
-# Fastboot Mode
+# Fastboot Mode (COM fastbootd)
 on property:sys.usb.config=fastboot
     stop adbd
     setprop sys.usb.ffs.ready 0
@@ -187,3 +187,8 @@ on property:sys.usb.ffs.ready=1 && property:sys.usb.config=sideload && property:
 # Restart adbd as root
 on property:service.adb.root=1
     restart adbd
+
+service fastbootd /system/bin/fastbootd
+    disabled
+    group system
+    seclabel u:r:recovery:s0 
