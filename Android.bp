@@ -5,5 +5,12 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 
+cc_prebuilt_binary {
+    name: "plpath_utils_manaus",
+    srcs: ["plpath_utils"],
+    device_specific: true,
+    recovery: true,
+}
+
 soong_namespace {
 }
