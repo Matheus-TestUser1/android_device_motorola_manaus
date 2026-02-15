@@ -83,9 +83,9 @@ PRODUCT_PACKAGES += \
     android.hardware.health@2.1-service
 
 # MTK Specific
-PRODUCT_PACKAGES += \
-    mtk_plpath_utils \
-    mtk_plpath_utils.recovery
+#PRODUCT_PACKAGES += \
+   # mtk_plpath_utils \
+   # mtk_plpath_utils.recovery
 
 # File System Tools
 PRODUCT_PACKAGES += \
