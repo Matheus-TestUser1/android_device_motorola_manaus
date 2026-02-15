@@ -137,19 +137,31 @@ TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
 # AVB
 # ============================================================================
 BOARD_AVB_ENABLE := true
-BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 
+# VBMETA principal - desativa verificação estrita para TWRP funcionar
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
+# Flags: 3 = HASHTREE_DISABLED (1) + VERIFICATION_DISABLED (2)
+# Isso permite boot sem assinatura perfeita, mas mantém estrutura AVB
+
+# VBMETA SYSTEM - mesmo tratamento
 BOARD_AVB_VBMETA_SYSTEM := system system_ext product
 BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
-BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
-BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 1
+# Rollback index: usar 0 ou valor compatível com seu firmware atual
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := 0
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2  # ❗ Diferente da recovery
 BOARD_AVB_VBMETA_SYSTEM_ARGS += --flags 3
 
+# RECOVERY - Configuração crítica para TWRP bootar
 BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
 BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA4096
-BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
+# ESSENCIAL: rollback index deve ser 0 para TWRP não-assinado bootar
+BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 0
+# ESSENCIAL: location diferente de todos os outros (1 é comum para recovery)
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
+
+# ADICIONAL: Desativar rollback protection para evitar brick
+BOARD_AVB_ROLLBACK_PROTECTION := false
 
 # ============================================================================
 # RECOVERY
