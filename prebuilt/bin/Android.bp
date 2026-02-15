@@ -1,13 +1,26 @@
 soong_namespace {
-    // Pode ficar vazio ou conter imports se necessário
 }
 
 cc_prebuilt_binary {
     name: "plpath_utils",
-    srcs: ["plpath_utils"], 
-    device_specific: true,
+    srcs: ["plpath_utils"],
+    
+    // Installation
     recovery: true,
+    device_specific: true,
+    
+    // Preserve binary (don't strip)
     strip: {
         none: true,
     },
+    
+    // Permissions
+    proprietary: true,
+    
+    // System/Vendor path
+    recovery_available: true,
+    vendor: true,
+    
+    // Architecture
+    compile_multilib: "64",
 }
