@@ -1,0 +1,9 @@
+cc_prebuilt_binary {
+    name: "plpath_utils", // Mudamos o "apelido" para o nome real
+    srcs: ["plpath_utils"], 
+    device_specific: true,
+    recovery: true,
+    strip: {
+        none: true,
+    },
+}
