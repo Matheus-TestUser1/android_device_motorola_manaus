@@ -1,5 +1,9 @@
+soong_namespace {
+    // Pode ficar vazio ou conter imports se necessário
+}
+
 cc_prebuilt_binary {
-    name: "plpath_utils", // Mudamos o "apelido" para o nome real
+    name: "plpath_utils",
     srcs: ["plpath_utils"], 
     device_specific: true,
     recovery: true,
