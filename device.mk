@@ -111,6 +111,8 @@ PRODUCT_COPY_FILES += \
    # $(DEVICE_PATH)/prebuilt/dtbo.img:dtbo.img
 #PRODUCT_COPY_FILES += \
 #    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:recovery/root/system/bin/plpath_utils
+PRODUCT_PACKAGES += \
+    plpath_utils_manaus
 # ============================================================================
 # SYSTEM PROPERTIES
 # ============================================================================
