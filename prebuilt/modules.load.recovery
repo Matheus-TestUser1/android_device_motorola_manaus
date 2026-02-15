@@ -1,93 +1,179 @@
-# Kernel modules to load in recovery
+# modules.load.recovery
 # Motorola Edge 40 Neo (manaus) - MT6879
-# VENDOR_BOOT VERSION
-#
-# Adicione os módulos necessários para o recovery aqui
-# Normalmente os mesmos do vendor ramdisk
+# TWRP Recovery - Ordered by dependencies
+
+# ════════════════════════════════════════════════════════════════════════
+# 1. CORE SYSTEM (Boot & Debug)
+# ════════════════════════════════════════════════════════════════════════
 mkp.ko
 bootprof.ko
-mtk-uart-apdma.ko
-8250_mtk.ko
+mtk_printk_ctrl.ko
+log_store.ko
+mrdump.ko
 dbgtop-drm.ko
 irq-dbg.ko
-mrdump.ko
-mtk_disp_notify.ko
 aee_aed.ko
 aee_hangdet.ko
 monitor_hang.ko
-mtk_printk_ctrl.ko
-log_store.ko
+aee_rs.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 2. DEVICE INFO & WATCHDOG
+# ════════════════════════════════════════════════════════════════════════
 nvmem_mtk-devinfo.ko
 mtk_wdt.ko
+mtk-socinfo.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 3. SECURITY & RNG
+# ════════════════════════════════════════════════════════════════════════
 sec-rng.ko
+sec.ko
+teeperf.ko
+mcDrvModule.ko
+isee.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 4. PINCTRL (CRITICAL - Must load early!)
+# ════════════════════════════════════════════════════════════════════════
 pinctrl-mtk-v2.ko
 pinctrl-mt6879.ko
 pinctrl-mtk-common-v2_debug.ko
-mt6879_dcm.ko
-mtk_dcm.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 5. CLOCKS (CRITICAL - After pinctrl!)
+# ════════════════════════════════════════════════════════════════════════
 clk-common.ko
 clk-mt6879.ko
+clk-mt6879-peri.ko
+clk-mt6879-bus.ko
 clk-mt6879-adsp.ko
 clk-mt6879-cam.ko
 clk-mt6879-img.ko
 clk-mt6879-mmsys.ko
-clk-mt6879-peri.ko
-clk-mt6879-bus.ko
 clk-mt6879-vcodec.ko
 clk-mt6879-ccu.ko
 clk-mt6879-mdp.ko
-mtk_dramc.ko
+clk-bringup.ko
+clk-chk-mt6879.ko
+clk-dbg-mt6879.ko
+clk-fmeter-mt6879.ko
+clk-disable-unused.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 6. POWER MANAGEMENT (After clocks!)
+# ════════════════════════════════════════════════════════════════════════
+mt6879_dcm.ko
+mtk_dcm.ko
 mtk-dvfsrc.ko
 mtk-dvfsrc-regulator.ko
-mtk-emi.ko
-mtk-pmic-wrap.ko
-mtk-spmi-pmic.ko
-spmi-mtk-pmif.ko
-mt6315-regulator.ko
-mt6363-regulator.ko
-wl2864c-regulator.ko
 mtk-vmm-spm.ko
 mtk-scpsys.ko
 mtk-scpsys-mt6879.ko
 mtk-scpsys-bringup.ko
-clk-bringup.ko
 pd-chk-mt6879.ko
-clk-fmeter-mt6879.ko
+mtk-pm-domain-disable-unused.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 7. SPMI & PMIC BASE (Before regulators!)
+# ════════════════════════════════════════════════════════════════════════
+regmap-spmi.ko
+mtk-pmic-wrap.ko
+mtk-spmi-pmic.ko
+spmi-mtk-pmif.ko
+mt6375.ko
+mt6685-core.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 8. REGULATORS (After PMIC base!)
+# ════════════════════════════════════════════════════════════════════════
+mt6315-regulator.ko
+mt6363-regulator.ko
+mt6368-regulator.ko
+wl2864c-regulator.ko
+rt5133-regulator.ko
+rt6160-regulator.ko
+regulator-vibrator.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 9. MEMORY & DRAM (After power!)
+# ════════════════════════════════════════════════════════════════════════
+mtk_dramc.ko
+mtk-emi.ko
+emi.ko
+emi-mpu.ko
+emi-mpu-v2.ko
+emi-slb.ko
+emi-mpu-hook-v1.ko
+cache-parity.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 10. IOMMU & MMU (After memory!)
+# ════════════════════════════════════════════════════════════════════════
 mtk-smi.ko
 mtk-smi-dbg.ko
+iommu_secure.ko
+iommu_debug.ko
+mtk_iommu.ko
+iommu_test.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 11. MEMORY ALLOCATORS (After IOMMU!)
+# ════════════════════════════════════════════════════════════════════════
+mtk_mm_heap.ko
+system_heap.ko
+zsmalloc.ko
+zram.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 12. INTERCONNECT & QoS (After memory!)
+# ════════════════════════════════════════════════════════════════════════
 mtk-icc-core.ko
 mtk-mmdvfs.ko
 mtk-mmdvfs-debug.ko
 mmqos-common.ko
 mmqos-mt6879.ko
-iommu_secure.ko
-iommu_debug.ko
-mtk_iommu.ko
-iommu_test.ko
-mtk_mm_heap.ko
-system_heap.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 13. DMA & CMDQ (After interconnect!)
+# ════════════════════════════════════════════════════════════════════════
+mtk-cqdma.ko
 mtk-cmdq-drv-ext.ko
 cmdq-platform-mt6879.ko
 cmdq_helper_inf.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 14. DISPLAY DRIVERS (After DMA & clocks!)
+# ════════════════════════════════════════════════════════════════════════
+mtk_disp_notify.ko
+mmprofile.ko
 mdp_drv_mt6879.ko
 mtk-mml.ko
 mtk-mml-mt6879.ko
 mtk_panel_ext.ko
+
+# Panel drivers (specific models)
 dsi-panel-mot-tianma-vtdr6115-655-fhdp-dphy-vdo-144hz.ko
 dsi-panel-mot-csot-vtdr6115-655-fhdp-dphy-vdo-144hz-c7.ko
 dsi-panel-mot-tm-vtdr6115-655-fhdp-dphy-vdo-144hz-u8.ko
 dsi-panel-mot-boe-nt37701a-655-fhdp-cmd-144hz.ko
 dsi-panel-mot-dummy-vdo-60hz.ko
+
+# DRM (after panels!)
 mediatek-drm.ko
-aee_rs.ko
-mmprofile.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 15. USB (CRITICAL FOR RECOVERY!)
+# ════════════════════════════════════════════════════════════════════════
 phy-mtk-tphy.ko
 usb_boost.ko
 mtu3.ko
 xhci-mtk-hcd.ko
-mt6368-regulator.ko
-mtk-spmi-pmic-adc.ko
-regmap-spmi.ko
+extcon-mtk-usb.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 16. STORAGE (CRITICAL FOR RECOVERY!)
+# ════════════════════════════════════════════════════════════════════════
 cqhci.ko
 mtk-mmc-autok.ko
 mtk-mmc-dbg.ko
@@ -99,92 +185,131 @@ ufs-mediatek-mod.ko
 ufs-mediatek-dbg.ko
 blocktag.ko
 pidmap.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 17. INPUT DEVICES (After base drivers!)
+# ════════════════════════════════════════════════════════════════════════
 mtk-pmic-keys.ko
 mtk-kpd.ko
-regulator-vibrator.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 18. I2C & SPI BUS (After clocks & power!)
+# ════════════════════════════════════════════════════════════════════════
 i2c-mt65xx.ko
-rtc-mt6685.ko
-emi.ko
-emi-mpu.ko
-clk-chk-mt6879.ko
-clk-dbg-mt6879.ko
 spi-mt65xx.ko
-mt6375.ko
-mt6685-core.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 19. RTC (After I2C!)
+# ════════════════════════════════════════════════════════════════════════
+rtc-mt6685.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 20. UART (After base!)
+# ════════════════════════════════════════════════════════════════════════
+mtk-uart-apdma.ko
+8250_mtk.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 21. AUDIO CLOCKS (After base clocks!)
+# ════════════════════════════════════════════════════════════════════════
 mt6685-audclk.ko
-extdev_io_class.ko
-clkbuf.ko
-device-apc-common.ko
-device-apc-mt6879.ko
-teeperf.ko
-mcDrvModule.ko
-isee.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 22. CHARGER & POWER SUPPLY (After PMIC & I2C!)
+# ════════════════════════════════════════════════════════════════════════
 industrialio-triggered-buffer.ko
 kfifo_buf.ko
 mt6375-adc.ko
 mt6375-auxadc.ko
-rt5133-regulator.ko
-rt6160-regulator.ko
-bq25980_mmi.ko
+mtk-spmi-pmic-adc.ko
 adapter_class.ko
 charger_class.ko
 mtk_charger_algorithm_class.ko
 mt6375-charger.ko
-mux_switch.ko
-fusb304.ko
-ps5169.ko
-pd_dbg_info.ko
+bq25980_mmi.ko
 tcpc_class.ko
 tcpc_mt6375.ko
+pd_dbg_info.ko
 mtk_chg_type_det.ko
 mtk_pd_adapter.ko
-mtk_pep40.ko
-mtk_pd_charging.ko
-mtk_pep20.ko
-moto_wlc_alg.ko
 mtk_pep.ko
+mtk_pep20.ko
+mtk_pep40.ko
 mtk_pep50.ko
+mtk_pd_charging.ko
+moto_wlc_alg.ko
 mtk_charger_framework.ko
 rt_pd_manager.ko
 mt6375-battery.ko
-mtk-socinfo.ko
-pwm-mtk-disp.ko
-leds-mtk.ko
-leds-mtk-disp.ko
-leds-mtk-pwm.ko
-extcon-mtk-usb.ko
-tcpci_late_sync.ko
-meta.ko
 mtk_battery_oc_throttling.ko
 mtk_low_battery_throttling.ko
 pmic_lbat_service.ko
 mtk_dynamic_loading_throttling.ko
 mtk_pbm.ko
 mtk_mdpm.ko
+moto_chg_tcmd.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 23. USB TYPE-C & MUX (After USB & charger!)
+# ════════════════════════════════════════════════════════════════════════
+mux_switch.ko
+fusb304.ko
+ps5169.ko
+fsa4480.ko
+tcpci_late_sync.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 24. LED & PWM (After display!)
+# ════════════════════════════════════════════════════════════════════════
+pwm-mtk-disp.ko
+leds-mtk.ko
+leds-mtk-disp.ko
+leds-mtk-pwm.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 25. DEVICE APC & SECURITY (After base!)
+# ════════════════════════════════════════════════════════════════════════
+extdev_io_class.ko
+clkbuf.ko
+device-apc-common.ko
+device-apc-mt6879.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 26. REBOOT MODE (After storage!)
+# ════════════════════════════════════════════════════════════════════════
 reboot-mode.ko
 syscon-reboot-mode.ko
 reset-ti-syscon.ko
-fsa4480.ko
-mtk-cqdma.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 27. IPC & MAILBOX (After base!)
+# ════════════════════════════════════════════════════════════════════════
 mtk_sync.ko
 mtk_rpmsg_mbox.ko
 mtk-mbox.ko
 mtk_tinysys_ipi.ko
-moto_chg_tcmd.ko
 mtk-mbox-mailbox.ko
 tinysys-scmi.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 28. MMINFRA DEBUG (After interconnect!)
+# ════════════════════════════════════════════════════════════════════════
 mtk-mminfra-debug.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 29. WIFI (Optional - Recovery não precisa!)
+# ════════════════════════════════════════════════════════════════════════
 cfg80211.ko
 mac80211.ko
-clk-disable-unused.ko
-mtk-pm-domain-disable-unused.ko
-zsmalloc.ko
-zram.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 30. META MODE (Factory test)
+# ════════════════════════════════════════════════════════════════════════
+meta.ko
+
+# ════════════════════════════════════════════════════════════════════════
+# 31. PERFORMANCE MONITORING (Last!)
+# ════════════════════════════════════════════════════════════════════════
 arm_dsu_pmu.ko
-emi-mpu-v2.ko
-emi-slb.ko
 uload_ind.ko
 load_track.ko
-sec.ko
-cache-parity.ko
-emi-mpu-hook-v1.ko
