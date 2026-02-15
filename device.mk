@@ -105,9 +105,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/init.recovery.usb.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.usb.rc \
     $(LOCAL_PATH)/recovery/root/mtk-plpath-utils.rc:$(TARGET_COPY_OUT_RECOVERY)/root/mtk-plpath-utils.rc \
     $(LOCAL_PATH)/recovery/root/ueventd.rc:$(TARGET_COPY_OUT_RECOVERY)/root/ueventd.rc \
-    $(LOCAL_PATH)/recovery/root/sbin/postrecoveryboot.sh:$(TARGET_COPY_OUT_RECOVERY)/root/sbin/postrecoveryboot.sh
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/prebuilt/dtb.img:dtb.img \
+ #   $(LOCAL_PATH)/recovery/root/sbin/postrecoveryboot.sh:$(TARGET_COPY_OUT_RECOVERY)/root/sbin/postrecoveryboot.sh
+#PRODUCT_COPY_FILES += \
+ #   $(DEVICE_PATH)/prebuilt/dtb.img:dtb.img \
    # $(DEVICE_PATH)/prebuilt/dtbo.img:dtbo.img
 #PRODUCT_COPY_FILES += \
 #    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:recovery/root/system/bin/plpath_utils
