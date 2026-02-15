@@ -1,26 +1,15 @@
+
 soong_namespace {
 }
-
 cc_prebuilt_binary {
     name: "plpath_utils",
     srcs: ["plpath_utils"],
-    
-    // Installation
+
+    // OBRIGATÓRIO: Diz que é para o TWRP/Recovery
     recovery: true,
-    device_specific: true,
-    
-    // Preserve binary (don't strip)
+
+    // OBRIGATÓRIO: Diz para não mexer no binário (não tentar otimizar)
     strip: {
         none: true,
     },
-    
-    // Permissions
-    proprietary: true,
-    
-    // System/Vendor path
-    recovery_available: true,
-    vendor: true,
-    
-    // Architecture
-    compile_multilib: "64",
 }
