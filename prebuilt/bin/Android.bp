@@ -9,3 +9,5 @@ cc_prebuilt_binary {
     },
 }
 
+soong_namespace {
+}
