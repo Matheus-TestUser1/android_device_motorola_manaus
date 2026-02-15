@@ -63,7 +63,7 @@ BOARD_KERNEL_TAGS_OFFSET := 0x07c08000
 BOARD_DTB_OFFSET := 0x07c08000
 
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2
-BOARD_KERNEL_CMDLINE += loglevel=4
+BOARD_KERNEL_CMDLINE += androidboot.serialconsole=0
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 
 BOARD_KERNEL_IMAGE_NAME := Image
@@ -74,7 +74,7 @@ BOARD_RAMDISK_USE_LZ4 := true
 
 # Prebuilts - Kernel e DTB para vendor_boot
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image
-TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
+TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb
 BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 
 # mkbootimg args - CRITICAL FOR VENDOR_BOOT
