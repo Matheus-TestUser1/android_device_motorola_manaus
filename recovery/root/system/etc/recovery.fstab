@@ -81,21 +81,9 @@ vendor_dlkm    /vendor_dlkm         erofs    ro                                 
 /dev/block/by-name/md1dsp      /md1dsp      emmc    defaults                                        flags=display="Modem_DSP";backup=1;flashimg=1
 
 # ════════════════════════════════════════════════════════════════════════
-# USB OTG
+# USB OTG (CORRIGIDO - Sem duplicatas)
 # ════════════════════════════════════════════════════════════════════════
 
-/devices/platform/usb_xhci*                           auto    vfat    defaults                      flags=storage;wipeingui;removable;fsflags=utf8
-/devices/platform/soc/11201000.usb0/11200000.xhci*    auto    vfat    defaults                      flags=storage;wipeingui;removable;fsflags=utf8
-
-# ════════════════════════════════════════════════════════════════════════
-# EXTERNAL STORAGE
-# ════════════════════════════════════════════════════════════════════════
-
-# USB OTG - Método 1 (específico MT6879)
 /devices/platform/soc/11201000.usb0/11200000.xhci*    auto    vfat    defaults    flags=storage;wipeingui;removable;fsflags=utf8
-
-# USB OTG - Método 2 (genérico MTK)
 /devices/platform/usb_xhci*                           auto    vfat    defaults    flags=storage;wipeingui;removable;fsflags=utf8
-
-# USB OTG - Método 3 (fallback universal)
 /devices/*/*/xhci-hcd.*.auto/usb*                     auto    auto    defaults    flags=storage;wipeingui;removable
