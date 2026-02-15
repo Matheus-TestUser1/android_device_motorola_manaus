@@ -1,33 +1,21 @@
-# Kernel modules to load in vendor ramdisk
-# Motorola Edge 40 Neo (manaus) - MT6879
-# VENDOR_BOOT VERSION
-#
-# Adicione os módulos necessários aqui, um por linha
-# Exemplo:
-# mtk_wdt.ko
-# mtk-uart.ko
-# etc.
-mkp.ko
-bootprof.ko
-mtk-uart-apdma.ko
-8250_mtk.ko
-dbgtop-drm.ko
-irq-dbg.ko
-mrdump.ko
-mtk_disp_notify.ko
-aee_aed.ko
-aee_hangdet.ko
-monitor_hang.ko
-mtk_printk_ctrl.ko
+# ============================================================================
+# MÓDULOS VENDOR_RAMDISK - ORDEM CORRIGIDA PARA EDGE 40 NEO
+# Carregamento sequencial por dependência
+# ============================================================================
+
+# === 1. DEBUG/LOG PRIMÁRIO (mínimo para boot) ===
 log_store.ko
-nvmem_mtk-devinfo.ko
-mtk_wdt.ko
-sec-rng.ko
+
+# === 2. INFRAESTRUTURA BÁSICA (sem dependências) ===
+mtk_printk_ctrl.ko
+irq-dbg.ko
+
+# === 3. HARDWARE BÁSICO (GPIO, PINCTRL, CLK) ===
 pinctrl-mtk-v2.ko
 pinctrl-mt6879.ko
 pinctrl-mtk-common-v2_debug.ko
-mt6879_dcm.ko
-mtk_dcm.ko
+
+# === 4. CLOCKS (ESSENCIAL - tudo depende disso) ===
 clk-common.ko
 clk-mt6879.ko
 clk-mt6879-adsp.ko
@@ -39,43 +27,63 @@ clk-mt6879-bus.ko
 clk-mt6879-vcodec.ko
 clk-mt6879-ccu.ko
 clk-mt6879-mdp.ko
+clk-fmeter-mt6879.ko
+clk-bringup.ko
+clk-chk-mt6879.ko
+
+# === 5. MEMÓRIA/DRAM ===
 mtk_dramc.ko
-mtk-dvfsrc.ko
-mtk-dvfsrc-regulator.ko
 mtk-emi.ko
-tui-common.ko
+emi.ko
+emi-mpu.ko
+emi-mpu-v2.ko
+emi-slb.ko
+
+# === 6. REGULADORES/POWER ===
 mtk-pmic-wrap.ko
 mtk-spmi-pmic.ko
 spmi-mtk-pmif.ko
 mt6315-regulator.ko
 mt6363-regulator.ko
+mt6368-regulator.ko
 wl2864c-regulator.ko
-mtk-vmm-spm.ko
-mtk-scpsys.ko
-mtk-scpsys-mt6879.ko
-mtk-scpsys-bringup.ko
-clk-bringup.ko
-pd-chk-mt6879.ko
-clk-fmeter-mt6879.ko
-mtk-smi.ko
-mtk-smi-dbg.ko
-mtk-icc-core.ko
-mtk-mmdvfs.ko
-mtk-mmdvfs-debug.ko
-mmqos-common.ko
-mmqos-mt6879.ko
+rt5133-regulator.ko
+rt6160-regulator.ko
+
+# === 7. WATCHDOG/RESET ===
+mtk_wdt.ko
+reset-ti-syscon.ko
+
+# === 8. SERIAL/UART (para console) ===
+mtk-uart-apdma.ko
+8250_mtk.ko
+
+# === 9. STORAGE (UFS/MMC) ===
+phy-mtk-ufs.ko
+mtk-mmc.ko
+mtk-mmc-autok.ko
+mtk-mmc-dbg.ko
+cqhci.ko
+ufs-mediatek-mod.ko
+ufs-mediatek-dbg.ko
+rpmb.ko
+rpmb-mtk.ko
+blocktag.ko
+
+# === 10. IOMMU/SMMU ===
 iommu_secure.ko
 iommu_debug.ko
 mtk_iommu.ko
-iommu_test.ko
-mtk_mm_heap.ko
-system_heap.ko
+mtk_smi.ko
+mtk-smi-dbg.ko
+
+# === 11. DISPLAY/DRM (só depois de clocks/GPIO) ===
 mtk-cmdq-drv-ext.ko
 cmdq-platform-mt6879.ko
 cmdq_helper_inf.ko
-mdp_drv_mt6879.ko
 mtk-mml.ko
 mtk-mml-mt6879.ko
+mdp_drv_mt6879.ko
 mtk_panel_ext.ko
 dsi-panel-mot-tianma-vtdr6115-655-fhdp-dphy-vdo-144hz.ko
 dsi-panel-mot-csot-vtdr6115-655-fhdp-dphy-vdo-144hz-c7.ko
@@ -83,64 +91,29 @@ dsi-panel-mot-tm-vtdr6115-655-fhdp-dphy-vdo-144hz-u8.ko
 dsi-panel-mot-boe-nt37701a-655-fhdp-cmd-144hz.ko
 dsi-panel-mot-dummy-vdo-60hz.ko
 mediatek-drm.ko
-aee_rs.ko
-mmprofile.ko
+mtk_disp_notify.ko
+pwm-mtk-disp.ko
+mmqos-common.ko
+mmqos-mt6879.ko
+mtk_mm_heap.ko
+system_heap.ko
+
+# === 12. USB ===
 phy-mtk-tphy.ko
 usb_boost.ko
 mtu3.ko
 xhci-mtk-hcd.ko
-mt6368-regulator.ko
-mtk-spmi-pmic-adc.ko
-regmap-spmi.ko
-cqhci.ko
-mtk-mmc-autok.ko
-mtk-mmc-dbg.ko
-mtk-mmc.ko
-phy-mtk-ufs.ko
-rpmb.ko
-rpmb-mtk.ko
-ufs-mediatek-mod.ko
-ufs-mediatek-dbg.ko
-blocktag.ko
-pidmap.ko
-mtk-pmic-keys.ko
-mtk-kpd.ko
-regulator-vibrator.ko
-i2c-mt65xx.ko
-rtc-mt6685.ko
-emi.ko
-emi-mpu.ko
-mtk-dvfsrc-helper.ko
-mtk-dvfsrc-devfreq.ko
-clk-chk-mt6879.ko
-spi-mt65xx.ko
+extcon-mtk-usb.ko
+
+# === 13. CHARGER/BATTERY ===
 mt6375.ko
-mt6685-core.ko
-mt6685-audclk.ko
-extdev_io_class.ko
-clkbuf.ko
-device-apc-common.ko
-device-apc-mt6879.ko
-teeperf.ko
-mcDrvModule.ko
-isee.ko
-industrialio-triggered-buffer.ko
-kfifo_buf.ko
 mt6375-adc.ko
 mt6375-auxadc.ko
-rt5133-regulator.ko
-rt6160-regulator.ko
-bq25980_mmi.ko
+mt6375-charger.ko
+mt6375-battery.ko
 adapter_class.ko
 charger_class.ko
 mtk_charger_algorithm_class.ko
-mt6375-charger.ko
-mux_switch.ko
-fusb304.ko
-ps5169.ko
-pd_dbg_info.ko
-tcpc_class.ko
-tcpc_mt6375.ko
 mtk_chg_type_det.ko
 mtk_pd_adapter.ko
 mtk_pep40.ko
@@ -151,30 +124,93 @@ mtk_pep.ko
 mtk_pep50.ko
 mtk_charger_framework.ko
 rt_pd_manager.ko
-mt6375-battery.ko
-mtk-socinfo.ko
-pwm-mtk-disp.ko
-leds-mtk.ko
-leds-mtk-disp.ko
-leds-mtk-pwm.ko
-extcon-mtk-usb.ko
+bq25980_mmi.ko
+mux_switch.ko
+fusb304.ko
+ps5169.ko
+pd_dbg_info.ko
+tcpc_class.ko
+tcpc_mt6375.ko
 tcpci_late_sync.ko
+moto_chg_tcmd.ko
+
+# === 14. INPUT/KEYS ===
+mtk-pmic-keys.ko
+mtk-kpd.ko
+regulator-vibrator.ko
+
+# === 15. I2C/SPI ===
+i2c-mt65xx.ko
+spi-mt65xx.ko
+
+# === 16. RTC ===
+rtc-mt6685.ko
+
+# === 17. SENSORES/ADC ===
+mtk-spmi-pmic-adc.ko
+regmap-spmi.ko
+
+# === 18. TEE/SECURITY ===
+mcDrvModule.ko
+isee.ko
+teeperf.ko
+
+# === 19. PERFORMANCE/POWER ===
+mt6879_dcm.ko
+mtk_dcm.ko
+mtk-dvfsrc.ko
+mtk-dvfsrc-regulator.ko
+mtk-dvfsrc-helper.ko
+mtk-dvfsrc-devfreq.ko
+mtk-scpsys.ko
+mtk-scpsys-mt6879.ko
+mtk-scpsys-bringup.ko
+pd-chk-mt6879.ko
+mediatek-cpufreq-hw.ko
+mtk-swpm-perf-arm-pmu.ko
+arm_dsu_pmu.ko
+
+# === 20. DEBUG/PROFILING (opcional) ===
+bootprof.ko
+dbgtop-drm.ko
+aee_aed.ko
+aee_hangdet.ko
+monitor_hang.ko
+aee_rs.ko
+mmprofile.ko
+mrdump.ko
 meta.ko
 pmic_lbat_service.ko
-reset-ti-syscon.ko
-adsp.ko
-mtk_slbc.ko
+
+# === 21. MISC ===
+nvmem_mtk-devinfo.ko
+mtk-socinfo.ko
+mtk-icc-core.ko
+mtk-mmdvfs.ko
+mtk-mmdvfs-debug.ko
+cache-parity.ko
+device-apc-common.ko
+device-apc-mt6879.ko
+pidmap.ko
+sec-rng.ko
+tui-common.ko
 vcp_status.ko
 mtk_sync.ko
-moto_chg_tcmd.ko
 mtk-mbox-mailbox.ko
 tinysys-scmi.ko
 mtk-mminfra-debug.ko
+adsp.ko
+mtk_slbc.ko
+industrialio-triggered-buffer.ko
+kfifo_buf.ko
+wl2864c-regulator.ko  # Se não carregou antes
+extdev_io_class.ko
+clkbuf.ko
+mt6685-core.ko
+mt6685-audclk.ko
+leds-mtk.ko
+leds-mtk-disp.ko
+leds-mtk-pwm.ko
 cfg80211.ko
 mac80211.ko
-mediatek-cpufreq-hw.ko
-arm_dsu_pmu.ko
-mtk-swpm-perf-arm-pmu.ko
-emi-mpu-v2.ko
-emi-slb.ko
-cache-parity.ko
+iommu_test.ko
