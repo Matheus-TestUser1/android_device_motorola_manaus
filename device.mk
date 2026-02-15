@@ -25,7 +25,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 # Armazenamento emulado moderno (FUSE ao invés de SDCardFS)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
-PRODUCT_SHIPPING_API_LEVEL := 33
+PRODUCT_SHIPPING_API_LEVEL := 31
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
 # ============================================================================
@@ -57,7 +57,7 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES_DEBUG += \
     bootctl
-PRODUCT_SHIPPING_API_LEVEL := 31
+
 # ============================================================================
 # CORE PACKAGES
 # ============================================================================
@@ -109,6 +109,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/dtb.img:dtb.img \
    # $(DEVICE_PATH)/prebuilt/dtbo.img:dtbo.img
+# Recovery binários MediaTek
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/recovery/root/system/bin/plpath_utils:recovery/root/system/bin/plpath_utils
 # ============================================================================
 # SYSTEM PROPERTIES
 # ============================================================================
