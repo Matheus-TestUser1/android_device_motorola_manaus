@@ -109,9 +109,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/dtb.img:dtb.img \
    # $(DEVICE_PATH)/prebuilt/dtbo.img:dtbo.img
-# Recovery binários MediaTek
+# DEPOIS:
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/recovery/root/system/bin/plpath_utils:recovery/root/system/bin/plpath_utils
+    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:recovery/root/system/bin/plpath_utils
 # ============================================================================
 # SYSTEM PROPERTIES
 # ============================================================================
