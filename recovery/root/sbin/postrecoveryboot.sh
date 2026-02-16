@@ -1,24 +1,34 @@
-# device/motorola/manaus/recovery/root/sbin/postrecoveryboot.sh
 #!/system/bin/sh
 #
-# Post recovery boot script for Motorola Edge 40 Neo (manaus)
+# postrecoveryboot.sh
+# Post Recovery Boot Script for Motorola Edge 40 Neo
 # MediaTek MT6879
-#
 
-# Log start
-log -t recovery -p i "postrecoveryboot.sh started"
+set -e
 
-# Set USB configuration
-setprop sys.usb.config mtp,adb
+LOG_TAG="PostRecoveryBoot"
 
-# Ensure ADB is running
-start adbd
+log_msg() {
+    echo "[${LOG_TAG}] $1"
+    echo "[${LOG_TAG}] $1" > /dev/kmsg 2>/dev/null || true
+}
 
-# Set brightness
-echo 1200 > /sys/class/leds/lcd-backlight/brightness 2>/dev/null || \
-echo 1200 > /sys/class/backlight/panel0-backlight/brightness 2>/dev/null
+main() {
+    log_msg "Starting post recovery boot sequence"
+    
+    # Set USB configuration
+    setprop sys.usb.config mtp,adb
+    
+    # Ensure ADB is enabled
+    start adbd
+    
+    # Set display brightness
+    echo 1200 > /sys/class/leds/lcd-backlight/brightness 2>/dev/null || \
+    echo 1200 > /sys/class/backlight/panel0-backlight/brightness 2>/dev/null || true
+    
+    log_msg "Post recovery boot sequence completed"
+    return 0
+}
 
-# Log end
-log -t recovery -p i "postrecoveryboot.sh completed"
-
+main "$@"
 exit 0
