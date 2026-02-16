@@ -89,7 +89,13 @@ BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 #BOARD_INCLUDE_RECOVERY_DTBO := true
+# Recovery init scripts
+BOARD_RECOVERY_INIT_RC := device/motorola/manaus/recovery/root/init.recovery.mt6879.rc
+BOARD_RECOVERY_INIT_RC += device/motorola/manaus/recovery/root/mtk-plpath-utils.rc
+BOARD_RECOVERY_INIT_RC += device/motorola/manaus/recovery/root/init.recovery.usb.rc
 
+# Recovery scripts
+TARGET_RECOVERY_DEVICE_MODULES += plpath_utils
 # ============================================================================
 # KERNEL MODULES - REQUIRED FOR VENDOR_BOOT
 # ============================================================================
