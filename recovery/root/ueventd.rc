@@ -131,3 +131,49 @@ subsystem dma_heap
 /sys/devices/system/cpu/cpu*   cpufreq/scaling_min_freq   0664  system system
 /sys/devices/virtual/misc/uhid/*/leds/* brightness        0664  system system
 /sys/devices/virtual/misc/uhid/*/leds/* multi_intensity   0664  system system
+
+
+# ============================================================================
+# MEDIATEK SPECIFIC (ADICIONAR!)
+# ============================================================================
+
+# UFS/eMMC boot partitions (CRITICAL!)
+/dev/block/mmcblk0                   0660    root    system
+/dev/block/mmcblk0boot0              0660    root    system
+/dev/block/mmcblk0boot1              0660    root    system
+/dev/block/mmcblk0rpmb               0660    root    system
+
+# UFS devices (CRITICAL!)
+/dev/block/sda                       0660    root    system
+/dev/block/sdb                       0660    root    system
+/dev/block/sdc                       0660    root    system
+
+# MediaTek specific partitions
+/dev/block/by-name/boot              0660    root    system
+/dev/block/by-name/misc              0660    root    system
+/dev/block/by-name/metadata          0660    root    system
+/dev/block/by-name/nvram             0660    root    system
+/dev/block/by-name/proinfo           0660    root    system
+/dev/block/by-name/frp               0660    root    system
+
+# MediaTek drivers
+/dev/trusty-ipc-dev0                 0660    system  system
+/dev/mobicore                        0600    system  system
+/dev/ion                             0666    system  graphics
+
+# DMA Heaps MediaTek (ADICIONAR!)
+/dev/dma_heap/mtk_mm                 0444    system  system
+/dev/dma_heap/mtk_mm-uncached        0444    system  system
+/dev/dma_heap/mtk_svp_region         0444    system  system
+/dev/dma_heap/mtk_prot_region        0444    system  system
+
+# Touch (já tem input/*, mas específico ajuda)
+/dev/touch                           0660    root    system
+
+# ============================================================================
+# BACKLIGHT (CRITICAL FOR DISPLAY!)
+# ============================================================================
+
+/sys/class/leds/lcd-backlight/brightness                  0666  root  system
+/sys/class/backlight/panel0-backlight/brightness          0666  root  system
+/sys/class/leds/lcd-backlight/max_brightness              0444  root  system
