@@ -79,9 +79,9 @@ on fs
     mkdir /dev/block/mapper 0755 root root
     
     # Wait for dynamic partition mapper devices
-    wait /dev/block/mapper/system_a 5
-    wait /dev/block/mapper/vendor_a 5
-    wait /dev/block/mapper/product_a 5
+    wait /dev/block/mapper/system 10
+    wait /dev/block/mapper/vendor 10
+    wait /dev/block/mapper/product 10
     
     # Try mount userdata (may fail if encrypted - expected)
     mount f2fs /dev/block/by-name/userdata /data noatime nosuid nodev || \
