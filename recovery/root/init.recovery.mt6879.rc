@@ -1,17 +1,17 @@
 # init.recovery.mt6879.rc
 # Main recovery init for Motorola Edge 40 Neo (manaus) - MT6879
-# CONFIGURADO PARA VENDOR_BOOT - NAO FICA NO RECOVERY TRADICIONAL
+# Vendor Boot Configuration
 
 import /init.recovery.usb.rc
 import /mtk-plpath-utils.rc
 
 on early-init
-    # Set up recovery environment
+    # Recovery environment
     export ANDROID_ROOT /system_root
     export ANDROID_DATA /data
     export EXTERNAL_STORAGE /sdcard
     
-    # Create necessary directories
+    # Block devices structure
     mkdir /dev/block 0755 root root
     mkdir /dev/block/platform 0755 root root
     mkdir /dev/block/platform/bootdevice 0755 root root
@@ -19,11 +19,11 @@ on early-init
     mkdir /dev/block/mapper 0755 root root
     mkdir /dev/block/by-name 0755 root root
     
-    # Symlinks for compatibility
+    # Bootdevice symlinks
     symlink /dev/block/platform/bootdevice /dev/block/bootdevice
     symlink /dev/block/platform/bootdevice/by-name /dev/block/by-name
     
-    # Create mount points
+    # Mount points
     mkdir /metadata 0771 root root
     mkdir /data 0771 root root
     mkdir /sdcard 0771 root root
@@ -32,110 +32,89 @@ on early-init
     mkdir /tmp 0775 root shell
     mkdir /system_root 0771 root root
     
-    # Framebuffer permissions - CRITICAL FOR DISPLAY
-    chown root root /dev/graphics/fb0
+    # Display - Framebuffer permissions
+    chown root graphics /dev/graphics/fb0
     chmod 0666 /dev/graphics/fb0
     
-    # Backlight
-    chown root root /sys/class/leds/lcd-backlight/brightness
+    # Display - Backlight (CRITICAL!)
+    chown root system /sys/class/leds/lcd-backlight/brightness
     chmod 0666 /sys/class/leds/lcd-backlight/brightness
-    chown root root /sys/class/backlight/panel0-backlight/brightness
+    chown root system /sys/class/backlight/panel0-backlight/brightness
     chmod 0666 /sys/class/backlight/panel0-backlight/brightness
 
 on init
-    # Device properties
+    # Platform identification
     setprop ro.hardware mt6879
-    setprop ro.hardware.platform mt6879
     setprop ro.board.platform mt6879
-    setprop ro.product.board mt6879
+    setprop ro.mediatek.platform MT6879
     
-    # Recovery
-    setprop ro.build.product manaus
+    # Product identification
     setprop ro.product.device manaus
     setprop ro.product.name manaus
+    setprop ro.build.product manaus
     
-    # Debug
+    # Recovery mode
     setprop ro.debuggable 1
     setprop ro.secure 0
     setprop ro.adb.secure 0
     
-    # TWRP
-    setprop ro.twrp.boot true
-    setprop ro.twrp.version 3.7.0_12
-    
-    # MediaTek
-    setprop ro.mediatek.platform MT6879
-    
-    # Disable verified boot checks
+    # AVB/Verified Boot
     setprop ro.boot.verifiedbootstate orange
     setprop ro.boot.vbmeta.device_state unlocked
     
-    # Dynamic partitions
+    # Dynamic Partitions & A/B
     setprop ro.boot.dynamic_partitions true
+    setprop ro.virtual_ab.enabled true
+    setprop ro.build.ab_update true
     
     # USB
     setprop sys.usb.controller 11201000.usb0
     setprop sys.usb.configfs 1
 
 on fs
-    # Mount metadata first
-    mount ext4 /dev/block/by-name/metadata /metadata rw nosuid nodev noatime
+    # Metadata partition (CRITICAL for Virtual A/B!)
+    mount ext4 /dev/block/by-name/metadata /metadata noatime nosuid nodev
     
-    # Create mapper directory if not exists
+    # Wait for mapper directory
     mkdir /dev/block/mapper 0755 root root
     
-    # Setup dynamic partitions
-    exec u:r:recovery:s0 -- /system/bin/mtk_plpath_utils
+    # Wait for dynamic partition mapper devices
+    wait /dev/block/mapper/system_a 5
+    wait /dev/block/mapper/vendor_a 5
+    wait /dev/block/mapper/product_a 5
     
-    # Wait for mapper devices
-    wait /dev/block/mapper/system 5
-    wait /dev/block/mapper/vendor 5
-    wait /dev/block/mapper/product 5
-    
-    # Try to mount data (may fail if encrypted - that's OK)
-    mount f2fs /dev/block/by-name/userdata /data rw nosuid nodev noatime || \
-    mount ext4 /dev/block/by-name/userdata /data rw nosuid nodev noatime || \
-    echo "Data mount failed (expected if encrypted)"
+    # Try mount userdata (may fail if encrypted - expected)
+    mount f2fs /dev/block/by-name/userdata /data noatime nosuid nodev || \
+    mount ext4 /dev/block/by-name/userdata /data noatime nosuid nodev || \
+    true
 
 on post-fs
-    # Symlinks for dynamic partitions
+    # Dynamic partition symlinks (slotselect handled by mapper)
     symlink /dev/block/mapper/system /dev/block/system
     symlink /dev/block/mapper/vendor /dev/block/vendor
     symlink /dev/block/mapper/product /dev/block/product
     symlink /dev/block/mapper/system_ext /dev/block/system_ext
     symlink /dev/block/mapper/vendor_dlkm /dev/block/vendor_dlkm
-    
-    # Start post recovery boot script
-    exec u:r:recovery:s0 -- /sbin/postrecoveryboot.sh
 
 on post-fs-data
-    # Ensure data directories exist
+    # Media storage
     mkdir /data/media 0770 media_rw media_rw
     mkdir /data/media/0 0770 media_rw media_rw
     
-    # Set up adb
+    # ADB
     mkdir /data/adb 0700 root root
 
 on boot
-    # Start essential services
-    start health-hal-2-1
-    
-    # Set USB to mtp,adb mode
+    # USB mode
     setprop sys.usb.config mtp,adb
     
     # Start ADB
     start adbd
 
-# Service definitions
+# Health HAL for battery info
 service health-hal-2-1 /system/bin/hw/android.hardware.health@2.1-service
     class hal
-    user root
-    group root
-    seclabel u:r:recovery:s0
-
-service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
-    class main
-    user root
-    group root system
-    oneshot
+    user system
+    group system
     disabled
+    seclabel u:r:recovery:s0
