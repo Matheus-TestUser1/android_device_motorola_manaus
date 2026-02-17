@@ -99,16 +99,6 @@ BOARD_RECOVERY_INIT_RC := device/motorola/manaus/recovery/root/init.recovery.mt6
 BOARD_RECOVERY_INIT_RC += device/motorola/manaus/recovery/root/mtk-plpath-utils.rc
 BOARD_RECOVERY_INIT_RC += device/motorola/manaus/recovery/root/init.recovery.usb.rc
 
-# Recovery device modules (plpath_utils for dynamic partitions)
-TARGET_RECOVERY_DEVICE_MODULES := \
-    plpath_utils \
-    adbd \
-    android.hardware.health@2.1-service
-
-# Recovery scripts for dynamic partitions and A/B support
-RECOVERY_BOOT_MODULES_LOAD := \
-    $(DEVICE_PATH)/prebuilt/modules.load
-
 # ============================================================================
 # KERNEL MODULES - REQUIRED FOR VENDOR_BOOT
 # ============================================================================
@@ -160,45 +150,28 @@ TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
 
 # ============================================================================
-# AVB (Android Verified Boot)
+# AVB (Android Verified Boot) - TWRP Configuration
 # ============================================================================
+
 BOARD_AVB_ENABLE := true
 
-# VBMETA principal - desativa verificação estrita para TWRP funcionar
+# Disable verification for TWRP (flags 3 = verification + hashtree disabled)
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
-# Flags: 3 = HASHTREE_DISABLED (1) + VERIFICATION_DISABLED (2)
-# Isso permite boot sem assinatura perfeita, mas mantém estrutura AVB
 
-# VBMETA SYSTEM - mesmo tratamento
+# System partitions
 BOARD_AVB_VBMETA_SYSTEM := system system_ext product
 BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
-# Rollback index: usar 0 para permitir boot de TWRP não-assinado
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := 0
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
-BOARD_AVB_VBMETA_SYSTEM_ARGS += --flags 3
 
-# RECOVERY - Configuração crítica para TWRP bootar
+# Recovery (vendor_boot)
 BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
 BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA4096
-# ESSENCIAL: rollback index 0 para TWRP não-assinado bootar
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 0
-# ESSENCIAL: location diferente de todos os outros (1 é comum para recovery)
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 
-# VENDOR_BOOT - Necessário para vendor_boot com modules
-BOARD_AVB_VENDOR_BOOT_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
-BOARD_AVB_VENDOR_BOOT_ALGORITHM := SHA256_RSA2048
-BOARD_AVB_VENDOR_BOOT_ROLLBACK_INDEX := 0
-BOARD_AVB_VENDOR_BOOT_ROLLBACK_INDEX_LOCATION := 3
-
-# Boot - Suporte a A/B
-BOARD_AVB_BOOT_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
-BOARD_AVB_BOOT_ALGORITHM := SHA256_RSA2048
-BOARD_AVB_BOOT_ROLLBACK_INDEX := 0
-BOARD_AVB_BOOT_ROLLBACK_INDEX_LOCATION := 4
-
-# Desativar rollback protection para evitar brick
+# Disable rollback protection
 BOARD_AVB_ROLLBACK_PROTECTION := false
 
 # ============================================================================
