@@ -93,7 +93,8 @@ PRODUCT_PACKAGES += \
 # ============================================================================
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/plpath_utils
-
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/prebuilt/dtb.img:dtb.img \
 # ============================================================================
 # RECOVERY FILES
 # ============================================================================
