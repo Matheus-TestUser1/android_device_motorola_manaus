@@ -68,7 +68,7 @@ BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2
 BOARD_KERNEL_CMDLINE += androidboot.serialconsole=0
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 BOARD_KERNEL_CMDLINE += androidboot.hardware=mt6879
-
+BOARD_KERNEL_CMDLINE += loglevel=4
 BOARD_KERNEL_IMAGE_NAME := Image
 #BOARD_KERNEL_SEPARATED_DTBO := true
 
