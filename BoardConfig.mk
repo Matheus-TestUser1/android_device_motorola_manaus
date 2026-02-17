@@ -69,6 +69,7 @@ BOARD_KERNEL_CMDLINE += androidboot.serialconsole=0
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 BOARD_KERNEL_CMDLINE += androidboot.hardware=mt6879
 BOARD_KERNEL_CMDLINE += loglevel=4
+BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery 
 BOARD_KERNEL_IMAGE_NAME := Image
 #BOARD_KERNEL_SEPARATED_DTBO := true
 
