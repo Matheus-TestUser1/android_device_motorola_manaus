@@ -1,11 +1,19 @@
 # snapuserd.rc
-# Snapuserd service for Motorola Edge 40 Neo (manaus) - MT6879
-# VENDOR_BOOT VERSION
+# Snapuserd daemon for Virtual A/B compression
+# Motorola Edge 40 Neo (manaus) - MT6879
 
+# Snapuserd daemon (CRITICAL for Virtual A/B with compression!)
 service snapuserd /system/bin/snapuserd
     socket snapuserd stream 0660 system system
-    socket snapuserd_worker stream 0660 system system
-    class core
     user root
-    group root system
-    seclabel u:r:snapuserd:s0
+    group system
+    class core
+    disabled
+    seclabel u:r:recovery:s0
+
+# Start snapuserd when needed
+on property:ro.virtual_ab.enabled=true
+    start snapuserd
+
+on property:ro.virtual_ab.compression.enabled=true
+    start snapuserd
