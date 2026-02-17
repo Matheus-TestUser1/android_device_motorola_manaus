@@ -1,7 +1,9 @@
-# system.prop - TWRP - Motorola Edge 40 Neo (manaus) - MT6879
-# VENDOR_BOOT VERSION - Configurado para boot via vendor_boot
+# system.prop - TWRP Recovery - Motorola Edge 40 Neo (manaus) - MT6879
+# Vendor Boot Configuration
 
-# --- IDENTIFICAÇÃO DO HARDWARE ---
+# ════════════════════════════════════════════════════════════════════════
+# HARDWARE IDENTIFICATION
+# ════════════════════════════════════════════════════════════════════════
 ro.product.brand=motorola
 ro.product.device=manaus
 ro.product.manufacturer=motorola
@@ -9,36 +11,59 @@ ro.product.model=moto edge 40 neo
 ro.product.board=manaus
 ro.board.platform=mt6879
 ro.hardware=mt6879
+ro.hardware.soc.manufacturer=mtk
 
-# --- CONFIGURAÇÕES DE INICIALIZAÇÃO ---
+# ════════════════════════════════════════════════════════════════════════
+# MEDIATEK PLATFORM
+# ════════════════════════════════════════════════════════════════════════
+ro.mediatek.platform=MT6879
+ro.vendor.mediatek.platform=MT6879
+
+# ════════════════════════════════════════════════════════════════════════
+# BOOT CONFIGURATION
+# ════════════════════════════════════════════════════════════════════════
 ro.boot.dynamic_partitions=true
 ro.boot.bootdevice=bootdevice
+ro.build.ab_update=true
 
-# --- USB PARA O MODO RECOVERY ---
-persist.sys.usb.config=mtp,adb
+# ════════════════════════════════════════════════════════════════════════
+# A/B & VIRTUAL AB
+# ════════════════════════════════════════════════════════════════════════
+ro.virtual_ab.enabled=true
+ro.virtual_ab.compression.enabled=true
+ro.virtual_ab.userspace.snapshots.enabled=true
+
+# ════════════════════════════════════════════════════════════════════════
+# SECURITY (Recovery - Permissive)
+# ════════════════════════════════════════════════════════════════════════
 ro.adb.secure=0
 ro.secure=0
 ro.debuggable=1
+ro.boot.verifiedbootstate=orange
+ro.boot.vbmeta.device_state=unlocked
+
+# ════════════════════════════════════════════════════════════════════════
+# USB CONFIGURATION (Recovery Mode)
+# ════════════════════════════════════════════════════════════════════════
+persist.sys.usb.config=mtp,adb
 sys.usb.controller=11201000.usb0
 sys.usb.configfs=1
 sys.usb.ffs.aio_compat=true
 
-# --- DISPLAY ---
+# ════════════════════════════════════════════════════════════════════════
+# DISPLAY
+# ════════════════════════════════════════════════════════════════════════
 ro.sf.lcd_density=400
 ro.minui.pixel_format=BGRA_8888
 
-# --- GERENCIAMENTO DE MEMÓRIA ---
+# ════════════════════════════════════════════════════════════════════════
+# MEMORY MANAGEMENT
+# ════════════════════════════════════════════════════════════════════════
 dalvik.vm.heapgrowthlimit=256m
 dalvik.vm.heapsize=512m
 
-# --- TWRP ---
-ro.twrp.boot=true
-ro.twrp.version=3.7.0_12
-
-# --- MediaTek ---
-ro.mediatek.platform=MT6879
-ro.vendor.mediatek.platform=MT6879
-
-# --- AVB ---
-ro.boot.verifiedbootstate=orange
-ro.boot.vbmeta.device_state=unlocked
+# ════════════════════════════════════════════════════════════════════════
+# TWRP IDENTIFICATION (Optional - auto-detected)
+# ════════════════════════════════════════════════════════════════════════
+# ro.twrp.boot=true
+# ro.twrp.version=3.7.0_12
