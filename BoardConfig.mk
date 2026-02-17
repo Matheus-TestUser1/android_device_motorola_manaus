@@ -244,7 +244,7 @@ AB_OTA_PARTITIONS := \
     vbmeta_system
 
 # A/B Post-install hook (recovery in vendor_boot)
-TARGET_POST_OTA_LOAD_RECOVERY_RESOURCES_HOOK := $(DEVICE_PATH)/recovery/root/post_ota_hook.sh
+#TARGET_POST_OTA_LOAD_RECOVERY_RESOURCES_HOOK := $(DEVICE_PATH)/recovery/root/post_ota_hook.sh
 
 # ============================================================================
 # USB - CRITICAL FOR TWRP FUNCTIONALITY
