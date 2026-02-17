@@ -41,6 +41,13 @@ AB_OTA_POSTINSTALL_CONFIG += \
     FILESYSTEM_TYPE_vendor=ext4 \
     POSTINSTALL_OPTIONAL_vendor=true
 
+# A/B Virtual properties (bom ter):
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.virtual_ab.enabled=true \
+    ro.virtual_ab.compression.enabled=true \
+    ro.virtual_ab.retrofit=false
+
+
 # ============================================================================
 # BOOT CONTROL HAL
 # ============================================================================
