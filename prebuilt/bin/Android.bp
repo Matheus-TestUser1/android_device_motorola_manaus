@@ -2,9 +2,6 @@
 soong_namespace {
 }
 
-# ============================================================================
-# BINÁRIOS PARA RECOVERY (vendor_ramdisk = root.2)
-# ============================================================================
 
 cc_prebuilt_binary {
     name: "plpath_utils",
@@ -26,9 +23,6 @@ cc_prebuilt_binary {
     check_elf_files: false,
 }
 
-# ============================================================================
-# SYMLINKS DE COMPATIBILIDADE MTK (também para RECOVERY)
-# ============================================================================
 
 cc_prebuilt_binary {
     name: "mtk_plpath_utils",
