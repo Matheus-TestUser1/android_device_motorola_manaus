@@ -90,10 +90,10 @@ PRODUCT_PACKAGES += \
     plpath_utils 
  
 
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/bin/plpath_utils \
-    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/bin/mtk_plpath_utils \
-    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/bin/mtk_plpath_utils_ota
+#PRODUCT_COPY_FILES += \
+    #$(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/bin/plpath_utils \
+   # $(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/bin/mtk_plpath_utils \
+    #$(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/bin/mtk_plpath_utils_ota
 
 # ============================================================================
 # CORE PACKAGES
