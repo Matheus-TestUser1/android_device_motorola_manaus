@@ -39,7 +39,7 @@ on post-fs
     symlink /dev/block/by-name/lk2 /dev/block/by-name/bootloader2
     symlink /dev/block/by-name/lk1 /dev/block/platform/mtk-msdc.0/by-name/bootloader1
     symlink /dev/block/by-name/lk2 /dev/block/platform/mtk-msdc.0/by-name/bootloader2
-
+     start snapuserd
 # ============================================================================
 # NOME DO SERVIÇO: mtk.plpath.utils.link (conforme esperado pela MediaTek!)
 # ============================================================================
