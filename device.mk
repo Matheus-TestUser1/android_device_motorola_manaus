@@ -84,7 +84,13 @@ PRODUCT_PACKAGES += \
 # ============================================================================
 PRODUCT_PACKAGES += \
     mtk_plpath_utils \
-    mtk_plpath_utils.recovery
+  #  mtk_plpath_utils.recovery
+
+# ADICIONAR:
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/plpath_utils \
+    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/mtk_plpath_utils \
+    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/mtk_plpath_utils_ota
 
 # ============================================================================
 # CORE PACKAGES
