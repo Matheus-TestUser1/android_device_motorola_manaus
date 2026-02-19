@@ -1,3 +1,4 @@
+# Android.bp em device/motorola/manaus/prebuilt/bin/
 soong_namespace {
 }
 
@@ -5,10 +6,10 @@ cc_prebuilt_binary {
     name: "plpath_utils",
     srcs: ["plpath_utils"],
     
-    // Recovery installation
-    recovery: true,
+    // CRÍTICO: vendor_ramdisk para vendor_boot v4!
+    vendor_ramdisk: true,
     
-    // Path específico no recovery
+    // Caminho dentro do vendor ramdisk
     relative_install_path: "system/bin",
     
     // Preserve binary
@@ -16,9 +17,13 @@ cc_prebuilt_binary {
         none: true,
     },
     
-    // Permissions
+    // 64-bit para ARM64
     compile_multilib: "64",
     
-    // Não vendor (conflita com recovery)
+    // Não é módulo proprietário/vendor
     proprietary: false,
+    vendor: false,
+    
+    // Se precisar de init.rc junto:
+    // init_rc: ["mtk-plpath-utils.rc"],
 }
