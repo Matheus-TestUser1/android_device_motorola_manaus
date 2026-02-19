@@ -1,39 +1,49 @@
-
+# device/motorola/manaus/prebuilt/bin/Android.bp
 soong_namespace {
 }
+
+# ============================================================================
+# BINÁRIOS PARA RECOVERY (vendor_ramdisk = root.2)
+# ============================================================================
 
 cc_prebuilt_binary {
     name: "plpath_utils",
     srcs: ["plpath_utils"],
-    
-    // CRÍTICO: vendor_ramdisk para vendor_boot v4!
-    vendor_ramdisk: true,
-    
-    // Caminho dentro do vendor ramdisk
+    vendor_ramdisk: true,        # ← ESSENCIAL! Vai para root.2 (RECOVERY)
     relative_install_path: "system/bin",
-    
-    // Preserve binary
-    strip: {
-        none: true,
-    },
-    
-    // 64-bit para ARM64
+    strip: { none: true },
     compile_multilib: "64",
-    
-    // Não é módulo proprietário/vendor
-    proprietary: false,
-    vendor: false,
-    
-    // Se precisar de init.rc junto:
-    // init_rc: ["mtk-plpath-utils.rc"],
+    check_elf_files: false,
 }
 
 cc_prebuilt_binary {
     name: "snapuserd",
     srcs: ["snapuserd"],
-    vendor_ramdisk: true,
+    vendor_ramdisk: true,        # ← ESSENCIAL! Vai para root.2 (RECOVERY)
     relative_install_path: "system/bin",
     strip: { none: true },
     compile_multilib: "64",
     check_elf_files: false,
+}
+
+# ============================================================================
+# SYMLINKS DE COMPATIBILIDADE MTK (também para RECOVERY)
+# ============================================================================
+
+cc_prebuilt_binary {
+    name: "mtk_plpath_utils",
+    stem: "mtk_plpath_utils",    # Nome do arquivo final
+    srcs: ["plpath_utils"],      # Mesmo binário!
+    vendor_ramdisk: true,        # ← RECOVERY!
+    relative_install_path: "system/bin",
+    symlink_source: "plpath_utils",  # Cria symlink
+}
+
+cc_prebuilt_binary {
+    name: "mtk_plpath_utils_ota",
+    stem: "mtk_plpath_utils_ota",
+    srcs: ["plpath_utils"],
+    vendor_ramdisk: true,        # ← RECOVERY!
+    relative_install_path: "system/bin",
+    symlink_source: "plpath_utils",
 }
