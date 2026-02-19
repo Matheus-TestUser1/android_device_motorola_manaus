@@ -83,14 +83,13 @@ PRODUCT_PACKAGES += \
 # deve ser incluído como PRODUCT_PACKAGES para garantir presença no ramdisk
 # ============================================================================
 PRODUCT_PACKAGES += \
-    mtk_plpath_utils \
-  #  mtk_plpath_utils.recovery
+    mtk_plpath_utils 
+ 
 
-# ADICIONAR:
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/plpath_utils \
-    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/mtk_plpath_utils \
-    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/mtk_plpath_utils_ota
+    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/bin/plpath_utils \
+    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/bin/mtk_plpath_utils \
+    $(DEVICE_PATH)/prebuilt/bin/plpath_utils:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/bin/mtk_plpath_utils_ota
 
 # ============================================================================
 # CORE PACKAGES
