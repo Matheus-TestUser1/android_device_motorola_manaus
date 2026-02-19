@@ -77,6 +77,10 @@ PRODUCT_PACKAGES += \
     snapuserd \
     snapuserd.recovery
 
+# snapuserd para Virtual A/B
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/prebuilt/bin/snapuserd:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/bin/snapuserd
+
 # ============================================================================
 # MTK PATH UTILS
 # Fonte: guia MTK/TWRP lopestom — "ramdisk\system\bin\mtk_plpath_utils"
