@@ -83,7 +83,7 @@ PRODUCT_PACKAGES += \
 # deve ser incluído como PRODUCT_PACKAGES para garantir presença no ramdisk
 # ============================================================================
 PRODUCT_PACKAGES += \
-    mtk_plpath_utils 
+    plpath_utils 
  
 
 PRODUCT_COPY_FILES += \
