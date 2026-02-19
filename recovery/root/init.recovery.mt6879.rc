@@ -1,9 +1,9 @@
 # init.recovery.mt6879.rc
 # Main recovery init for Motorola Edge 40 Neo (manaus) - MT6879
-# Vendor Boot Configuration
+# TWRP Recovery Configuration - UFS + Virtual A/B
 
 import /init.recovery.usb.rc
-import /mtk-plpath-utils.rc
+import /system/etc/mtk-plpath-utils.rc
 
 on early-init
     # Recovery environment
@@ -11,17 +11,20 @@ on early-init
     export ANDROID_DATA /data
     export EXTERNAL_STORAGE /sdcard
     
-    # Block devices structure
+    # Block devices structure - MT6879 UFS (mtk-msdc.0 confirmado)
     mkdir /dev/block 0755 root root
     mkdir /dev/block/platform 0755 root root
-    mkdir /dev/block/platform/bootdevice 0755 root root
-    mkdir /dev/block/platform/bootdevice/by-name 0755 root root
+    mkdir /dev/block/platform/mtk-msdc.0 0755 root root
+    mkdir /dev/block/platform/mtk-msdc.0/by-name 0755 root root
     mkdir /dev/block/mapper 0755 root root
     mkdir /dev/block/by-name 0755 root root
     
     # Bootdevice symlinks
-    symlink /dev/block/platform/bootdevice /dev/block/bootdevice
-    symlink /dev/block/platform/bootdevice/by-name /dev/block/by-name
+    symlink /dev/block/platform/mtk-msdc.0 /dev/block/bootdevice
+    symlink /dev/block/platform/mtk-msdc.0/by-name /dev/block/by-name
+    
+    # Executar plpath_utils (mtk_plpath_utils_ota renomeado)
+    exec u:r:recovery:s0 -- /system/bin/plpath_utils
     
     # Mount points
     mkdir /metadata 0771 root root
@@ -36,13 +39,18 @@ on early-init
     chown root graphics /dev/graphics/fb0
     chmod 0666 /dev/graphics/fb0
     
-    # Display - Backlight (CRITICAL!)
+    # Display - Backlight (CRITICAL for TWRP UI!)
     chown root system /sys/class/leds/lcd-backlight/brightness
     chmod 0666 /sys/class/leds/lcd-backlight/brightness
     chown root system /sys/class/backlight/panel0-backlight/brightness
     chmod 0666 /sys/class/backlight/panel0-backlight/brightness
 
 on init
+    # USB controller (confirmado stock: 11201000.usb0)
+    setprop sys.usb.ffs.aio_compat 1
+    setprop sys.usb.configfs 1
+    setprop sys.usb.controller "11201000.usb0"
+    
     # Platform identification
     setprop ro.hardware mt6879
     setprop ro.board.platform mt6879
@@ -62,14 +70,10 @@ on init
     setprop ro.boot.verifiedbootstate orange
     setprop ro.boot.vbmeta.device_state unlocked
     
-    # Dynamic Partitions & A/B
+    # Dynamic Partitions & A/B (confirmado: Virtual A/B)
     setprop ro.boot.dynamic_partitions true
     setprop ro.virtual_ab.enabled true
     setprop ro.build.ab_update true
-    
-    # USB
-    setprop sys.usb.controller 11201000.usb0
-    setprop sys.usb.configfs 1
 
 on fs
     # Metadata partition (CRITICAL for Virtual A/B!)
@@ -78,10 +82,14 @@ on fs
     # Wait for mapper directory
     mkdir /dev/block/mapper 0755 root root
     
-    # Wait for dynamic partition mapper devices
+    # Wait for dynamic partition mapper devices (incluindo pl_a/pl_b UFS)
+    wait /dev/block/mapper/pl_a 10
+    wait /dev/block/mapper/pl_b 10
     wait /dev/block/mapper/system 10
     wait /dev/block/mapper/vendor 10
     wait /dev/block/mapper/product 10
+    wait /dev/block/mapper/system_ext 10
+    wait /dev/block/mapper/vendor_dlkm 10
     
     # Try mount userdata (may fail if encrypted - expected)
     mount f2fs /dev/block/by-name/userdata /data noatime nosuid nodev || \
@@ -89,12 +97,27 @@ on fs
     true
 
 on post-fs
-    # Dynamic partition symlinks (slotselect handled by mapper)
+    # Dynamic partition symlinks
     symlink /dev/block/mapper/system /dev/block/system
     symlink /dev/block/mapper/vendor /dev/block/vendor
     symlink /dev/block/mapper/product /dev/block/product
     symlink /dev/block/mapper/system_ext /dev/block/system_ext
     symlink /dev/block/mapper/vendor_dlkm /dev/block/vendor_dlkm
+    
+    # UFS boot region symlinks (do stock init.mt6879.rc)
+    symlink /dev/block/sda /dev/block/by-name/preloader_a
+    symlink /dev/block/sdb /dev/block/by-name/preloader_b
+    symlink /dev/block/sda /dev/block/platform/mtk-msdc.0/by-name/preloader_a
+    symlink /dev/block/sdb /dev/block/platform/mtk-msdc.0/by-name/preloader_b
+    
+    # Bootloader symlinks (lk1/lk2)
+    symlink /dev/block/by-name/lk1 /dev/block/by-name/bootloader1
+    symlink /dev/block/by-name/lk2 /dev/block/by-name/bootloader2
+    symlink /dev/block/by-name/lk1 /dev/block/platform/mtk-msdc.0/by-name/bootloader1
+    symlink /dev/block/by-name/lk2 /dev/block/platform/mtk-msdc.0/by-name/bootloader2
+    
+    # Iniciar snapuserd para Virtual A/B
+    start snapuserd
 
 on post-fs-data
     # Media storage
@@ -111,8 +134,17 @@ on boot
     # Start ADB
     start adbd
 
-# Health HAL for battery info
-service health-hal-2-1 /system/bin/hw/android.hardware.health@2.1-service
+# snapuserd - ESSENCIAL para Virtual A/B (VAB)
+service snapuserd /system/bin/snapuserd
+    class core
+    user root
+    group root
+    socket snapuserd stream 0666 system system
+    disabled
+    seclabel u:r:recovery:s0
+
+# Health HAL
+service health-hal-2-1 /system/bin/android.hardware.health@2.1-service
     class hal
     user system
     group system
