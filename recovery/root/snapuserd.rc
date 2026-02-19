@@ -8,7 +8,6 @@ service snapuserd /system/bin/snapuserd
     user root
     group system
     class core
-    disabled
     seclabel u:r:recovery:s0
 
 # Start snapuserd when needed
