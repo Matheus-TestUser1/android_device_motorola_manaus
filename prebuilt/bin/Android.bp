@@ -27,3 +27,13 @@ cc_prebuilt_binary {
     // Se precisar de init.rc junto:
     // init_rc: ["mtk-plpath-utils.rc"],
 }
+
+cc_prebuilt_binary {
+    name: "snapuserd",
+    srcs: ["snapuserd"],
+    vendor_ramdisk: true,
+    relative_install_path: "system/bin",
+    strip: { none: true },
+    compile_multilib: "64",
+    check_elf_files: false,
+}
