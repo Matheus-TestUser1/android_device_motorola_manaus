@@ -98,7 +98,7 @@ repo sync -c --force-sync --no-tags --no-clone-bundle -j$(nproc --all)
 # Clonar este device tree
 mkdir -p device/motorola
 cd device/motorola
-git clone https://github.com/Matheus-TestUser1/twrpdt-manaus-U1TM34.107_34_3.git manaus
+git clone https://github.com/Matheus-TestUser1/android_device_motorola_manaus.git manaus
 cd ../..
 ```
 
