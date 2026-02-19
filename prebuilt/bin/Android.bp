@@ -1,4 +1,4 @@
-# device/motorola/manaus/prebuilt/bin/Android.bp
+
 soong_namespace {
 }
 
