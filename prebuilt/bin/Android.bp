@@ -1,43 +1,36 @@
-
 soong_namespace {
 }
 
-
+// 1. Binário Principal e seus Symlinks (MTK)
 cc_prebuilt_binary {
     name: "plpath_utils",
     srcs: ["plpath_utils"],
-    vendor_ramdisk: true,        # ← ESSENCIAL! Vai para root.2 (RECOVERY)
+    vendor_ramdisk: true,
     relative_install_path: "system/bin",
-    strip: { none: true },
+    strip: {
+        none: true,
+    },
     compile_multilib: "64",
     check_elf_files: false,
+
+    // Cria os links mtk_plpath_utils e mtk_plpath_utils_ota automaticamente
+    symlinks: [
+        "mtk_plpath_utils",
+        "mtk_plpath_utils_ota",
+    ],
 }
 
+---
+
+// 2. Snapuserd (Mantido de forma independente conforme solicitado)
 cc_prebuilt_binary {
     name: "snapuserd",
     srcs: ["snapuserd"],
-    vendor_ramdisk: true,        # ← ESSENCIAL! Vai para root.2 (RECOVERY)
+    vendor_ramdisk: true,
     relative_install_path: "system/bin",
-    strip: { none: true },
+    strip: {
+        none: true,
+    },
     compile_multilib: "64",
     check_elf_files: false,
-}
-
-
-cc_prebuilt_binary {
-    name: "mtk_plpath_utils",
-    stem: "mtk_plpath_utils",    # Nome do arquivo final
-    srcs: ["plpath_utils"],      # Mesmo binário!
-    vendor_ramdisk: true,        # ← RECOVERY!
-    relative_install_path: "system/bin",
-    symlink_source: "plpath_utils",  # Cria symlink
-}
-
-cc_prebuilt_binary {
-    name: "mtk_plpath_utils_ota",
-    stem: "mtk_plpath_utils_ota",
-    srcs: ["plpath_utils"],
-    vendor_ramdisk: true,        # ← RECOVERY!
-    relative_install_path: "system/bin",
-    symlink_source: "plpath_utils",
 }
