@@ -128,7 +128,7 @@ PRODUCT_PACKAGES += \
 # PREBUILT BINARIES (MediaTek)
 # CORRIGIDO: vírgula solta após dtb.img removida (causava erro de sintaxe no build)
 # ============================================================================
-
+    PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/dtb.img:dtb.img
 
 # ============================================================================
