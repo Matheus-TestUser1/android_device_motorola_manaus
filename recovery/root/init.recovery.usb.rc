@@ -12,7 +12,10 @@ on init
     setprop ro.usb.id.product.adb 2e81
     setprop ro.usb.id.product.fastboot 2e80
     setprop ro.usb.id.product.mtp 2e82
-    
+    setprop sys.usb.controller "11201000.usb0"
+    setprop ro.recovery.usb.vid "22b8"
+    setprop ro.recovery.usb.adb.pid "2e81"
+    setprop ro.recovery.usb.fastboot.pid "2e80"
     # Product info
     setprop ro.product.manufacturer motorola
     setprop ro.product.model "motorola edge 40 neo"
