@@ -143,9 +143,9 @@ BOARD_MOTOROLA_DYNAMIC_PARTITIONS_SIZE := 9122611200
 
 BOARD_USES_METADATA_PARTITION := true
 BOARD_ROOT_EXTRA_FOLDERS += metadata
-# REMOVIDO: BOARD_SUPER_PARTITION_METADATA_DEVICE — variável inexistente no AOSP
+ REMOVIDO: BOARD_SUPER_PARTITION_METADATA_DEVICE — variável inexistente no AOSP
 # Confirmado em: platform_build/core/board_config.mk
-
+TW_INCLUDE_REPACKTOOLS_AB := true
 # ============================================================================
 # FS TYPES
 # ============================================================================
