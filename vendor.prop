@@ -9,55 +9,45 @@ ro.hardware.soc.manufacturer=mtk
 ro.board.platform=mt6879
 
 # ════════════════════════════════════════════════════════════════════════
-# STORAGE (F2FS/eMMC/UFS)
+# STORAGE
+# Confirmado: ro.vendor.mtk_f2fs_enable=1 no vendor.prop original
 # ════════════════════════════════════════════════════════════════════════
 ro.vendor.mtk_f2fs_enable=1
 ro.vendor.mtk_emmc_support=1
 ro.vendor.mtk_ufs_support=1
 
 # ════════════════════════════════════════════════════════════════════════
-# USB (Recovery)
+# USB
+# Confirmado: vendor.usb.use_ffs_mtp=1 no vendor.prop original
+# persist.sys.usb.config fica apenas no system.prop (sem duplicata)
 # ════════════════════════════════════════════════════════════════════════
-persist.sys.usb.config=mtp,adb
 persist.vendor.usb.config=mtp
 persist.vendor.usb.config.extra=none
 sys.usb.controller=11201000.usb0
 sys.usb.ffs.aio_compat=true
+vendor.usb.use_ffs_mtp=1
 
 # ════════════════════════════════════════════════════════════════════════
 # DISPLAY/GRAPHICS
+# ro.sf.lcd_density e ro.minui.pixel_format ficam no system.prop (sem duplicata)
 # ════════════════════════════════════════════════════════════════════════
 ro.vendor.graphics.memory=4096
 ro.vendor.mtk_gpu_support=1
-ro.minui.pixel_format=BGRA_8888
-ro.sf.lcd_density=400
 
 # ════════════════════════════════════════════════════════════════════════
-# MEDIATEK PERFORMANCE (Recovery - pode remover se quiser)
-# ════════════════════════════════════════════════════════════════════════
-ro.vendor.mtk_perf_simple_start_win=1
-ro.vendor.mtk_perf_fast_start_win=1
-ro.vendor.mtk_perf_response_time=1
-
-# ════════════════════════════════════════════════════════════════════════
-# SECURITY (Recovery - desabilitado)
+# SECURITY
+# ro.adb.secure e ro.secure ficam no system.prop (sem duplicata)
 # ════════════════════════════════════════════════════════════════════════
 ro.vendor.boot.warranty_bit=0
 ro.vendor.warranty_bit=0
-ro.adb.secure=0
-ro.secure=0
 ro.debuggable=1
 
 # ════════════════════════════════════════════════════════════════════════
-# MODEM/RADIO (Opcional - pode remover em recovery)
-# ════════════════════════════════════════════════════════════════════════
-# ro.vendor.mtk.bt_sap_enable=true
-# ro.vendor.mtk_protocol1_rat_config=N/Lf/Lt/W/G
-# ro.vendor.mtk_ps1_rat=N/Lf/Lt/W/G
-
-# ════════════════════════════════════════════════════════════════════════
-# A/B & VIRTUAL AB
+# VIRTUAL A/B
+# ADICIONADO: ro.virtual_ab.userspace.snapshots.enabled
+# Presente no vendor.prop original do dispositivo, estava faltando aqui
 # ════════════════════════════════════════════════════════════════════════
 ro.boot.dynamic_partitions=true
 ro.virtual_ab.enabled=true
 ro.virtual_ab.compression.enabled=true
+ro.virtual_ab.userspace.snapshots.enabled=true
