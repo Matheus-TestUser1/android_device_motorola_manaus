@@ -1,52 +1,72 @@
-# mtk-plpath-utils.rc
-# MediaTek plpath utilities for TWRP Recovery
-# Motorola Edge 40 Neo (manaus) - MT6879 - UFS + Virtual A/B
-# 
-# IMPORTANTE: Nome do serviço mantido conforme esperado pela MediaTek
-# O binário foi renomeado para plpath_utils, mas o serviço usa nome MTK padrão
+#
+# Copyright (C) 2024 TeamWin Recovery Project
+#
 
-on early-init
-    # Criar estrutura de diretórios essencial
-    mkdir /dev/block 0755 root root
-    mkdir /dev/block/platform 0755 root root
-    mkdir /dev/block/platform/mtk-msdc.0 0755 root root
-    mkdir /dev/block/platform/mtk-msdc.0/by-name 0755 root root
-    mkdir /dev/block/by-name 0755 root root
-    mkdir /dev/block/mapper 0755 root root
+import /init.recovery.project.rc
+
+on init
+    setprop sys.usb.configfs 1
+    setprop sys.usb.controller "11201000.usb0"
     
-    # Symlinks essenciais para bootdevice
-    symlink /dev/block/platform/mtk-msdc.0 /dev/block/bootdevice
-    symlink /dev/block/platform/mtk-msdc.0/by-name /dev/block/by-name
+    # PATH
+    export PATH /system/bin:/sbin
+    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64
     
-    # Iniciar serviço MTK (nome fixo!)
-    start mtk.plpath.utils.link
+    # Mount tmpfs
+    mount tmpfs tmpfs /tmp mode=0755
+    
+    # Create directories
+    mkdir /system
+    mkdir /data 0771 system system
+    mkdir /cache 0770 system cache
+    mkdir /metadata 0771 system system
+    mkdir /mnt 0755 root system
+
+on fs
+    # Mount early fstab
+    mount_all /system/etc/recovery.fstab --early
 
 on post-fs
-    # Preloader symlinks - UFS (sda/sdb confirmado stock)
-    symlink /dev/block/sda /dev/block/by-name/preloader_a
-    symlink /dev/block/sdb /dev/block/by-name/preloader_b
-    symlink /dev/block/sda /dev/block/platform/mtk-msdc.0/by-name/preloader_a
-    symlink /dev/block/sdb /dev/block/platform/mtk-msdc.0/by-name/preloader_b
+    # ⭐ CRÍTICO: Symlinks UFS → MMC (A/B support)
+    symlink /dev/block/sda /dev/block/mmcblk0boot0
+    symlink /dev/block/sdb /dev/block/mmcblk0boot1
+    symlink /dev/block/mmcblk0boot0 /dev/block/by-name/preloader_a
+    symlink /dev/block/mmcblk0boot1 /dev/block/by-name/preloader_b
     
-    # Preloader raw (pl_a/pl_b do mapper)
+    # Combo EMMC/UFS compatibility
+    symlink /dev/block/by-name/preloader_a /dev/block/by-name/preloader_emmc_a
+    symlink /dev/block/by-name/preloader_b /dev/block/by-name/preloader_emmc_b
+    symlink /dev/block/by-name/preloader_a /dev/block/by-name/preloader_ufs_a
+    symlink /dev/block/by-name/preloader_b /dev/block/by-name/preloader_ufs_b
+    
+    # ⭐⭐⭐ EXEC mtk_plpath_utils - ESPERA TERMINAR! ⭐⭐⭐
+    exec u:r:update_engine:s0 root root -- /system/bin/mtk_plpath_utils
+    
+    # Preloader raw symlinks (depois do plpath)
     symlink /dev/block/mapper/pl_a /dev/block/by-name/preloader_raw_a
     symlink /dev/block/mapper/pl_b /dev/block/by-name/preloader_raw_b
-    symlink /dev/block/mapper/pl_a /dev/block/platform/mtk-msdc.0/by-name/preloader_raw_a
-    symlink /dev/block/mapper/pl_b /dev/block/platform/mtk-msdc.0/by-name/preloader_raw_b
     
-    # Bootloader symlinks (lk1/lk2)
-    symlink /dev/block/by-name/lk1 /dev/block/by-name/bootloader1
-    symlink /dev/block/by-name/lk2 /dev/block/by-name/bootloader2
-    symlink /dev/block/by-name/lk1 /dev/block/platform/mtk-msdc.0/by-name/bootloader1
-    symlink /dev/block/by-name/lk2 /dev/block/platform/mtk-msdc.0/by-name/bootloader2
-     start snapuserd
-# ============================================================================
-# NOME DO SERVIÇO: mtk.plpath.utils.link (conforme esperado pela MediaTek!)
-# ============================================================================
-# O binário é plpath_utils (renomeado), mas o serviço mantém nome MTK padrão
-service mtk.plpath.utils.link /system/bin/plpath_utils
-    class main
+    # Mount late fstab
+    mount_all /system/etc/recovery.fstab --late
+
+on boot
+    # Start snapuserd for Virtual A/B
+    start snapuserd
+    
+    # Start recovery
+    setprop recovery.booting 1
+    start recovery
+
+service snapuserd /system/bin/snapuserd
     user root
     group root system
-    oneshot
     seclabel u:r:recovery:s0
+    oneshot
+    disabled
+
+service recovery /system/bin/recovery
+    user root
+    group root
+    seclabel u:r:recovery:s0
+    capabilities DAC_OVERRIDE SYS_BOOT
+    disabled
