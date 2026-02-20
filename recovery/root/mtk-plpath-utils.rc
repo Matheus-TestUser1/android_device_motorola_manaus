@@ -140,7 +140,6 @@ service snapuserd /system/bin/snapuserd
     user root
     group root
     socket snapuserd stream 0666 system system
-    disabled
     seclabel u:r:recovery:s0
 
 # Health HAL
@@ -148,5 +147,4 @@ service health-hal-2-1 /system/bin/android.hardware.health@2.1-service
     class hal
     user system
     group system
-    disabled
     seclabel u:r:recovery:s0
