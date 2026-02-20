@@ -78,9 +78,6 @@ BOARD_KERNEL_CMDLINE += androidboot.serialconsole=0
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 BOARD_KERNEL_CMDLINE += androidboot.hardware=mt6879
 BOARD_KERNEL_CMDLINE += loglevel=4
-BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
-BOARD_KERNEL_CMDLINE += printk.devkmsg=on
-BOARD_KERNEL_CMDLINE += log_buf_len=16M
 
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_RAMDISK_USE_LZ4 := true
