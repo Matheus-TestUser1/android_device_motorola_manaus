@@ -76,8 +76,13 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/mtk_plpath_utils
 
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/bin/mtk_plpath_utils \
-   
+    $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/bin/mtk_plpath_utils 
+
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils.rc:$(TARGET_COPY_OUT_RECOVERY)/root/system/etc/bin/mtk_plpath_utils.rc
+
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils.rc:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/etc/init/mtk_plpath_utils.rc 
 # ============================================================================
 # CORE PACKAGES
 # ============================================================================
