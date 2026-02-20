@@ -27,35 +27,58 @@ on fs
     mount_all /system/etc/recovery.fstab --early
 
 on post-fs
-    # ⭐ CRÍTICO: Symlinks UFS → MMC (A/B support)
-    symlink /dev/block/sda /dev/block/mmcblk0boot0
-    symlink /dev/block/sdb /dev/block/mmcblk0boot1
-    symlink /dev/block/mmcblk0boot0 /dev/block/by-name/preloader_a
-    symlink /dev/block/mmcblk0boot1 /dev/block/by-name/preloader_b
-    
-    # Combo EMMC/UFS compatibility
-    symlink /dev/block/by-name/preloader_a /dev/block/by-name/preloader_emmc_a
-    symlink /dev/block/by-name/preloader_b /dev/block/by-name/preloader_emmc_b
-    symlink /dev/block/by-name/preloader_a /dev/block/by-name/preloader_ufs_a
-    symlink /dev/block/by-name/preloader_b /dev/block/by-name/preloader_ufs_b
-    
-    # ⭐⭐⭐ EXEC mtk_plpath_utils - ESPERA TERMINAR! ⭐⭐⭐
-    exec u:r:update_engine:s0 root root -- /system/bin/mtk_plpath_utils
-    
-    # Preloader raw symlinks (depois do plpath)
-    symlink /dev/block/mapper/pl_a /dev/block/by-name/preloader_raw_a
-    symlink /dev/block/mapper/pl_b /dev/block/by-name/preloader_raw_b
-    
     # Mount late fstab
     mount_all /system/etc/recovery.fstab --late
 
 on boot
+    # Start MTK plpath utils
+    start mtk.plpath.utils.link
+    
     # Start snapuserd for Virtual A/B
     start snapuserd
     
     # Start recovery
     setprop recovery.booting 1
     start recovery
+
+# MTK plpath utils creates mapper symlinks via properties
+on property:persist.vendor.mtk.pl_lnk=1
+    symlink /dev/block/mapper/pl_a /dev/block/by-name/preloader_raw_a
+    symlink /dev/block/mapper/pl_b /dev/block/by-name/preloader_raw_b
+    symlink /dev/block/mapper/pl_a /dev/block/platform/bootdevice/by-name/preloader_raw_a
+    symlink /dev/block/mapper/pl_b /dev/block/platform/bootdevice/by-name/preloader_raw_b
+    
+    # FSTAB_RAW2(lk2,bootloader2) - bootloader symlinks
+    symlink /dev/block/by-name/lk1 /dev/block/by-name/bootloader1
+    symlink /dev/block/by-name/lk2 /dev/block/by-name/bootloader2
+
+# Fix ro.vendor.mtk_ufs_support - UFS boot device symlinks
+# mtk_plpath_utils sets these properties based on UFS device detection
+
+on property:vendor.mtk.boot0_linka=1
+    symlink /dev/block/sda /dev/block/mmcblk0boot0
+
+on property:vendor.mtk.boot0_linkb=1
+    symlink /dev/block/sdb /dev/block/mmcblk0boot0
+
+on property:vendor.mtk.boot0_linkc=1
+    symlink /dev/block/sdc /dev/block/mmcblk0boot0
+
+on property:vendor.mtk.boot1_linka=1
+    symlink /dev/block/sda /dev/block/mmcblk0boot1
+
+on property:vendor.mtk.boot1_linkb=1
+    symlink /dev/block/sdb /dev/block/mmcblk0boot1
+
+on property:vendor.mtk.boot1_linkc=1
+    symlink /dev/block/sdc /dev/block/mmcblk0boot1
+
+service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
+    class main
+    user root
+    group root system
+    oneshot
+    disabled
 
 service snapuserd /system/bin/snapuserd
     user root
