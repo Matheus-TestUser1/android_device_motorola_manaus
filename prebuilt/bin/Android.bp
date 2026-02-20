@@ -2,27 +2,3 @@
 soong_namespace {
 }
 
-# ============================================================================
-# BINÁRIOS PARA RECOVERY (vendor_ramdisk = root.2)
-# ============================================================================
-
-cc_prebuilt_binary {
-    name: "mtk_plpath_utils",
-    srcs: ["mtk_plpath_utils"],
-    vendor_ramdisk: true,        # ← ESSENCIAL! Vai para root.2 (RECOVERY)
-    relative_install_path: "system/bin",
-    strip: { none: true },
-    compile_multilib: "64",
-    check_elf_files: false,
-}
-
-cc_prebuilt_binary {
-    name: "snapuserd",
-    srcs: ["snapuserd"],
-    vendor_ramdisk: true,        # ← ESSENCIAL! Vai para root.2 (RECOVERY)
-    relative_install_path: "system/bin",
-    strip: { none: true },
-    compile_multilib: "64",
-    check_elf_files: false,
-}
-
