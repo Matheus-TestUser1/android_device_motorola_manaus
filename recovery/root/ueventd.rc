@@ -1,19 +1,8 @@
-# ueventd.rc - Motorola Edge 40 Neo (manaus) - MT6879
-# VENDOR_BOOT VERSION - Recovery optimized
-
-# Import vendor/odm configs if available
 import /vendor/etc/ueventd.rc
 import /odm/etc/ueventd.rc
 
-# Firmware directories
 firmware_directories /etc/firmware/ /odm/firmware/ /vendor/firmware/ /firmware/image/
-
-# Socket buffer size
 uevent_socket_rcvbuf_size 16M
-
-# ============================================================================
-# SUBSYSTEMS
-# ============================================================================
 
 subsystem graphics
     devname uevent_devpath
@@ -32,12 +21,14 @@ subsystem sound
     dirname /dev/snd
 
 subsystem dma_heap
-    devname uevent_devpath
-    dirname /dev/dma_heap
-
-# ============================================================================
-# BASIC DEVICES
-# ============================================================================
+   devname uevent_devpath
+   dirname /dev/dma_heap
+# ueventd can only set permissions on device nodes and their associated
+# sysfs attributes, not on arbitrary paths.
+#
+# format for /dev rules: devname mode uid gid
+# format for /sys rules: nodename attr mode uid gid
+# shortcut: "mtd@NN" expands to "/dev/mtd/mtdNN"
 
 /dev/null                 0666   root       root
 /dev/zero                 0666   root       root
@@ -50,130 +41,45 @@ subsystem dma_heap
 /dev/binder               0666   root       root
 /dev/hwbinder             0666   root       root
 /dev/vndbinder            0666   root       root
+
 /dev/pmsg0                0222   root       log
+/dev/dma_heap/system      0444   system     system
+/dev/dma_heap/system-uncached      0444   system     system
+/dev/dma_heap/system-secure        0444   system     system
 
-# ============================================================================
-# DMA HEAP (Important for modern Android!)
-# ============================================================================
+#For ATT IQI
+/dev/iqi_bridge           0660   system     vendor_bridge_rw
 
-/dev/dma_heap/system              0444   system     system
-/dev/dma_heap/system-uncached     0444   system     system
-/dev/dma_heap/system-secure       0444   system     system
-
-# ============================================================================
-# GRAPHICS (Critical for TWRP display!)
-# ============================================================================
-
+# kms driver for drm based gpu
 /dev/dri/*                0666   root       graphics
-/dev/graphics/fb0         0666   root       graphics
-/dev/graphics/*           0666   root       graphics
-/dev/mali*                0666   root       graphics
 
-# ============================================================================
-# INPUT (Critical for touch!)
-# ============================================================================
-
-/dev/input/*              0666   root       input
-/dev/v4l-touch*           0660   root       input
+# these should not be world writable
 /dev/uhid                 0660   uhid       uhid
 /dev/uinput               0660   uhid       uhid
-/dev/event*               0666   root       input
-
-# ============================================================================
-# USB (Critical for ADB/MTP!)
-# ============================================================================
-
+/dev/rtc0                 0640   system     system
+/dev/tty0                 0660   root       system
+/dev/graphics/*           0660   root       graphics
+/dev/input/*              0660   root       input
+/dev/v4l-touch*           0660   root       input
+/dev/snd/*                0660   system     audio
 /dev/bus/usb/*            0660   root       usb
 /dev/mtp_usb              0660   root       mtp
 /dev/usb_accessory        0660   root       usb
-/dev/usb-ffs/*            0660   root       usb
-
-# ============================================================================
-# AUDIO
-# ============================================================================
-
-/dev/snd/*                0660   system     audio
-/dev/audio*               0660   system     audio
-
-# ============================================================================
-# SYSTEM
-# ============================================================================
-
-/dev/rtc0                 0640   system     system
-/dev/tty0                 0660   root       system
 /dev/tun                  0660   system     vpn
+
+# CDMA radio interface MUX
 /dev/ppp                  0660   radio      vpn
 
-# ============================================================================
-# BLOCK DEVICES (Critical for storage!)
-# ============================================================================
+# Virtualisation is managed by Virt Manager
+/dev/kvm                  0600   virtmanager root
+/dev/vhost-vsock          0600   virtmanager root
 
-/dev/block/*              0660   root       disk
-
-# ============================================================================
-# MEDIATEK SPECIFIC
-# ============================================================================
-
-/dev/mtk_*                0660   root       system
-/dev/imgsys*              0660   root       system
-/dev/videox*              0660   root       system
-/dev/camera*              0660   root       system
-
-# ============================================================================
-# SYSFS PROPERTIES (From original)
-# ============================================================================
-
+# sysfs properties
 /sys/devices/platform/trusty.*      trusty_version        0440  root   log
-/sys/devices/virtual/input/input*   enable                0660  root   input
-/sys/devices/virtual/input/input*   poll_delay            0660  root   input
-/sys/devices/virtual/usb_composite/*   enable             0664  root   system
+/sys/devices/virtual/input/input*   enable      0660  root   input
+/sys/devices/virtual/input/input*   poll_delay  0660  root   input
+/sys/devices/virtual/usb_composite/*   enable      0664  root   system
 /sys/devices/system/cpu/cpu*   cpufreq/scaling_max_freq   0664  system system
 /sys/devices/system/cpu/cpu*   cpufreq/scaling_min_freq   0664  system system
-/sys/devices/virtual/misc/uhid/*/leds/* brightness        0664  system system
+/sys/devices/virtual/misc/uhid/*/leds/* brightness   0664  system system
 /sys/devices/virtual/misc/uhid/*/leds/* multi_intensity   0664  system system
-
-
-# ============================================================================
-# MEDIATEK SPECIFIC (ADICIONAR!)
-# ============================================================================
-
-# UFS/eMMC boot partitions (CRITICAL!)
-/dev/block/mmcblk0                   0660    root    system
-/dev/block/mmcblk0boot0              0660    root    system
-/dev/block/mmcblk0boot1              0660    root    system
-/dev/block/mmcblk0rpmb               0660    root    system
-
-# UFS devices (CRITICAL!)
-/dev/block/sda                       0660    root    system
-/dev/block/sdb                       0660    root    system
-/dev/block/sdc                       0660    root    system
-
-# MediaTek specific partitions
-/dev/block/by-name/boot              0660    root    system
-/dev/block/by-name/misc              0660    root    system
-/dev/block/by-name/metadata          0660    root    system
-/dev/block/by-name/nvram             0660    root    system
-/dev/block/by-name/proinfo           0660    root    system
-/dev/block/by-name/frp               0660    root    system
-
-# MediaTek drivers
-/dev/trusty-ipc-dev0                 0660    system  system
-/dev/mobicore                        0600    system  system
-/dev/ion                             0666    system  graphics
-
-# DMA Heaps MediaTek (ADICIONAR!)
-/dev/dma_heap/mtk_mm                 0444    system  system
-/dev/dma_heap/mtk_mm-uncached        0444    system  system
-/dev/dma_heap/mtk_svp_region         0444    system  system
-/dev/dma_heap/mtk_prot_region        0444    system  system
-
-# Touch (já tem input/*, mas específico ajuda)
-/dev/touch                           0660    root    system
-
-# ============================================================================
-# BACKLIGHT (CRITICAL FOR DISPLAY!)
-# ============================================================================
-
-/sys/class/leds/lcd-backlight/brightness                  0666  root  system
-/sys/class/backlight/panel0-backlight/brightness          0666  root  system
-/sys/class/leds/lcd-backlight/max_brightness              0444  root  system
