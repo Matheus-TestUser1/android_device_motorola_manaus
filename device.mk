@@ -47,7 +47,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # ============================================================================
 # BOOT CONTROL HAL (A/B slot management)
-# ✅ CORRIGIDO: bootctrl.default (genérico, funciona com MTK)
 # ============================================================================
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.2-impl \
@@ -61,28 +60,18 @@ PRODUCT_PACKAGES_DEBUG += \
 
 # ============================================================================
 # VIRTUAL A/B — SNAPUSERD
-# ✅ CORRIGIDO: Removido COPY_FILES duplicado
 # ============================================================================
 PRODUCT_PACKAGES += \
     snapuserd \
     snapuserd.recovery
 
 # ============================================================================
-# MTK PATH UTILS
-# ✅ CORRIGIDO: Só COPY_FILES pro recovery ramdisk
-# Removido PRODUCT_PACKAGES que ia pro vendor ramdisk
+# MTK PATH UTILS - Recovery ramdisk apenas
+# Service definido no init.recovery.mt6879.rc
 # ============================================================================
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/mtk_plpath_utils
 
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/bin/mtk_plpath_utils 
-
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils.rc:$(TARGET_COPY_OUT_RECOVERY)/root/system/etc/bin/mtk_plpath_utils.rc
-
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils.rc:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/etc/init/mtk_plpath_utils.rc 
 # ============================================================================
 # CORE PACKAGES
 # ============================================================================
@@ -113,7 +102,6 @@ PRODUCT_PACKAGES += \
 
 # ============================================================================
 # PREBUILT BINARIES (MediaTek)
-# ✅ CORRIGIDO: Syntax error removido
 # ============================================================================
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/dtb.img:dtb.img
@@ -126,7 +114,6 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/system/etc/twrp.flags:$(TARGET_COPY_OUT_RECOVERY)/root/system/etc/twrp.flags \
     $(DEVICE_PATH)/recovery/root/init.recovery.mt6879.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.mt6879.rc \
     $(DEVICE_PATH)/recovery/root/init.recovery.usb.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.usb.rc \
-    $(DEVICE_PATH)/recovery/root/mtk-plpath-utils.rc:$(TARGET_COPY_OUT_RECOVERY)/root/mtk-plpath-utils.rc \
     $(DEVICE_PATH)/recovery/root/ueventd.rc:$(TARGET_COPY_OUT_RECOVERY)/root/ueventd.rc
 
 # ============================================================================
