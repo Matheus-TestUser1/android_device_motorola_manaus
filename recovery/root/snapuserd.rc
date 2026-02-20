@@ -1,11 +1,7 @@
 service snapuserd /system/bin/snapuserd
-    socket snapuserd stream 0666 system system  # ← CORRIGIDO: 0666
+    socket snapuserd stream 0660 system system
+    oneshot
+    disabled
     user root
-    group root  # ← CORRIGIDO: root
-    class core
-    disabled  # ← IMPORTANTE: não inicia automaticamente
-    seclabel u:r:recovery:s0
-
-# Iniciar explicitamente no post-fs (não esperar propriedade!)
-on post-fs
-    start snapuserd  # ← CORRIGIDO: inicia diretamente
+    group root system
+    seclabel u:r:snapuserd:s0
