@@ -8,10 +8,6 @@ DEVICE_PATH := device/motorola/manaus
 
 # ============================================================================
 # A/B SUPPORT
-# Fonte: AOSP product/virtual_ab_ota/
-# compression.mk: VAB com compressão (ro.virtual_ab.compression.enabled=true)
-# REMOVIDO: launch_with_vendor_ramdisk.mk — mutuamente exclusivo com compression.mk
-# Os dois não podem coexistir: compression.mk já inclui tudo necessário
 # ============================================================================
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression.mk)
 
@@ -21,10 +17,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
-# first_api_level=31 confirmado pelo vendor.prop original
 PRODUCT_SHIPPING_API_LEVEL := 31
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
-# ro.vndk.version=31 confirmado pelo vendor.prop original
 PRODUCT_TARGET_VNDK_VERSION := 31
 
 # ============================================================================
@@ -32,8 +26,6 @@ PRODUCT_TARGET_VNDK_VERSION := 31
 # ============================================================================
 AB_OTA_UPDATER := true
 
-# CORRIGIDO: era ext4 — dispositivo usa EROFS em todas as partições de sistema
-# Confirmado: BOARD_SYSTEMIMAGE_PARTITION_TYPE := erofs no BoardConfig.mk
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
     POSTINSTALL_PATH_system=system/bin/otapreopt_script \
@@ -46,7 +38,7 @@ AB_OTA_POSTINSTALL_CONFIG += \
     FILESYSTEM_TYPE_vendor=erofs \
     POSTINSTALL_OPTIONAL_vendor=true
 
-# Virtual A/B properties — confirmado pelo vendor.prop original do dispositivo
+# Virtual A/B properties
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.virtual_ab.enabled=true \
     ro.virtual_ab.compression.enabled=true \
@@ -55,43 +47,33 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # ============================================================================
 # BOOT CONTROL HAL (A/B slot management)
-# Fonte: guia MTK/TWRP lopestom — boot control HAL necessário para A/B MTK
-# Arquivo: ramdisk\system\lib64\hw\android.hardware.boot@N.n-impl-N.n-mtkimpl.so
+# ✅ CORRIGIDO: bootctrl.default (genérico, funciona com MTK)
 # ============================================================================
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.2-impl \
     android.hardware.boot@1.2-impl.recovery \
     android.hardware.boot@1.2-service \
-    bootctrl.mt6879 \
-    bootctrl.mt6879.recovery
+    bootctrl.default \
+    bootctrl.default.recovery
 
 PRODUCT_PACKAGES_DEBUG += \
     bootctl
 
 # ============================================================================
 # VIRTUAL A/B — SNAPUSERD
-# Confirmado: ro.virtual_ab.userspace.snapshots.enabled=true no vendor.prop original
-# ATENÇÃO: dm-user.ko deve estar em prebuilt/modules/ — obrigatório para snapuserd
+# ✅ CORRIGIDO: Removido COPY_FILES duplicado
 # ============================================================================
 PRODUCT_PACKAGES += \
     snapuserd \
     snapuserd.recovery
 
-# snapuserd para Virtual A/B
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/prebuilt/bin/snapuserd:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/system/bin/snapuserd
-
 # ============================================================================
 # MTK PATH UTILS
-# Fonte: guia MTK/TWRP lopestom — "ramdisk\system\bin\mtk_plpath_utils"
-# deve ser incluído como PRODUCT_PACKAGES para garantir presença no ramdisk
+# ✅ CORRIGIDO: Só COPY_FILES pro recovery ramdisk
+# Removido PRODUCT_PACKAGES que ia pro vendor ramdisk
 # ============================================================================
-PRODUCT_PACKAGES += \
-    mtk_plpath_utils 
- 
-
 PRODUCT_COPY_FILES += \
-       $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/mtk_plpath_utils
+    $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/mtk_plpath_utils
 
 # ============================================================================
 # CORE PACKAGES
@@ -107,7 +89,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES_DEBUG += \
     update_engine_client
 
-# CORRIGIDO: impl-mock substituído pela implementação real
 PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.1-impl \
     android.hardware.fastboot@1.1-service
@@ -124,9 +105,9 @@ PRODUCT_PACKAGES += \
 
 # ============================================================================
 # PREBUILT BINARIES (MediaTek)
-# CORRIGIDO: vírgula solta após dtb.img removida (causava erro de sintaxe no build)
+# ✅ CORRIGIDO: Syntax error removido
 # ============================================================================
-    PRODUCT_COPY_FILES += \
+PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/dtb.img:dtb.img
 
 # ============================================================================
