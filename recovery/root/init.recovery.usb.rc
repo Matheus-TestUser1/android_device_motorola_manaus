@@ -5,7 +5,9 @@
 on early-init
     setprop sys.usb.configfs 1
     setprop sys.usb.controller "11201000.usb0"
-
+     setprop ro.recovery.usb.vid "22b8"
+    setprop ro.recovery.usb.adb.pid "2e81"
+    setprop ro.recovery.usb.fastboot.pid "2e80"
 on init
     # USB IDs Motorola
     setprop ro.usb.id.vendor 22b8
