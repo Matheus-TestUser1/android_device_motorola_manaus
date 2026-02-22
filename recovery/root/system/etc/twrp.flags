@@ -1,98 +1,133 @@
-# mount_point   fstype  device                                  flags
+# twrp.flags - Motorola Edge 40 Neo (manaus) - MT6879
+# TWRP 3.7+ Format
+# Partições críticas com flags otimizadas
 
 # ════════════════════════════════════════════════════════════════════════
-# DATA / METADATA / CACHE
+# SYSTEM PARTITIONS (Dynamic - Super) - MOUNT ONLY
 # ════════════════════════════════════════════════════════════════════════
-/data           f2fs    /dev/block/by-name/userdata             flags=display="Data";backup=1;wipeingui;wipeduringfactoryreset
-/metadata       ext4    /dev/block/by-name/metadata             flags=display="Metadata";backup=1;wipeingui
-/cache          ext4    /data/cache                             flags=display="Cache";backup=1;wipeingui;wipeduringfactoryreset
+
+/system                erofs     /dev/block/mapper/system                                flags=display="System";logical;slotselect
+/system_ext            erofs     /dev/block/mapper/system_ext                            flags=display="System_EXT";logical;slotselect
+/vendor                erofs     /dev/block/mapper/vendor                                flags=display="Vendor";logical;slotselect
+/product               erofs     /dev/block/mapper/product                               flags=display="Product";logical;slotselect
+/vendor_dlkm           erofs     /dev/block/mapper/vendor_dlkm                           flags=display="Vendor_DLKM";logical;slotselect
 
 # ════════════════════════════════════════════════════════════════════════
-# BOOT PARTITIONS (A/B)
+# DATA PARTITION - BACKUP/WIPE ENABLED
 # ════════════════════════════════════════════════════════════════════════
-/boot           emmc    /dev/block/by-name/boot                 flags=display="Boot";backup=1;flashimg=1;slotselect
-/vendor_boot    emmc    /dev/block/by-name/vendor_boot          flags=display="Vendor_Boot";backup=1;flashimg=1;slotselect
-/dtbo           emmc    /dev/block/by-name/dtbo                 flags=display="DTBO";backup=1;flashimg=1;slotselect
+
+/data                  f2fs      /dev/block/bootdevice/by-name/userdata                  flags=fileencryption=aes-256-xts:aes-256-cts:v2;keydirectory=/metadata/vold/metadata_encryption;length=-16384;backup=1;settingsstorage
 
 # ════════════════════════════════════════════════════════════════════════
-# AVB / VBMETA (A/B)
+# METADATA - CRITICAL!
 # ════════════════════════════════════════════════════════════════════════
-/vbmeta         emmc    /dev/block/by-name/vbmeta               flags=display="VBMeta";backup=1;flashimg=1;slotselect
-/vbmeta_system  emmc    /dev/block/by-name/vbmeta_system        flags=display="VBMeta_System";backup=1;flashimg=1;slotselect
-/vbmeta_vendor  emmc    /dev/block/by-name/vbmeta_vendor        flags=display="VBMeta_Vendor";backup=1;flashimg=1;slotselect
+
+/metadata              ext4      /dev/block/by-name/metadata                             flags=display="Metadata";backup=1;wrappedkey
 
 # ════════════════════════════════════════════════════════════════════════
-# VENDOR-SPECIFIC PARTITIONS (MediaTek)
+# BOOT PARTITIONS (A/B) - BACKUP/FLASH ENABLED
 # ════════════════════════════════════════════════════════════════════════
-/nvdata         ext4    /dev/block/by-name/nvdata               flags=display="NVData";backup=1;wipeingui
-/nvcfg          ext4    /dev/block/by-name/nvcfg                flags=display="NVCfg";backup=1;wipeingui
-/persist        ext4    /dev/block/by-name/persist              flags=display="Persist";backup=1;wipeingui
-/prodpersist    ext4    /dev/block/by-name/prodpersist          flags=display="ProdPersist";backup=1
-/protect_f      ext4    /dev/block/by-name/protect1             flags=display="Protect_F";backup=1
-/protect_s      ext4    /dev/block/by-name/protect2             flags=display="Protect_S";backup=1
-/tzapp          ext4    /dev/block/by-name/tzapp                flags=display="TZ_App";backup=1;slotselect
+
+/boot                  emmc      /dev/block/bootdevice/by-name/boot                      flags=display="Boot";backup=1;flashimg=1;slotselect
+/vendor_boot           emmc      /dev/block/bootdevice/by-name/vendor_boot               flags=display="Vendor Boot";backup=1;flashimg=1;slotselect
+/dtbo                  emmc      /dev/block/bootdevice/by-name/dtbo                      flags=display="DTBO";backup=1;flashimg=1;slotselect
 
 # ════════════════════════════════════════════════════════════════════════
-# PERSISTENT DATA
+# VBMETA (A/B) - BACKUP/FLASH ENABLED
 # ════════════════════════════════════════════════════════════════════════
-/misc           emmc    /dev/block/by-name/misc                 flags=display="Misc"
-/persistent     emmc    /dev/block/by-name/frp                  flags=display="FRP"
-/nvram          emmc    /dev/block/by-name/nvram                flags=display="NVRAM";backup=1;flashimg=1
-/proinfo        emmc    /dev/block/by-name/proinfo              flags=display="Proinfo";backup=1
-/para           emmc    /dev/block/by-name/para                 flags=display="Para";backup=1
-/seccfg         emmc    /dev/block/by-name/seccfg               flags=display="SecCfg";backup=1
+
+/vbmeta                emmc      /dev/block/bootdevice/by-name/vbmeta                    flags=display="VBMeta";backup=1;flashimg=1;slotselect
+/vbmeta_system         emmc      /dev/block/bootdevice/by-name/vbmeta_system             flags=display="VBMeta System";backup=1;flashimg=1;slotselect
+/vbmeta_vendor         emmc      /dev/block/bootdevice/by-name/vbmeta_vendor             flags=display="VBMeta Vendor";backup=1;flashimg=1;slotselect
 
 # ════════════════════════════════════════════════════════════════════════
-# BOOTLOADER
+# VENDOR PARTITIONS (MediaTek) - BACKUP ENABLED
 # ════════════════════════════════════════════════════════════════════════
-/bootloader     emmc    /dev/block/by-name/lk                   flags=display="Bootloader";backup=1;flashimg=1;slotselect
-/bootloader2    emmc    /dev/block/by-name/lk2                  flags=display="Bootloader2";backup=1;flashimg=1;slotselect
+
+/nvdata                ext4      /dev/block/bootdevice/by-name/nvdata                    flags=display="NVData";backup=1
+/nvcfg                 ext4      /dev/block/bootdevice/by-name/nvcfg                     flags=display="NVCfg";backup=1
+/persist               ext4      /dev/block/bootdevice/by-name/persist                   flags=display="Persist";backup=1
+/prodpersist           ext4      /dev/block/bootdevice/by-name/prodpersist               flags=display="Prod Persist";backup=1
+/protect_f             ext4      /dev/block/bootdevice/by-name/protect1                  flags=display="Protect F";backup=1
+/protect_s             ext4      /dev/block/bootdevice/by-name/protect2                  flags=display="Protect S";backup=1
 
 # ════════════════════════════════════════════════════════════════════════
-# LOGOS / GRAPHICS
+# BOOTLOADER (A/B) - BACKUP/FLASH ENABLED
 # ════════════════════════════════════════════════════════════════════════
-/logo           emmc    /dev/block/by-name/logo                 flags=display="Logo";backup=1;flashimg=1
+
+/bootloader            emmc      /dev/block/bootdevice/by-name/lk                        flags=display="Bootloader";backup=1;flashimg=1;slotselect
+/bootloader2           emmc      /dev/block/bootdevice/by-name/lk2                       flags=display="Bootloader2";backup=1;flashimg=1;slotselect
 
 # ════════════════════════════════════════════════════════════════════════
-# MODEM / DSP
+# PERSISTENT DATA - BACKUP ENABLED
 # ════════════════════════════════════════════════════════════════════════
-/md1img         emmc    /dev/block/by-name/md1img               flags=display="Modem";backup=1;flashimg=1
-/md1dsp         emmc    /dev/block/by-name/md1dsp               flags=display="Modem_DSP";backup=1;flashimg=1
-/md1arm7        emmc    /dev/block/by-name/md1arm7              flags=display="Modem_ARM7";backup=1;flashimg=1
+
+/misc                  emmc      /dev/block/bootdevice/by-name/misc                      flags=display="Misc"
+/frp                   emmc      /dev/block/bootdevice/by-name/frp                       flags=display="FRP";backup=1
+/nvram                 emmc      /dev/block/bootdevice/by-name/nvram                     flags=display="NVRAM";backup=1;flashimg=1
+/proinfo               emmc      /dev/block/bootdevice/by-name/proinfo                   flags=display="Proinfo";backup=1
+/para                  emmc      /dev/block/bootdevice/by-name/para                      flags=display="Para";backup=1
+/seccfg                emmc      /dev/block/bootdevice/by-name/seccfg                    flags=display="SecCfg";backup=1
 
 # ════════════════════════════════════════════════════════════════════════
-# TRUSTZONE / SECURE BOOT
+# LOGOS - BACKUP/FLASH ENABLED
 # ════════════════════════════════════════════════════════════════════════
-/tee1           emmc    /dev/block/by-name/tee1                 flags=display="TEE1";backup=1;flashimg=1
-/tee2           emmc    /dev/block/by-name/tee2                 flags=display="TEE2";backup=1;flashimg=1
+
+/logo                  emmc      /dev/block/bootdevice/by-name/logo                      flags=display="Logo";backup=1;flashimg=1
 
 # ════════════════════════════════════════════════════════════════════════
-# SCP / SSPM / DPM / MCUPM (MediaTek Co-processors)
+# MODEM (BACKUP ENABLED)
 # ════════════════════════════════════════════════════════════════════════
-/scp1           emmc    /dev/block/by-name/scp1                 flags=display="SCP1";backup=1;flashimg=1
-/scp2           emmc    /dev/block/by-name/scp2                 flags=display="SCP2";backup=1;flashimg=1
-/sspm_1         emmc    /dev/block/by-name/sspm_1               flags=display="SSPM1";backup=1;flashimg=1
-/sspm_2         emmc    /dev/block/by-name/sspm_2               flags=display="SSPM2";backup=1;flashimg=1
-/dpm_1          emmc    /dev/block/by-name/dpm_1                flags=display="DPM1";backup=1;flashimg=1
-/dpm_2          emmc    /dev/block/by-name/dpm_2                flags=display="DPM2";backup=1;flashimg=1
-/mcupm_1        emmc    /dev/block/by-name/mcupm_1              flags=display="MCUPM1";backup=1;flashimg=1
-/mcupm_2        emmc    /dev/block/by-name/mcupm_2              flags=display="MCUPM2";backup=1;flashimg=1
+
+/modem                 emmc      /dev/block/bootdevice/by-name/md1img                    flags=display="Modem";backup=1;flashimg=1
+/modem_dsp             emmc      /dev/block/bootdevice/by-name/md1dsp                    flags=display="Modem DSP";backup=1;flashimg=1
+/modem_arm7            emmc      /dev/block/bootdevice/by-name/md1arm7                   flags=display="Modem ARM7";backup=1;flashimg=1
 
 # ════════════════════════════════════════════════════════════════════════
-# OTHER FIRMWARE
+# TRUSTZONE - BACKUP/FLASH ENABLED
 # ════════════════════════════════════════════════════════════════════════
-/gz1            emmc    /dev/block/by-name/gz1                  flags=display="GZ1";backup=1;flashimg=1
-/gz2            emmc    /dev/block/by-name/gz2                  flags=display="GZ2";backup=1;flashimg=1
-/spmfw          emmc    /dev/block/by-name/spmfw                flags=display="SPMFW";backup=1;flashimg=1
-/audio_dsp      emmc    /dev/block/by-name/audio_dsp            flags=display="Audio_DSP";backup=1;flashimg=1
-/pi_img         emmc    /dev/block/by-name/pi_img               flags=display="PI_IMG";backup=1;flashimg=1
-/boot_para      emmc    /dev/block/by-name/boot_para            flags=display="Boot_Para";backup=1
-/odmdtbo        emmc    /dev/block/by-name/odmdtbo              flags=display="ODM_DTBO";backup=1;flashimg=1
-/otp            emmc    /dev/block/by-name/otp                  flags=display="OTP";backup=1
-/expdb          emmc    /dev/block/by-name/expdb                flags=display="ExpDB"
-/efuse          emmc    /dev/block/by-name/efuse                flags=display="eFuse"
+
+/tee1                  emmc      /dev/block/bootdevice/by-name/tee1                      flags=display="TEE1";backup=1;flashimg=1
+/tee2                  emmc      /dev/block/bootdevice/by-name/tee2                      flags=display="TEE2";backup=1;flashimg=1
+/tzapp                 ext4      /dev/block/bootdevice/by-name/tzapp                     flags=display="TZ App";backup=1;slotselect
 
 # ════════════════════════════════════════════════════════════════════════
-# REMOVABLE STORAGE
+# MEDIATEK CO-PROCESSORS - BACKUP/FLASH ENABLED
 # ════════════════════════════════════════════════════════════════════════
-/usb_otg        vfat    /devices/platform/soc/11201000.usb0* flags=display="USB-OTG";storage;wipeingui;removable;fsflags="utf8"
+
+/scp1                  emmc      /dev/block/bootdevice/by-name/scp1                      flags=display="SCP1";backup=1;flashimg=1
+/scp2                  emmc      /dev/block/bootdevice/by-name/scp2                      flags=display="SCP2";backup=1;flashimg=1
+/sspm_1                emmc      /dev/block/bootdevice/by-name/sspm_1                    flags=display="SSPM1";backup=1;flashimg=1
+/sspm_2                emmc      /dev/block/bootdevice/by-name/sspm_2                    flags=display="SSPM2";backup=1;flashimg=1
+/dpm_1                 emmc      /dev/block/bootdevice/by-name/dpm_1                     flags=display="DPM1";backup=1;flashimg=1
+/dpm_2                 emmc      /dev/block/bootdevice/by-name/dpm_2                     flags=display="DPM2";backup=1;flashimg=1
+/mcupm_1               emmc      /dev/block/bootdevice/by-name/mcupm_1                   flags=display="MCUPM1";backup=1;flashimg=1
+/mcupm_2               emmc      /dev/block/bootdevice/by-name/mcupm_2                   flags=display="MCUPM2";backup=1;flashimg=1
+
+# ════════════════════════════════════════════════════════════════════════
+# OTHER FIRMWARE - BACKUP/FLASH ENABLED
+# ════════════════════════════════════════════════════════════════════════
+
+/gz1                   emmc      /dev/block/bootdevice/by-name/gz1                       flags=display="GZ1";backup=1;flashimg=1
+/gz2                   emmc      /dev/block/bootdevice/by-name/gz2                       flags=display="GZ2";backup=1;flashimg=1
+/spmfw                 emmc      /dev/block/bootdevice/by-name/spmfw                     flags=display="SPM FW";backup=1;flashimg=1
+/audio_dsp             emmc      /dev/block/bootdevice/by-name/audio_dsp                 flags=display="Audio DSP";backup=1;flashimg=1
+/pi_img                emmc      /dev/block/bootdevice/by-name/pi_img                    flags=display="PI IMG";backup=1;flashimg=1
+/boot_para             emmc      /dev/block/bootdevice/by-name/boot_para                 flags=display="Boot Para";backup=1
+/odmdtbo               emmc      /dev/block/bootdevice/by-name/odmdtbo                   flags=display="ODM DTBO";backup=1;flashimg=1
+/otp                   emmc      /dev/block/bootdevice/by-name/otp                       flags=display="OTP";backup=1
+/efuse                 emmc      /dev/block/bootdevice/by-name/efuse                     flags=display="eFuse"
+/expdb                 emmc      /dev/block/bootdevice/by-name/expdb                     flags=display="ExpDB"
+
+# ════════════════════════════════════════════════════════════════════════
+# SUPER PARTITION (for reference)
+# ════════════════════════════════════════════════════════════════════════
+
+/super                 emmc      /dev/block/bootdevice/by-name/super                     flags=display="Super";backup=1;flashimg=1
+
+# ════════════════════════════════════════════════════════════════════════
+# USB OTG
+# ════════════════════════════════════════════════════════════════════════
+
+/devices/platform/soc/11201000.usb0/11200000.xhci*    auto    vfat    defaults    voldmanaged=usbotg:auto,flags=storage;wipeingui;removable;fsflags=utf8
+/devices/platform/usb_xhci*                           auto    vfat    defaults    voldmanaged=usbotg:auto,flags=storage;wipeingui;removable;fsflags=utf8
