@@ -1,9 +1,11 @@
-import /vendor/etc/ueventd.rc
-import /odm/etc/ueventd.rc
+# TWRP ueventd.rc - Versão completa e otimizada
+# Mescla regras do TWRP original com entradas críticas do vendor (Motorola/Manaus)
 
+# Diretórios de firmware
 firmware_directories /etc/firmware/ /odm/firmware/ /vendor/firmware/ /firmware/image/
 uevent_socket_rcvbuf_size 16M
 
+# Subsistemas (do TWRP original)
 subsystem graphics
     devname uevent_devpath
     dirname /dev/graphics
@@ -21,15 +23,12 @@ subsystem sound
     dirname /dev/snd
 
 subsystem dma_heap
-   devname uevent_devpath
-   dirname /dev/dma_heap
-# ueventd can only set permissions on device nodes and their associated
-# sysfs attributes, not on arbitrary paths.
-#
-# format for /dev rules: devname mode uid gid
-# format for /sys rules: nodename attr mode uid gid
-# shortcut: "mtd@NN" expands to "/dev/mtd/mtdNN"
+    devname uevent_devpath
+    dirname /dev/dma_heap
 
+# ============================================
+# REGRAS GENÉRICAS DO TWRP (dispositivos base)
+# ============================================
 /dev/null                 0666   root       root
 /dev/zero                 0666   root       root
 /dev/full                 0666   root       root
@@ -47,13 +46,13 @@ subsystem dma_heap
 /dev/dma_heap/system-uncached      0444   system     system
 /dev/dma_heap/system-secure        0444   system     system
 
-#For ATT IQI
+# Para ATT IQI (se existir)
 /dev/iqi_bridge           0660   system     vendor_bridge_rw
 
-# kms driver for drm based gpu
+# kms driver para drm/gpu
 /dev/dri/*                0666   root       graphics
 
-# these should not be world writable
+# Dispositivos padrão
 /dev/uhid                 0660   uhid       uhid
 /dev/uinput               0660   uhid       uhid
 /dev/rtc0                 0640   system     system
@@ -67,19 +66,159 @@ subsystem dma_heap
 /dev/usb_accessory        0660   root       usb
 /dev/tun                  0660   system     vpn
 
-# CDMA radio interface MUX
+# Interface rádio CDMA
 /dev/ppp                  0660   radio      vpn
 
-# Virtualisation is managed by Virt Manager
+# Virtualização (se existir)
 /dev/kvm                  0600   virtmanager root
 /dev/vhost-vsock          0600   virtmanager root
 
-# sysfs properties
+# ============================================
+# REGRAS DO VENDOR (Motorola/Manaus) - CRÍTICAS
+# ============================================
+
+# TOUCH - MOTOROLA (CRÍTICO!)
+/dev/touch                0660    root       system
+/dev/hotknot              0660    root       system
+
+# SYSFS TOUCH (CRÍTICO!)
+/sys/class/sensors/Moto\ CapSense\ Ch*   enable       0660    root    input
+/sys/class/sensors/Moto\ CapSense\ Ch*   poll_delay   0660    root    input
+
+# ARMAZENAMENTO - EMMC (CRÍTICO!)
+/dev/block/mmcblk0                               0660    root    system
+/dev/block/mmcblk0boot0                          0660    root    system
+/dev/block/mmcblk0boot1                          0660    root    system
+/dev/misc-sd                                     0660    root    system
+
+# ARMAZENAMENTO - UFS (CRÍTICO!)
+/dev/block/sda                                   0660    root    system
+/dev/block/sdb                                   0660    root    system
+/dev/block/sdc                                   0660    root    system
+
+# RPMB (para Trusty)
+/dev/block/mmcblk0rpmb                           0660    root    system
+
+# PARTIÇÕES BY-NAME (CRÍTICO PARA TWRP!)
+/dev/block/by-name/misc2                         0660    root    system
+/dev/block/by-name/boot                          0640    root    system
+/dev/block/by-name/recovery                       0640    root    system
+/dev/block/by-name/secro                          0640    root    system
+/dev/block/by-name/seccfg                         0660    root    system
+/dev/block/by-name/proinfo                        0660    root    system
+/dev/block/by-name/nvram                          0660    root    system
+/dev/block/by-name/para                           0660    root    system
+/dev/block/by-name/logo                           0660    root    system
+/dev/block/by-name/frp                            0660    root    system
+/dev/block/by-name/md1img                         0640    root    system
+/dev/block/by-name/md1img_a                       0640    root    system
+/dev/block/by-name/md1img_b                       0640    root    system
+/dev/block/by-name/md1dsp                         0660    root    system
+/dev/block/by-name/boot_para                       0640    root    system
+/dev/block/by-name/misc                           0660    root    system
+
+# OTP
+/dev/otp                                          0660    system    system
+/dev/block/by-name/otp                            0660    root    system
+
+# DRM NODE
+/dev/dri/card0                                    0660    system    system
+
+# ION - CRÍTICO PARA GPU/DISPLAY
+/dev/ion                                          0666    system    graphics
+
+# MALI GPU
+/dev/mali0                                        0666    system    graphics
+
+# DMA_HEAP (do vendor)
+/dev/dma_heap/mtk_mm                              0444    system    system
+/dev/dma_heap/mtk_mm-uncached                     0444    system    system
+/dev/dma_heap/mtk_svp_page-uncached               0444    system    system
+/dev/dma_heap/mtk_prot_page-uncached              0444    system    system
+/dev/dma_heap/mtk_svp_region                       0444    system    system
+/dev/dma_heap/mtk_svp_region-aligned               0444    system    system
+/dev/dma_heap/mtk_prot_region                      0444    system    system
+/dev/dma_heap/mtk_prot_region-aligned              0444    system    system
+/dev/dma_heap/mtk_2d_fr_region                     0444    system    system
+/dev/dma_heap/mtk_2d_fr_region-aligned             0444    system    system
+/dev/dma_heap/mtk_wfd_region                       0444    system    system
+/dev/dma_heap/mtk_wfd_region-aligned               0444    system    system
+/dev/dma_heap/mtk_wfd_page-uncached                0444    system    system
+/dev/dma_heap/mtk_sapu_data_shm_region             0444    system    system
+/dev/dma_heap/mtk_sapu_data_shm_region-aligned     0444    system    system
+/dev/dma_heap/mtk_sapu_engine_shm_region           0444    system    system
+/dev/dma_heap/mtk_sapu_engine_shm_region-aligned   0444    system    system
+
+# V4L2 DEVICES (câmera/display)
+/dev/video*                                        0660    camera    system
+/dev/media*                                        0660    camera    system
+/dev/v4l-subdev*                                   0660    camera    system
+/dev/vcu                                           0660    camera    system
+/dev/vdec-fmt                                      0660    media     system
+/dev/fmt_sync                                      0660    system    system
+/dev/mtk_hcp                                       0660    camera    system
+
+# CÂMERA
+/dev/camera_eeprom*                                0660    system    camera
+/dev/ccu*                                          0660    system    camera
+
+# TOUCH - GENÉRICO (fallback)
+/dev/touchscreen                                   0660    root      input
+
+# FINGERPRINT
+/dev/esfp0                                         0660    system    system
+/dev/goodix_fp                                     0660    system    system
+
+# GPIO (se necessário)
+/dev/mtgpio                                        0600    radio     root
+
+# SYSFS PROPERTIES (do TWRP original)
 /sys/devices/platform/trusty.*      trusty_version        0440  root   log
-/sys/devices/virtual/input/input*   enable      0660  root   input
-/sys/devices/virtual/input/input*   poll_delay  0660  root   input
-/sys/devices/virtual/usb_composite/*   enable      0664  root   system
-/sys/devices/system/cpu/cpu*   cpufreq/scaling_max_freq   0664  system system
-/sys/devices/system/cpu/cpu*   cpufreq/scaling_min_freq   0664  system system
-/sys/devices/virtual/misc/uhid/*/leds/* brightness   0664  system system
-/sys/devices/virtual/misc/uhid/*/leds/* multi_intensity   0664  system system
+/sys/devices/virtual/input/input*   enable                 0660  root   input
+/sys/devices/virtual/input/input*   poll_delay             0660  root   input
+/sys/devices/virtual/usb_composite/*   enable              0664  root   system
+/sys/devices/system/cpu/cpu*   cpufreq/scaling_max_freq    0664  system system
+/sys/devices/system/cpu/cpu*   cpufreq/scaling_min_freq    0664  system system
+/sys/devices/virtual/misc/uhid/*/leds/* brightness         0664  system system
+/sys/devices/virtual/misc/uhid/*/leds/* multi_intensity    0664  system system
+
+# LEDS (do vendor)
+/sys/devices/platform/leds-mt65xx/leds/green   delay_on      0664  system   system
+/sys/devices/platform/leds-mt65xx/leds/green   delay_off     0664  system   system
+/sys/devices/platform/leds-mt65xx/leds/red     delay_on      0664  system   system
+/sys/devices/platform/leds-mt65xx/leds/red     delay_off     0664  system   system
+/sys/devices/platform/leds-mt65xx/leds/blue    delay_on      0664  system   system
+/sys/devices/platform/leds-mt65xx/leds/blue    delay_off     0664  system   system
+
+# ============================================
+# DISPOSITIVOS OPCIONAIS (podem ser úteis no TWRP)
+# ============================================
+
+# CONECTIVIDADE (básico - se necessário para adb/usb)
+/dev/stpwmt                                         0660    system    system
+/dev/wmtdetect                                      0660    system    system
+/dev/conninfra_dev                                  0660    system    system
+/dev/conn_pwr_dev                                   0660    system    system
+
+# DEBUG/LOG (útil para troubleshooting)
+/dev/log/ksystem                                    0600    root      log
+
+# HANG DETECT (pode ser útil)
+/dev/RT_Monitor                                     0660    system    system
+/dev/kick_powerkey                                  0660    system    system
+
+# INFRAESTRUTURA TEE (básico - alguns TWRP usam)
+/dev/trusty-ipc-dev0                                0660    system    system
+/dev/nebula-ipc-dev0                                0660    system    system
+/dev/mobicore                                       0600    system    system
+/dev/mobicore-user                                  0666    system    system
+/dev/t-base-tui                                     0666    system    system
+
+# ============================================
+# OBSERVAÇÕES:
+# - Este arquivo NÃO contém imports (vendor/odm)
+# - Todas as regras críticas do vendor estão incluídas
+# - Touch, armazenamento e GPU são prioridade
+# - Removido: modem, NFC, Bluetooth, WiFi, GPS (desnecessários)
+# - Mantido: debug/hang detect (podem ajudar em troubleshooting)
+# ============================================
