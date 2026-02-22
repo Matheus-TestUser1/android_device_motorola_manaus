@@ -26,9 +26,10 @@ PRODUCT_TARGET_VNDK_VERSION := 31
 # ============================================================================
 AB_OTA_UPDATER := true
 
+# ⭐ POSTINSTALL COM mtk_plpath_utils (CRÍTICO PRO MEDIATEK!)
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
-    POSTINSTALL_PATH_system=system/bin/otapreopt_script \
+    POSTINSTALL_PATH_system=system/bin/mtk_plpath_utils \
     FILESYSTEM_TYPE_system=erofs \
     POSTINSTALL_OPTIONAL_system=true
 
@@ -66,11 +67,16 @@ PRODUCT_PACKAGES += \
     snapuserd.recovery
 
 # ============================================================================
-# MTK PATH UTILS - Recovery ramdisk apenas
-# Service definido no init.recovery.mt6879.rc
+# MTK PATH UTILS - 2 LOCAIS (CRÍTICO!)
 # ============================================================================
+
+# Recovery ramdisk (para TWRP boot):
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/mtk_plpath_utils
+
+# System partition (para OTA postinstall):
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_SYSTEM)/bin/mtk_plpath_utils
 
 # ============================================================================
 # CORE PACKAGES
