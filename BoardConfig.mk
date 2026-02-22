@@ -116,6 +116,8 @@ BOARD_VENDOR_RAMDISK_KERNEL_MODULES := $(wildcard $(DEVICE_PATH)/prebuilt/module
 
 # Lê a ordem de carregamento do arquivo modules.load
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilt/modules/modules.load 2>/dev/null))
+TW_INCLUDE_BOOT_HAL := true
+
 
 # Carrega os módulos automaticamente no boot
 TW_LOAD_VENDOR_MODULES := true
