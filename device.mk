@@ -47,11 +47,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.virtual_ab.retrofit=false
 
 # ============================================================================
-# BOOT CONTROL HAL (A/B slot management)
+# BOOT CONTROL HAL (A/B slot management) - MTK Implementation
 # ============================================================================
 PRODUCT_PACKAGES += \
-    android.hardware.boot@1.2-impl \
-    android.hardware.boot@1.2-impl.recovery \
+    android.hardware.boot@1.2-mtkimpl \
+    android.hardware.boot@1.2-mtkimpl.recovery \
     android.hardware.boot@1.2-service \
     bootctrl.default \
     bootctrl.default.recovery
@@ -69,10 +69,10 @@ PRODUCT_PACKAGES += \
 # ============================================================================
 # MTK PATH UTILS - 2 LOCAIS (CRÍTICO!)
 # ============================================================================
-
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/mtk_plpath_utils \
     $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_SYSTEM)/bin/mtk_plpath_utils
+
 # ============================================================================
 # CORE PACKAGES
 # ============================================================================
