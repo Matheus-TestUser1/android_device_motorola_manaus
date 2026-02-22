@@ -215,10 +215,35 @@ subsystem dma_heap
 /dev/t-base-tui                                     0666    system    system
 
 # ============================================
-# OBSERVAÇÕES:
-# - Este arquivo NÃO contém imports (vendor/odm)
-# - Todas as regras críticas do vendor estão incluídas
-# - Touch, armazenamento e GPU são prioridade
-# - Removido: modem, NFC, Bluetooth, WiFi, GPS (desnecessários)
-# - Mantido: debug/hang detect (podem ajudar em troubleshooting)
+# A/B + VENDOR_BOOT + MEDIATEK - CRÍTICO!
 # ============================================
+
+# A/B Boot partitions (essenciais para slot management)
+/dev/block/by-name/boot_a                 0640   root       system
+/dev/block/by-name/boot_b                 0640   root       system
+/dev/block/by-name/vendor_boot_a          0640   root       system
+/dev/block/by-name/vendor_boot_b          0640   root       system
+
+# Preloader mappers (criados por mtk_plpath_utils em runtime)
+/dev/block/mapper/pl_a                    0660   root       system
+/dev/block/mapper/pl_b                    0660   root       system
+/dev/block/by-name/preloader_raw_a        0660   root       system
+/dev/block/by-name/preloader_raw_b        0660   root       system
+
+# Bootloader LK (verificar nomes exatos no manaus: lk1/lk2 ou bootloader1/bootloader2)
+/dev/block/by-name/lk1                    0660   root       system
+/dev/block/by-name/lk2                    0660   root       system
+/dev/block/by-name/bootloader1            0660   root       system
+/dev/block/by-name/bootloader2            0660   root       system
+
+# Core symlinks para fstab funcionar
+/dev/block/bootdevice                     0660   root       system
+/dev/block/dm-*                           0660   root       system
+
+# Metadata para FBE/encryption
+/dev/block/by-name/metadata               0660   root       system
+
+# Motorola specific (se existirem)
+/dev/block/by-name/persist                0660   root       system
+/dev/block/by-name/motoboot               0660   root       system
+/dev/block/by-name/dfps                   0660   root       system
