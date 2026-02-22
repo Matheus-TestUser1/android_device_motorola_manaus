@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-
+BUILD_BROKEN_DUP_RULES := true
 DEVICE_PATH := device/motorola/manaus
 
 # ============================================================================
@@ -62,6 +62,7 @@ TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a55
 
 TARGET_SUPPORTS_64_BIT_APPS := true
 TARGET_IS_64_BIT := true
+TARGET_SUPPORTS_32_BIT_APPS := true
 
 # ============================================================================
 # KERNEL / MKBOOTIMG
@@ -109,9 +110,15 @@ BOARD_RECOVERY_INIT_RC := device/motorola/manaus/recovery/root/init.recovery.mt6
 # Fonte: AOSP docs - Virtual A/B com compressão userspace requer dm-user
 # ============================================================================
 #TW_LOAD_VENDOR_BOOT_MODULES := true
-TW_LOAD_VENDOR_MODULES := true
-BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilt/modules/modules.load 2>/dev/null))
+
+# Copia todos os módulos .ko do prebuilt/modules/
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES := $(wildcard $(DEVICE_PATH)/prebuilt/modules/*.ko)
+
+# Lê a ordem de carregamento do arquivo modules.load
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilt/modules/modules.load 2>/dev/null))
+
+# Carrega os módulos automaticamente no boot
+TW_LOAD_VENDOR_MODULES := true
 
 # Binário do serviço boot HAL
 PRODUCT_COPY_FILES += \
@@ -214,10 +221,10 @@ RECOVERY_SDCARD_ON_DATA := true
 TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 
-TW_PREPARE_DATA_MEDIA_EARLY := true
+#TW_PREPARE_DATA_MEDIA_EARLY := true
 
-BOARD_CHARGER_DISABLE_INIT_BLANK := true
-BOARD_SUPPRESS_SECURE_BOOT_WARNING := true
+#BOARD_CHARGER_DISABLE_INIT_BLANK := true
+#BOARD_SUPPRESS_SECURE_BOOT_WARNING := true
 
 BOARD_RECOVERY_RES_DIR := device/motorola/manaus/recovery/root
 
@@ -260,7 +267,7 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.
 TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
-
+TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 TW_NO_SCREEN_TIMEOUT := true
 TW_DEVICE_VERSION := manaus_MT6879_vendor_boot
 
@@ -308,7 +315,7 @@ TW_OVERRIDE_SYSTEM_PROPS := \
 #TW_INCLUDE_CRYPTO_FBE := false
 #TW_INCLUDE_FBE_METADATA_DECRYPT := false
 #BOARD_USES_QCOM_FBE_DECRYPTION := false
-
+#TW_USE_FSCRYPT_POLICY := 2
 # ============================================================================
 # DISPLAY/GRAPHICS
 # ============================================================================
