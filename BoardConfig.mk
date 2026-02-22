@@ -81,7 +81,7 @@ BOARD_KERNEL_CMDLINE += loglevel=4
 
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_RAMDISK_USE_LZ4 := true
-
+BOARD_KERNEL_SEPARATED_DTBO := true
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
@@ -100,21 +100,18 @@ BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 # RECOVERY INIT SCRIPTS
 # ============================================================================
 BOARD_RECOVERY_INIT_RC := device/motorola/manaus/recovery/root/init.recovery.mt6879.rc
-BOARD_RECOVERY_INIT_RC += device/motorola/manaus/recovery/root/mtk-plpath-utils.rc
-BOARD_RECOVERY_INIT_RC += device/motorola/manaus/recovery/root/init.recovery.usb.rc
+#BOARD_RECOVERY_INIT_RC += device/motorola/manaus/recovery/root/mtk-plpath-utils.rc
+#BOARD_RECOVERY_INIT_RC += device/motorola/manaus/recovery/root/init.recovery.usb.rc
 
 # ============================================================================
 # KERNEL MODULES — VENDOR_BOOT
 # ATENÇÃO: dm-user.ko deve estar em prebuilt/modules/ — obrigatório para snapuserd
 # Fonte: AOSP docs - Virtual A/B com compressão userspace requer dm-user
 # ============================================================================
-TW_LOAD_VENDOR_BOOT_MODULES := true
-
-BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilt/modules.load 2>/dev/null))
+#TW_LOAD_VENDOR_BOOT_MODULES := true
+TW_LOAD_VENDOR_MODULES := true
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilt/modules/modules.load 2>/dev/null))
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES := $(wildcard $(DEVICE_PATH)/prebuilt/modules/*.ko)
-
-BOARD_RECOVERY_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilt/modules.load 2>/dev/null))
-RECOVERY_KERNEL_MODULES := $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES)
 
 # ============================================================================
 # VIRTUAL A/B (VAB)
@@ -142,7 +139,7 @@ BOARD_USES_METADATA_PARTITION := true
 BOARD_ROOT_EXTRA_FOLDERS += metadata
 # REMOVIDO: BOARD_SUPER_PARTITION_METADATA_DEVICE — variável inexistente no AOSP
 # Confirmado em: platform_build/core/board_config.mk
-BOARD_SUPER_PARTITION_METADATA_DEVICE := super
+#BOARD_SUPER_PARTITION_METADATA_DEVICE := super
 TW_INCLUDE_REPACKTOOLS_AB := true
 # ============================================================================
 # FS TYPES
@@ -292,10 +289,10 @@ TW_OVERRIDE_SYSTEM_PROPS := \
 # ============================================================================
 # SECURITY - CRYPTO DESABILITADO
 # ============================================================================
-TW_INCLUDE_CRYPTO := false
-TW_INCLUDE_CRYPTO_FBE := false
-TW_INCLUDE_FBE_METADATA_DECRYPT := false
-BOARD_USES_QCOM_FBE_DECRYPTION := false
+#TW_INCLUDE_CRYPTO := false
+#TW_INCLUDE_CRYPTO_FBE := false
+#TW_INCLUDE_FBE_METADATA_DECRYPT := false
+#BOARD_USES_QCOM_FBE_DECRYPTION := false
 
 # ============================================================================
 # DISPLAY/GRAPHICS
