@@ -71,13 +71,8 @@ PRODUCT_PACKAGES += \
 # ============================================================================
 
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/mtk_plpath_utils
-
-# 2. SYSTEM PARTITION (para OTA post-install)
-# Usado durante atualização A/B (AB_OTA_POSTINSTALL_CONFIG)
-PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/mtk_plpath_utils \
     $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_SYSTEM)/bin/mtk_plpath_utils
-
 # ============================================================================
 # CORE PACKAGES
 # ============================================================================
