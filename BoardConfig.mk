@@ -291,9 +291,11 @@ TW_USE_NEW_MINADBD := true
 TW_USE_TOOLBOX := true
 TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_LIBRESETPROP := true
-
+TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_EXCLUDE_TWRPAPP := true
 TW_EXCLUDE_APEX := true
+TW_INCLUDE_FASTBOOTD := true
+TW_INCLUDE_FUSE_EXFAT := true
 TW_NO_FASTBOOT_BOOT := true
 
 # ADICIONADO: obrigatório para A/B MTK sem partição /recovery dedicada
@@ -333,6 +335,11 @@ TARGET_OTA_ASSERT_DEVICE := manaus,manaus_g,edge40neo
 PLATFORM_SECURITY_PATCH := 2099-12-31
 VENDOR_SECURITY_PATCH := 2099-12-31
 
+# Hack
+PLATFORM_VERSION := 13
+PLATFORM_VERSION_LAST_STABLE := 13
+PLATFORM_SECURITY_PATCH := 2099-12-31
+VENDOR_SECURITY_PATCH := 2099-12-31
 # ============================================================================
 # PROPERTIES
 # ============================================================================
