@@ -9,17 +9,20 @@
 DEVICE_PATH := device/motorola/manaus
 DEVICE_CODENAME := manaus
 
-# Inherit from common AOSP config
+
+# Inherit from those products. Most specific first.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
 
-# Inherit some common TWRP stuff.
+# Installs gsi keys into ramdisk, to boot a developer GSI with verified boot.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+
+# Inherit from our custom product configuration.
 $(call inherit-product, vendor/twrp/config/common.mk)
 
-# Inherit device configuration
-$(call inherit-product, $(DEVICE_PATH)/device.mk)
+# Device specific configs.
+$(call inherit-product, device/motorola/manaus/device.mk)
 
-# Copy recovery files
-PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,$(DEVICE_PATH)/recovery/root,recovery/root)
 
 # Device identifier - DEVE bater com o nome do arquivo
 PRODUCT_DEVICE := manaus
@@ -30,9 +33,3 @@ PRODUCT_MANUFACTURER := motorola
 
 # OTA assert
 TARGET_OTA_ASSERT_DEVICE := manaus,manaus_g,edge40neo
-
-# Product info
-PRODUCT_BUILD_PROP_OVERRIDES += \
-    PRODUCT_NAME=manaus \
-    BUILD_PRODUCT=manaus \
-    TARGET_DEVICE=manaus
