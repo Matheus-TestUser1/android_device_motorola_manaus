@@ -113,6 +113,21 @@ TW_LOAD_VENDOR_MODULES := true
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilt/modules/modules.load 2>/dev/null))
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES := $(wildcard $(DEVICE_PATH)/prebuilt/modules/*.ko)
 
+# Binário do serviço boot HAL
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/recovery/root/vendor/bin/hw/android.hardware.boot@1.2-service:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/hw/android.hardware.boot@1.2-service
+
+# Bibliotecas necessárias
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/recovery/root/vendor/lib64/android.hardware.boot@1.0.so:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib64/android.hardware.boot@1.0.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib64/android.hardware.boot@1.1.so:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib64/android.hardware.boot@1.1.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib64/android.hardware.boot@1.2.so:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib64/android.hardware.boot@1.2.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib64/android.hardware.boot@1.0-impl-1.2-mtk.so:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib64/android.hardware.boot@1.0-impl-1.2-mtk.so
+
+# ============================================================================
+# RECOVERY ROOT FILES (já existentes - mantenha)
+# ============================================================================
+BOARD_RECOVERY_RES_DIR := $(DEVICE_PATH)/recovery/root
 # ============================================================================
 # VIRTUAL A/B (VAB)
 # Confirmado pelo vendor.prop original do dispositivo:
