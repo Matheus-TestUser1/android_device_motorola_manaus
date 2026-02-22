@@ -1,84 +1,95 @@
-#
 # Copyright (C) 2024 TeamWin Recovery Project
+# Motorola Edge 40 Neo (manaus) - MT6879
+# Fluxo: Bootloader → vendor_boot → Recovery → init.rc → plpath → symlinks → metadata → snapuserd → dynamic → TWRP
 #
 
-import /init.recovery.project.rc
+import /init.recovery.usb.rc
 
 on init
     setprop sys.usb.configfs 1
     setprop sys.usb.controller "11201000.usb0"
+    setprop sys.usb.ffs.aio_compat 1
     
-    # PATH
-    export PATH /system/bin:/sbin
-    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64
+    export PATH /system/bin:/sbin:/vendor/bin
+    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/system/lib:/vendor/lib:/vendor/lib64/hw:/sbin
     
-    # Mount tmpfs
     mount tmpfs tmpfs /tmp mode=0755
     
-    # Create directories
-    mkdir /system
+    mkdir /system 0755 root root
     mkdir /data 0771 system system
     mkdir /cache 0770 system cache
     mkdir /metadata 0771 system system
     mkdir /mnt 0755 root system
 
 on fs
-    # Mount early fstab
+    # ⭐ Monta metadata (early) - conforme fluxograma
     mount_all /system/etc/recovery.fstab --early
 
 on post-fs
-    # Mount late fstab
+    # 1. Boot HAL (A/B slot management)
+    start boot-hal-1-2
+    
+    # 2. Wait para boot device
+    wait /dev/block/mmcblk0boot0 2
+    
+    # 3. Symlinks base (hardware) - ANTES do plpath
+    symlink /dev/block/sda /dev/block/mmcblk0boot0
+    symlink /dev/block/sdb /dev/block/mmcblk0boot1
+    symlink /dev/block/mmcblk0boot0 /dev/block/by-name/preloader_a
+    symlink /dev/block/mmcblk0boot1 /dev/block/by-name/preloader_b
+    
+    # 4. Combo compatibility
+    symlink /dev/block/by-name/preloader_a /dev/block/by-name/preloader_emmc_a
+    symlink /dev/block/by-name/preloader_b /dev/block/by-name/preloader_emmc_b
+    symlink /dev/block/by-name/preloader_a /dev/block/by-name/preloader_ufs_a
+    symlink /dev/block/by-name/preloader_b /dev/block/by-name/preloader_ufs_b
+    
+    # 5. Bootdevice symlink
+    symlink /dev/block/platform/bootdevice /dev/block/bootdevice
+    
+    # 6. ⭐ EXEC plpath_utils (cria mappers pl_a/pl_b)
+    exec u:r:update_engine:s0 root root -- /system/bin/mtk_plpath_utils
+    start mtk.plpath.utils.link
+    
+    # 7. ⭐ WAIT e symlinks preloader_raw (DEPOIS do plpath)
+    wait /dev/block/mapper/pl_a 2
+    symlink /dev/block/mapper/pl_a /dev/block/by-name/preloader_raw_a
+    symlink /dev/block/mapper/pl_b /dev/block/by-name/preloader_raw_b
+    
+    # 8. Bootloader symlinks
+    symlink /dev/block/by-name/lk1 /dev/block/by-name/bootloader1
+    symlink /dev/block/by-name/lk2 /dev/block/by-name/bootloader2
+    
+    # 9. ⭐ INICIA SNAPUSERD (antes do mount late!)
+    start snapuserd
+    
+    # 10. ⭐ Monta dynamic partitions (late) - DEPOIS do snapuserd
     mount_all /system/etc/recovery.fstab --late
 
 on boot
-    # Start MTK plpath utils
-    start mtk.plpath.utils.link
+    # Health HAL
+    start health-hal-2-1
     
-    # Start snapuserd for Virtual A/B
-    start snapuserd
-    
-    # Start recovery
+    # Recovery
     setprop recovery.booting 1
     start recovery
-
-# MTK plpath utils creates mapper symlinks via properties
-on property:persist.vendor.mtk.pl_lnk=1
-    symlink /dev/block/mapper/pl_a /dev/block/by-name/preloader_raw_a
-    symlink /dev/block/mapper/pl_b /dev/block/by-name/preloader_raw_b
-    symlink /dev/block/mapper/pl_a /dev/block/platform/bootdevice/by-name/preloader_raw_a
-    symlink /dev/block/mapper/pl_b /dev/block/platform/bootdevice/by-name/preloader_raw_b
     
-    # FSTAB_RAW2(lk2,bootloader2) - bootloader symlinks
-    symlink /dev/block/by-name/lk1 /dev/block/by-name/bootloader1
-    symlink /dev/block/by-name/lk2 /dev/block/by-name/bootloader2
-
-# Fix ro.vendor.mtk_ufs_support - UFS boot device symlinks
-# mtk_plpath_utils sets these properties based on UFS device detection
-
-on property:vendor.mtk.boot0_linka=1
-    symlink /dev/block/sda /dev/block/mmcblk0boot0
-
-on property:vendor.mtk.boot0_linkb=1
-    symlink /dev/block/sdb /dev/block/mmcblk0boot0
-
-on property:vendor.mtk.boot0_linkc=1
-    symlink /dev/block/sdc /dev/block/mmcblk0boot0
-
-on property:vendor.mtk.boot1_linka=1
-    symlink /dev/block/sda /dev/block/mmcblk0boot1
-
-on property:vendor.mtk.boot1_linkb=1
-    symlink /dev/block/sdb /dev/block/mmcblk0boot1
-
-on property:vendor.mtk.boot1_linkc=1
-    symlink /dev/block/sdc /dev/block/mmcblk0boot1
+    # USB
+    setprop sys.usb.config adb
 
 service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
     class main
     user root
     group root system
-    oneshot
     disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+service boot-hal-1-2 /system/bin/android.hardware.boot@1.2-service
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
 
 service snapuserd /system/bin/snapuserd
     user root
@@ -86,6 +97,12 @@ service snapuserd /system/bin/snapuserd
     seclabel u:r:recovery:s0
     oneshot
     disabled
+
+service health-hal-2-1 /system/bin/android.hardware.health@2.1-service
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
 
 service recovery /system/bin/recovery
     user root
