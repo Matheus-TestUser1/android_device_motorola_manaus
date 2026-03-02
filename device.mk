@@ -142,7 +142,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.adb.secure=0 \
     persist.sys.usb.config=mtp,adb \
     ro.boot.dynamic_partitions=true \
-    ro.boot.bootdevice=112b0000.ufshci
+    ro.boot.bootdevice=bootdevice
 
 # ============================================================================
 # SOONG NAMESPACES
