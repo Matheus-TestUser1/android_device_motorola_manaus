@@ -67,9 +67,14 @@ TARGET_SUPPORTS_64_BIT_APPS := true
 TARGET_IS_64_BIT := true
 TARGET_SUPPORTS_32_BIT_APPS := true
 
+# display
+TARGET_SCREEN_HEIGHT := 2400
+TARGET_SCREEN_WIDTH := 1080
 # ============================================================================
 # KERNEL / MKBOOTIMG
 # ============================================================================
+TARGET_KERNEL_ARCH := arm64
+TARGET_KERNEL_HEADER_ARCH := arm64
 BOARD_KERNEL_BASE := 0x3fff8000
 BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_KERNEL_PAGESIZE := 4096
@@ -80,7 +85,6 @@ BOARD_DTB_OFFSET := 0x07c88000
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2
 BOARD_KERNEL_CMDLINE += androidboot.serialconsole=0
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
-BOARD_KERNEL_CMDLINE += androidboot.hardware=mt6879
 BOARD_KERNEL_CMDLINE += loglevel=4
 
 BOARD_KERNEL_IMAGE_NAME := Image
@@ -97,8 +101,12 @@ BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
+BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_PAGE_SIZE) --board ""
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
+
+# Display
+TARGET_SCREEN_DENSITY := 400
 
 # ============================================================================
 # RECOVERY INIT SCRIPTS
