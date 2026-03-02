@@ -51,13 +51,15 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # ============================================================================
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.2-mtkimpl \
-    android.hardware.boot@1.2-mtkimpl.recovery \
-    android.hardware.boot@1.2-service \
-    bootctrl.default \
-    bootctrl.default.recovery
+    android.hardware.boot@1.2-mtkimpl.recovery \\
+    android.hardware.boot@1.2-service 
+ 
 
 PRODUCT_PACKAGES_DEBUG += \
     bootctl
+
+PRODUCT_PACKAGES += \
+    bootctrl.mt6879
 
 # ============================================================================
 # VIRTUAL A/B — SNAPUSERD
