@@ -51,7 +51,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # ============================================================================
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.2-mtkimpl \
-    android.hardware.boot@1.2-mtkimpl.recovery \\
+    android.hardware.boot@1.2-mtkimpl.recovery \
     android.hardware.boot@1.2-service 
 
 PRODUCT_STATIC_BOOT_CONTROL_HAL := \
