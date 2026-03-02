@@ -24,6 +24,9 @@ TARGET_BOARD_PLATFORM_GPU := mali-g610mc3
 BOARD_USES_MTK_HARDWARE := true
 MTK_HARDWARE := true
 
+# APEX
+DEXPREOPT_GENERATE_APEX_IMAGE := true
+
 # ============================================================================
 # VENDOR_BOOT / BOOT HEADER V4
 # Fonte: https://source.android.com/docs/core/architecture/partitions/vendor-boot-partitions
@@ -295,7 +298,7 @@ TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_LIBRESETPROP := true
 TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_EXCLUDE_TWRPAPP := true
-TW_EXCLUDE_APEX := true
+#TW_EXCLUDE_APEX := true
 TW_INCLUDE_FASTBOOTD := true
 TW_INCLUDE_FUSE_EXFAT := true
 TW_NO_FASTBOOT_BOOT := true
