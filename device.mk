@@ -47,24 +47,33 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.virtual_ab.retrofit=false
 
 # ============================================================================
-# BOOT CONTROL HAL (A/B slot management) - MTK Implementation
+# BOOT CONTROL HAL (A/B slot management)
 # ============================================================================
+
+# ⭐ SÓ bootctrl genérico (fallback)
+#PRODUCT_PACKAGES += \
+  #  bootctrl.default \
+  #  bootctrl.default.recovery
+
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.2-mtkimpl \
     android.hardware.boot@1.2-mtkimpl.recovery \
     android.hardware.boot@1.2-service 
 
-PRODUCT_STATIC_BOOT_CONTROL_HAL := \
-    bootctrl.mt6879 \
-    libgptutils \
-    libz \
-    libcutils
 
 PRODUCT_PACKAGES_DEBUG += \
     bootctl
 
-PRODUCT_PACKAGES += \
-    bootctrl.mt6879
+# ⭐ BOOT HAL LIBS (MTK) - PREBUILT DO STOCK - CRÍTICAS PRO A/B!
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/recovery/root/vendor/lib64/android.hardware.boot@1.0.so:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib64/android.hardware.boot@1.0.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib64/android.hardware.boot@1.1.so:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib64/android.hardware.boot@1.1.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib64/android.hardware.boot@1.2.so:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib64/android.hardware.boot@1.2.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib64/android.hardware.boot@1.0-impl-1.2-mtkimpl.so:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib64/hw/android.hardware.boot@1.0-impl-1.2-mtkimpl.so
+
+# ⭐ BOOT HAL SERVICE (MTK) - PREBUILT DO STOCK
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/recovery/root/vendor/bin/hw/android.hardware.boot@1.2-service:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/hw/android.hardware.boot@1.2-service
 
 # ============================================================================
 # VIRTUAL A/B — SNAPUSERD
