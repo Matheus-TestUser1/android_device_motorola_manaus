@@ -135,9 +135,6 @@ PRODUCT_COPY_FILES += \
 # SYSTEM PROPERTIES
 # ============================================================================
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.product.device=manaus \
-    ro.product.name=manaus \
-    ro.build.product=manaus \
     ro.hardware=mt6879 \
     ro.board.platform=mt6879 \
     sys.usb.controller=11201000.usb0 \
