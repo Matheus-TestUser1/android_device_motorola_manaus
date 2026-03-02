@@ -13,7 +13,11 @@ ro.hardware=mt6879
 ro.hardware.soc.manufacturer=mtk
 ro.mediatek.platform=MT6879
 ro.vendor.mediatek.platform=MT6879
+# Fstab
+ro.postinstall.fstab.prefix=/system
 
+# USB MTP
+ro.sys.usb.storage.type=mtp
 # ════════════════════════════════════════════════════════════════════════
 # BOOT
 # ════════════════════════════════════════════════════════════════════════
@@ -36,7 +40,7 @@ ro.secure=0
 ro.debuggable=1
 ro.boot.verifiedbootstate=orange
 ro.boot.vbmeta.device_state=unlocked
-
+ro.twrp.vendor_boot=true
 # ════════════════════════════════════════════════════════════════════════
 # USB — confirmado vendor.usb.use_ffs_mtp=1 no vendor.prop original
 # ════════════════════════════════════════════════════════════════════════
