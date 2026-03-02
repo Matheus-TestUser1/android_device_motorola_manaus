@@ -51,14 +51,14 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # ============================================================================
 
 # ⭐ SÓ bootctrl genérico (fallback)
-#PRODUCT_PACKAGES += \
-  #  bootctrl.default \
-  #  bootctrl.default.recovery
-
+PRODUCT_PACKAGES += \
+   bootctrl.default \
+   bootctrl.default.recovery
+# compatibility test 
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.2-mtkimpl \
     android.hardware.boot@1.2-mtkimpl.recovery \
-    android.hardware.boot@1.2-service 
+   # android.hardware.boot@1.2-service 
 
 
 PRODUCT_PACKAGES_DEBUG += \
