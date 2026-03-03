@@ -22,7 +22,7 @@ ro.sys.usb.storage.type=mtp
 # BOOT
 # ════════════════════════════════════════════════════════════════════════
 ro.boot.dynamic_partitions=true
-#ro.boot.bootdevice=112b0000.ufshci
+ro.boot.bootdevice=bootdevice
 ro.build.ab_update=true
 
 # ════════════════════════════════════════════════════════════════════════

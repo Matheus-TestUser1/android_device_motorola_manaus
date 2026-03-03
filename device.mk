@@ -51,9 +51,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # ============================================================================
 
 # ⭐ SÓ bootctrl genérico (fallback)
-#PRODUCT_PACKAGES += \
-#   bootctrl.default \
- #  bootctrl.default.recovery
+PRODUCT_PACKAGES += \
+   bootctrl.default \
+   bootctrl.default.recovery
 # compatibility test 
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.2-mtkimpl \
@@ -131,18 +131,6 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/init.recovery.usb.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.usb.rc \
     $(DEVICE_PATH)/recovery/root/ueventd.rc:$(TARGET_COPY_OUT_RECOVERY)/root/ueventd.rc
 
-# ============================================================================
-# SYSTEM PROPERTIES
-# ============================================================================
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware=mt6879 \
-    ro.board.platform=mt6879 \
-    sys.usb.controller=11201000.usb0 \
-    sys.usb.ffs.aio_compat=true \
-    ro.adb.secure=0 \
-    persist.sys.usb.config=mtp,adb \
-    ro.boot.dynamic_partitions=true \
-    ro.boot.bootdevice=bootdevice
 
 # ============================================================================
 # SOONG NAMESPACES
