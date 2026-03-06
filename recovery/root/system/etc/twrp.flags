@@ -50,5 +50,9 @@
 /spmfw              emmc      /dev/block/by-name/spmfw                                              flags=display="spmfw"
 /pi_img             emmc      /dev/block/by-name/pi_img                                             flags=display="pi_img"
 
+
+
 /devices/platform/soc/11201000.usb0/11200000.xhci*    auto    vfat    defaults    voldmanaged=usbotg:auto,flags=storage;wipeingui;removable;fsflags=utf8
+
 /devices/platform/usb_xhci*                           auto    vfat    defaults    voldmanaged=usbotg:auto,flags=storage;wipeingui;removable;fsflags=utf8
+
