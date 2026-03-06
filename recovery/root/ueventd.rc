@@ -49,6 +49,9 @@ subsystem dma_heap
 /dev/mali0                0666   system     graphics
 /dev/ion                  0666   system     graphics
 
+/dev/block/mmcblk0                               0660    root    system
+/dev/block/mmcblk0boot0                          0660    root    system
+/dev/block/mmcblk0boot1                          0660    root    system
 # ════════════════════════════════════════════════════════════════
 # DMA_HEAP (CRITICAL FOR GPU/DISPLAY!)
 # ════════════════════════════════════════════════════════════════
