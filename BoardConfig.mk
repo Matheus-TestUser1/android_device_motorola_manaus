@@ -121,7 +121,7 @@ BOARD_RECOVERY_INIT_RC := device/motorola/manaus/recovery/root/init.recovery.mt6
 # ATENÇÃO: dm-user.ko deve estar em prebuilt/modules/ — obrigatório para snapuserd
 # Fonte: AOSP docs - Virtual A/B com compressão userspace requer dm-user
 # ============================================================================
-#TW_LOAD_VENDOR_BOOT_MODULES := true
+TW_LOAD_VENDOR_BOOT_MODULES := true
 
 # Copia todos os módulos .ko do prebuilt/modules/
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES := $(wildcard $(DEVICE_PATH)/prebuilt/modules/*.ko)
