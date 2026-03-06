@@ -4,7 +4,7 @@ All notable changes in this project will be documented in this file.
 
 ## [1.0.0] - 2024-02-09
 
-##Added
+### Added
 - Full vendor_boot support for TWRP booting
 - Kernel module configuration for vendor ramdisk
 - Optimized boot files for vendor_boot
