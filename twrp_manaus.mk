@@ -24,7 +24,7 @@ $(call inherit-product, vendor/twrp/config/common.mk)
 $(call inherit-product, device/motorola/manaus/device.mk)
 
 
-# Device identifier - DEVE bater com o nome do arquivo
+# Device identifier - It MUST match the file name
 PRODUCT_DEVICE := manaus
 PRODUCT_NAME := twrp_manaus
 PRODUCT_BRAND := motorola
