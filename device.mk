@@ -25,7 +25,7 @@ PRODUCT_TARGET_VNDK_VERSION := 31
 # ============================================================================
 AB_OTA_UPDATER := true
 
-# ⭐ POSTINSTALL COM mtk_plpath_utils (CRÍTICO PRO MEDIATEK!)
+# ⭐ POSTINSTALL COM mtk_plpath_utils (SPECIFIC FOR MEDIATEK!)
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
     POSTINSTALL_PATH_system=system/bin/mtk_plpath_utils \
@@ -61,14 +61,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES_DEBUG += \
     bootctl
 
-# ⭐ BOOT HAL LIBS (MTK) - PREBUILT DO STOCK - CRÍTICAS PRO A/B!
+# ⭐ BOOT HAL LIBS (MTK) - PREBUILT FROM STOCK - CRITICAL FOR A/B!
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/android.hardware.boot@1.0.so:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib64/android.hardware.boot@1.0.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/android.hardware.boot@1.1.so:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib64/android.hardware.boot@1.1.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/android.hardware.boot@1.2.so:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib64/android.hardware.boot@1.2.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/android.hardware.boot@1.0-impl-1.2-mtkimpl.so:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib64/hw/android.hardware.boot@1.0-impl-1.2-mtkimpl.so
 
-# ⭐ BOOT HAL SERVICE (MTK) - PREBUILT DO STOCK
+# ⭐ BOOT HAL SERVICE (MTK) - PREBUILT FROM STOCK
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/vendor/bin/hw/android.hardware.boot@1.2-service:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/hw/android.hardware.boot@1.2-service
 
@@ -80,7 +80,7 @@ PRODUCT_PACKAGES += \
     snapuserd.recovery
 
 # ============================================================================
-# MTK PATH UTILS - 2 LOCAIS (CRÍTICO!)
+# MTK PATH UTILS - 2 LOCAIS (CRITICAL!)
 # ============================================================================
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/mtk_plpath_utils \
