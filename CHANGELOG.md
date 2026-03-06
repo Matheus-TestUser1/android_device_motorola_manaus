@@ -1,62 +1,59 @@
-# Changelog - TWRP para Motorola Edge 40 Neo
+# Changelog - TWRP for Motorola Edge 40 Neo
 
-Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
+All notable changes in this project will be documented in this file.
 
 ## [1.0.0] - 2024-02-09
 
-### Adicionado
-- Suporte completo a vendor_boot para boot do TWRP
-- Configuração de módulos do kernel para vendor ramdisk
-- Arquivos de inicialização otimizados para vendor_boot
-- Suporte a partições dinâmicas (super)
-- Suporte a EROFS
-- Configuração de USB/ADB funcionando
-- Suporte a MTP
-- Scripts de post-recovery-boot
+##Added
+- Full vendor_boot support for TWRP booting
+- Kernel module configuration for vendor ramdisk
+- Optimized boot files for vendor_boot
+- Dynamic partition (super) support
+- EROFS support
+- Working USB/ADB configuration
+- MTP support
+- Post-recovery-boot scripts
 
-### Corrigido
-- **Problema crítico**: TWRP não ficava no recovery tradicional
-- Configuração correta de `BOARD_USES_VENDOR_BOOTIMAGE`
-- Configuração de `BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT`
-- fstab com suporte a first_stage_mount
-- init.rc com carregamento correto de módulos
-- Configuração de dynamic partitions
+### Fixed
+- **Critical Issue**: TWRP was not booting into traditional recovery mode
+- Correct configuration of `BOARD_USES_VENDOR_BOOTIMAGE`
+- Configuration of `BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT`
+- fstab with support for first_stage_mount
+- init.rc with correct module loading
+- Dynamic partitions configuration
 
-### Modificado
-- `BoardConfig.mk` - Configuração completa para vendor_boot
-- `device.mk` - Pacotes e propriedades otimizados
-- `init.recovery.mt6879.rc` - Inicialização para vendor_boot
-- `init.recovery.usb.rc` - Configuração USB aprimorada
-- `recovery.fstab` - Tabela de partições corrigida
-- `twrp.flags` - Flags otimizadas para TWRP GUI
-- `system.prop` - Propriedades do sistema atualizadas
-- `vendor.prop` - Propriedades do vendor atualizadas
+### Modified
+- `BoardConfig.mk` - Complete configuration for vendor_boot
+- `device.mk` - Optimized packages and properties
+- `init.recovery.mt6879.rc` - Initialization for vendor_boot
+- `init.recovery.usb.rc` - Improved USB configuration
+- `recovery.fstab` - Corrected partition table
+- `twrp.flags` - Optimized flags for TWRP GUI
+- `system.prop` - Updated system properties
+- `vendor.prop` - Updated vendor properties
 
-### Notas Técnicas
-- O TWRP agora boota corretamente via vendor_boot
-- Não fica mais preso no recovery tradicional
-- Suporte a A/B partições funcionando
-- Dynamic partitions mapeadas corretamente
-
+### Technical Notes
+- TWRP now boots correctly via vendor_boot
+- No longer stuck in traditional recovery mode
+- A/B partition support working
+- Dynamic partitions mapped correctly
 ## [0.9.0] - 2024-02-08
 
-### Adicionado
-- Estrutura inicial do device tree
-- Arquivos de configuração básicos
-- Kernel prebuilt
-- Suporte inicial a MT6879
+### Added
+- Initial device tree structure
+- Basic configuration files
+- Prebuilt kernel
+- Initial support for MT6879
 
-### Problemas Conhecidos
-- TWRP ficava no recovery tradicional
-- vendor_boot não funcionava corretamente
-- Partições dinâmicas não montavam
 
----
+### Known Issues
+- TWRP remained in traditional recovery mode
+- vendor_boot did not function correctly
+- Dynamic partitions did not mount
 
-## Legenda
-
-- **Adicionado** para novas funcionalidades.
-- **Modificado** para mudanças em funcionalidades existentes.
-- **Corrigido** para correções de bugs.
-- **Removido** para funcionalidades removidas.
-- **Segurança** para vulnerabilidades de segurança.
+### Legend
+- **Added** for new features.
+- **Modified** for changes to existing features.
+- **Fixed** for bug fixes.
+- **Removed** for removed features.
+- **Security** for security vulnerabilities.
