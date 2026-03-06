@@ -1,7 +1,7 @@
 #
 # Copyright (C) 2024 TeamWin Recovery Project
 # Motorola Edge 40 Neo (manaus) - MT6879
-# VERSÃO FINAL COMPLETA E ORGANIZADA
+# VERSÃO FINAL COM BOOT HAL SERVICE
 #
 
 import /init.recovery.usb.rc
@@ -45,6 +45,12 @@ on fs
 on post-fs
     # Wait for boot device
     wait /dev/block/mmcblk0boot0 2
+    
+    # ════════════════════════════════════════════════════════════
+    # BOOT HAL SERVICE (A/B compatibility - igual stock/Xaga)
+    # ════════════════════════════════════════════════════════════
+    
+    start boot-hal-1-2
     
     # ════════════════════════════════════════════════════════════
     # BLOCK DEVICE SYMLINKS
@@ -181,6 +187,13 @@ on boot
 # ════════════════════════════════════════════════════════════════
 # SERVICE DEFINITIONS
 # ════════════════════════════════════════════════════════════════
+
+service boot-hal-1-2 /system/bin/android.hardware.boot@1.2-service
+    user root
+    group root system
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
 
 service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
     class main
