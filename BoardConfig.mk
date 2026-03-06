@@ -288,7 +288,7 @@ TW_EXTRA_LANGUAGES := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 TW_NO_SCREEN_TIMEOUT := true
-TW_DEVICE_VERSION := manaus_MT6879_vendor_boot
+TW_DEVICE_VERSION := Twrptestuser_manaus
 
 # Confirmado: ro.sf.lcd_density=400 no vendor.prop original
 #TARGET_SCREEN_DENSITY := 400
@@ -305,7 +305,6 @@ TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
 TW_EXTERNAL_STORAGE_PATH := "/external_sd"
 TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
 TW_DEFAULT_EXTERNAL_STORAGE := true
-
 TW_USE_NEW_MINADBD := true
 TW_USE_TOOLBOX := true
 TW_INCLUDE_RESETPROP := true
