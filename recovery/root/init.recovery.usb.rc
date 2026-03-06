@@ -44,11 +44,18 @@ on fs && property:sys.usb.configfs=1
     mkdir /config/usb_gadget/g1/configs/b.1/strings/0x409 0770 shell shell
     write /config/usb_gadget/g1/configs/b.1/MaxPower 900
     
-    # Create functions
+# Create functions
     mkdir /config/usb_gadget/g1/functions/ffs.adb 0770 shell shell
     mkdir /config/usb_gadget/g1/functions/ffs.fastboot 0770 shell shell
-    mkdir /config/usb_gadget/g1/functions/mtp.gs0 0770 shell shell
+    mkdir /config/usb_gadget/g1/functions/ffs.mtp 0770 shell shell
     mkdir /config/usb_gadget/g1/functions/ffs.sideload 0770 shell shell
+
+    # OS Descriptors (Necessário para o Windows reconhecer o MTP)
+    write /config/usb_gadget/g1/os_desc/use 1
+    write /config/usb_gadget/g1/os_desc/b_vendor_code 0x1
+    write /config/usb_gadget/g1/os_desc/qw_sign "MSFT100"
+    write /config/usb_gadget/g1/functions/ffs.mtp/os_desc/interface.MTP/compatible_id "MTP"
+    symlink /config/usb_gadget/g1/configs/b.1 /config/usb_gadget/g1/os_desc/b.1
 
 on fs && property:sys.usb.configfs=0
     # Legacy USB support (CORRIGIDO: adb,fastboot)
@@ -155,8 +162,8 @@ on property:sys.usb.ffs.ready=1 && property:sys.usb.config=mtp,adb && property:s
     rm /config/usb_gadget/g1/configs/b.1/f1
     rm /config/usb_gadget/g1/configs/b.1/f2
     write /config/usb_gadget/g1/idVendor 0x22b8
-    write /config/usb_gadget/g1/idProduct 0x2e82
-    symlink /config/usb_gadget/g1/functions/mtp.gs0 /config/usb_gadget/g1/configs/b.1/f1
+    write /config/usb_gadget/g1/idProduct 0x2e76
+    symlink /config/usb_gadget/g1/functions/ffs.mtp /config/usb_gadget/g1/configs/b.1/f1
     symlink /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/b.1/f2
     write /config/usb_gadget/g1/UDC ${sys.usb.controller}
     setprop sys.usb.state ${sys.usb.config}
