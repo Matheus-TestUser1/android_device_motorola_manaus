@@ -108,7 +108,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.health@2.1-impl \
     android.hardware.health@2.1-service
-
+# Drm
+PRODUCT_PACKAGES += \
+    android.hardware.drm@1.4
 PRODUCT_PACKAGES += \
     e2fsck \
     resize2fs \
