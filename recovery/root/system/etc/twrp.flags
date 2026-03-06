@@ -52,5 +52,6 @@
 
 
 
-/usb-otg auto /dev/block/sdd1 /dev/block/sdd flags=display="USB-OTG";storage;wipeingui;removable;fsflags="utf8"
+/devices/platform/soc/11201000.usb0/11200000.xhci*    auto    vfat    defaults    voldmanaged=usbotg:auto,flags=storage;wipeingui;removable;fsflags=utf8
 
+/devices/platform/usb_xhci*                           auto    vfat    defaults    voldmanaged=usbotg:auto,flags=storage;wipeingui;removable;fsflags=utf8
