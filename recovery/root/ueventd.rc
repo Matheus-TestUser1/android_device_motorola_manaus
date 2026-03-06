@@ -140,3 +140,43 @@ subsystem dma_heap
 # LEDs
 /sys/devices/platform/leds-mt65xx/leds/*/delay_on    0664   system   system
 /sys/devices/platform/leds-mt65xx/leds/*/delay_off   0664   system   system
+
+# ════════════════════════════════════════════════════════════
+# INPUT DEVICES - GOODIX TOUCH
+# ════════════════════════════════════════════════════════════
+
+# Event devices
+/dev/input/event*          0660   system     input
+/dev/input/mice            0660   system     input
+/dev/input/mouse*          0660   system     input
+
+# Goodix touch device
+/dev/goodix_ts             0660   system     input
+/dev/touch*                0660   system     input
+
+# I2C for Goodix (CRÍTICO!)
+/dev/i2c-0                 0660   system     system
+/dev/i2c-1                 0660   system     system
+/dev/i2c-2                 0660   system     system
+/dev/i2c-3                 0660   system     system
+/dev/i2c-4                 0660   system     system
+/dev/i2c-5                 0660   system     system
+/dev/i2c-6                 0660   system     system
+/dev/i2c-7                 0660   system     system
+
+# Goodix firmware loading (CRÍTICO!)
+/sys/devices/platform/soc/*/i2c.*/i2c-*/i-*/input/input*           enable      0660  root   input
+/sys/devices/platform/soc/*/i2c*/i2c-*/*/input/input*/enable       0660  root   input
+/sys/devices/virtual/input/input*/enable                           0660  root   input
+
+# Goodix calibration/reset
+/sys/devices/platform/soc/*/i2c*/i2c-*/*/goodix_ts/reset           0660  system input
+/sys/devices/platform/soc/*/i2c*/i2c-*/*/goodix_ts/irq_enabled     0660  system input
+
+# ════════════════════════════════════════════════════════════
+# MTP/USB
+# ════════════════════════════════════════════════════════════
+
+/dev/mtp_usb               0660   system     mtp
+/dev/usb_accessory         0660   system     usb
+/dev/android_adb           0660   system     adb
