@@ -26,7 +26,6 @@ MTK_HARDWARE := true
 
 # APEX
 #DEXPREOPT_GENERATE_APEX_IMAGE := true
-BOARD_USES_RECOVERY_AS_BOOT := true
 TARGET_USES_LOGICAL_PARTITIONS := true
 # ============================================================================
 # VENDOR_BOOT / BOOT HEADER V4
