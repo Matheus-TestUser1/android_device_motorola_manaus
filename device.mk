@@ -17,10 +17,9 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
-PRODUCT_SHIPPING_API_LEVEL := 33
+PRODUCT_SHIPPING_API_LEVEL := 31
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
-PRODUCT_TARGET_VNDK_VERSION := 33
-
+PRODUCT_TARGET_VNDK_VERSION := 31
 # ============================================================================
 # A/B OTA CONFIGURATION
 # ============================================================================
