@@ -86,15 +86,6 @@ on post-fs
     chmod 0660 /dev/block/by-name/cid
     chmod 0660 /dev/block/by-name/clogo
     chmod 0640 /dev/block/by-name/logs
-    # Create goodix directories
-    mkdir /data/goodix 0770 system system
-    mkdir /mnt/vendor/persist/goodix 0770 system system
-    
-    # Set Goodix permissions
-    chown system system /sys/devices/platform/soc//i2c/i2c-//goodix_ts/reset
-    chown system system /sys/devices/platform/soc//i2c/i2c-//goodix_ts/irq_enabled
-    chmod 0660 /sys/devices/platform/soc//i2c/i2c-//goodix_ts/reset
-    chmod 0660 /sys/devices/platform/soc//i2c/i2c-//goodix_ts/irq_enabled
     
     # Input devices permissions
     chown system input /dev/input/event*
@@ -182,12 +173,7 @@ on boot
     chown system system /sys/class/leds/lcd-backlight/brightness
     write /sys/class/leds/lcd-backlight/brightness 1200
        
-    # Enable touch input
-    write /sys/devices/virtual/input/input0/enable 1
-    write /sys/devices/virtual/input/input1/enable 1
-    write /sys/devices/virtual/input/input2/enable 1
-    write /sys/devices/virtual/input/input3/enable 1
-    write /sys/devices/virtual/input/input4/enable 1
+  
     # ════════════════════════════════════════════════════════════
     # SERVICES
     # ════════════════════════════════════════════════════════════
