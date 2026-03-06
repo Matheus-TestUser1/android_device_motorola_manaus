@@ -315,7 +315,8 @@ TW_EXCLUDE_APEX := true
 TW_INCLUDE_FASTBOOTD := true
 TW_INCLUDE_FUSE_EXFAT := true
 TW_NO_FASTBOOT_BOOT := true
-
+TW_INCLUDE_LIBRESETPROP := true
+TW_NO_BIND_SYSTEM := true
 # ADICIONADO: obrigatório para A/B MTK sem partição /recovery dedicada
 # Fonte: guia MTK/TWRP lopestom — "Required on devices without /recovery partition"
 TW_HAS_NO_RECOVERY_PARTITION := true
