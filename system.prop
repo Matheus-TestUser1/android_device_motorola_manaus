@@ -26,14 +26,14 @@ ro.boot.bootdevice=bootdevice
 ro.build.ab_update=true
 
 # ════════════════════════════════════════════════════════════════════════
-# VIRTUAL A/B — confirmado pelo vendor.prop original
+# VIRTUAL A/B — Confirmed by the original vendor.prop
 # ════════════════════════════════════════════════════════════════════════
 ro.virtual_ab.enabled=true
 ro.virtual_ab.compression.enabled=true
 ro.virtual_ab.userspace.snapshots.enabled=true
 
 # ════════════════════════════════════════════════════════════════════════
-# SECURITY (Recovery - permissivo)
+# SECURITY (Recovery - permissive)
 # ════════════════════════════════════════════════════════════════════════
 ro.adb.secure=0
 ro.secure=0
@@ -42,7 +42,7 @@ ro.boot.verifiedbootstate=orange
 ro.boot.vbmeta.device_state=unlocked
 ro.twrp.vendor_boot=true
 # ════════════════════════════════════════════════════════════════════════
-# USB — confirmado vendor.usb.use_ffs_mtp=1 no vendor.prop original
+# USB — confirm vendor.usb.use_ffs_mtp=1 on vendor.prop Stock
 # ════════════════════════════════════════════════════════════════════════
 persist.sys.usb.config=mtp,adb
 sys.usb.controller=11201000.usb0
@@ -50,8 +50,8 @@ sys.usb.configfs=1
 sys.usb.ffs.aio_compat=true
 
 # ════════════════════════════════════════════════════════════════════════
-# DISPLAY — definido aqui, removido do vendor.prop (sem duplicata)
-# Confirmado: ro.sf.lcd_density=400 no vendor.prop original
+# DISPLAY — Defined Here, removed from vendor.prop (Without Duplicate)
+# Confirmed: ro.sf.lcd_density=400 on vendor.prop Stock
 # ════════════════════════════════════════════════════════════════════════
 ro.sf.lcd_density=400
 ro.minui.pixel_format=BGRA_8888
