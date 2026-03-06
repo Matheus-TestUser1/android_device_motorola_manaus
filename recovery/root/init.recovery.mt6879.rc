@@ -40,7 +40,7 @@ on init
 
 on fs
     # Mount metadata (early stage)
-    mount_all /system/etc/recovery.fstab --early
+    mount_all /first_stage_ramdisk/fstab.mt6895 --late
 
 on post-fs
     # Wait for boot device
