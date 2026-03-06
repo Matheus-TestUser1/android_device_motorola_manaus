@@ -1,76 +1,173 @@
 #
 # Copyright (C) 2024 TeamWin Recovery Project
 # Motorola Edge 40 Neo (manaus) - MT6879
-# Fluxo: Bootloader → vendor_boot → Recovery → init.rc → plpath → symlinks → metadata → snapuserd → dynamic → TWRP
+# VERSÃO FINAL COMPLETA E ORGANIZADA
 #
 
 import /init.recovery.usb.rc
 
 on init
+    # USB configuration
     setprop sys.usb.configfs 1
     setprop sys.usb.controller "11201000.usb0"
     setprop sys.usb.ffs.aio_compat 1
     
+    # Environment
     export PATH /system/bin:/sbin:/vendor/bin
     export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/system/lib:/vendor/lib:/vendor/lib64/hw:/sbin
     
+    # Temporary filesystem
     mount tmpfs tmpfs /tmp mode=0755
     
+    # Basic directories
     mkdir /system 0755 root root
     mkdir /data 0771 system system
     mkdir /cache 0770 system cache
     mkdir /metadata 0771 system system
     mkdir /mnt 0755 root system
+    
+    # Block device directories
     mkdir /dev/block 0755 root root
     mkdir /dev/block/by-name 0755 root root
     mkdir /dev/block/mapper 0755 root root
+    
+    # Graphics/Display directories
+    mkdir /dev/graphics 0755 root graphics
+    mkdir /dev/dri 0755 root graphics
+    
+    # Input directory
+    mkdir /dev/input 0755 root input
 
 on fs
-    # ⭐ Monta metadata (early) - conforme fluxograma
+    # Mount metadata (early stage)
     mount_all /system/etc/recovery.fstab --early
 
 on post-fs
-    # 1. Boot HAL (A/B slot management)
-    start boot-hal-1-2
-    
-    # 2. Wait para boot device
+    # Wait for boot device
     wait /dev/block/mmcblk0boot0 2
     
-    # 3. Symlinks base (hardware) - ANTES do plpath
+    # ════════════════════════════════════════════════════════════
+    # BLOCK DEVICE SYMLINKS
+    # ════════════════════════════════════════════════════════════
+    
+    # Hardware symlinks (UFS → eMMC compatibility)
     symlink /dev/block/sda /dev/block/mmcblk0boot0
     symlink /dev/block/sdb /dev/block/mmcblk0boot1
+    
+    # Preloader symlinks
     symlink /dev/block/mmcblk0boot0 /dev/block/by-name/preloader_a
     symlink /dev/block/mmcblk0boot1 /dev/block/by-name/preloader_b
     
-    # 4. Combo compatibility
+    # Combo compatibility (eMMC + UFS)
     symlink /dev/block/by-name/preloader_a /dev/block/by-name/preloader_emmc_a
     symlink /dev/block/by-name/preloader_b /dev/block/by-name/preloader_emmc_b
     symlink /dev/block/by-name/preloader_a /dev/block/by-name/preloader_ufs_a
     symlink /dev/block/by-name/preloader_b /dev/block/by-name/preloader_ufs_b
     
-    # 5. Bootdevice symlink
+    # Bootdevice symlink
     symlink /dev/block/platform/bootdevice /dev/block/bootdevice
     
-    # 6. ⭐ EXEC plpath_utils (cria mappers pl_a/pl_b)
+    # ════════════════════════════════════════════════════════════
+    # BLOCK DEVICE PERMISSIONS (Motorola specific)
+    # ════════════════════════════════════════════════════════════
+    
+    chmod 0660 /dev/block/by-name/utags
+    chmod 0660 /dev/block/by-name/utagsBackup
+    chown root system /dev/block/by-name/utags
+    chown root system /dev/block/by-name/utagsBackup
+    chmod 0660 /dev/block/by-name/hob
+    chmod 0660 /dev/block/by-name/dhob
+    chmod 0660 /dev/block/by-name/cid
+    chmod 0660 /dev/block/by-name/clogo
+    chmod 0640 /dev/block/by-name/logs
+    
+    # ════════════════════════════════════════════════════════════
+    # DISPLAY/GRAPHICS PERMISSIONS
+    # ════════════════════════════════════════════════════════════
+    
+    chmod 0660 /dev/graphics/fb0
+    chown system graphics /dev/graphics/fb0
+    chmod 0660 /dev/mtk_disp_mgr
+    chown system graphics /dev/mtk_disp_mgr
+    chmod 0660 /dev/mtkfb_vsync
+    chown system graphics /dev/mtkfb_vsync
+    chmod 0660 /dev/sw_sync
+    chown system graphics /dev/sw_sync
+    chmod 0444 /dev/mtk_disp
+    chown system graphics /dev/mtk_disp
+    chmod 0660 /dev/dri/card0
+    chown system system /dev/dri/card0
+    
+    # ════════════════════════════════════════════════════════════
+    # GPU PERMISSIONS
+    # ════════════════════════════════════════════════════════════
+    
+    chmod 0666 /dev/ion
+    chown system graphics /dev/ion
+    chmod 0666 /dev/mali0
+    chown system graphics /dev/mali0
+    
+    # ════════════════════════════════════════════════════════════
+    # VENDOR PARTITIONS
+    # ════════════════════════════════════════════════════════════
+    
+    # Create directories
+    mkdir /mnt/vendor/protect_f 0770 system system
+    mkdir /mnt/vendor/protect_s 0770 system system
+    mkdir /mnt/vendor/nvdata 0771 root system
+    mkdir /mnt/vendor/nvcfg 0771 system system
+    
+    # Set permissions
+    chown system system /mnt/vendor/protect_f
+    chmod 0770 /mnt/vendor/protect_f
+    chown system system /mnt/vendor/protect_s
+    chmod 0770 /mnt/vendor/protect_s
+    chown root system /mnt/vendor/nvdata
+    chmod 0771 /mnt/vendor/nvdata
+    chown system system /mnt/vendor/nvcfg
+    chmod 0771 /mnt/vendor/nvcfg
+    
+    # ════════════════════════════════════════════════════════════
+    # MEDIATEK PLPATH (Preloader mapper)
+    # ════════════════════════════════════════════════════════════
+    
     exec u:r:recovery:s0 root root -- /system/bin/mtk_plpath_utils
     start mtk.plpath.utils.link
     
-    # 7. ⭐ WAIT e symlinks preloader_raw (DEPOIS do plpath)
+    # Wait for mapper devices
     wait /dev/block/mapper/pl_a 2
+    
+    # Create preloader_raw symlinks
     symlink /dev/block/mapper/pl_a /dev/block/by-name/preloader_raw_a
     symlink /dev/block/mapper/pl_b /dev/block/by-name/preloader_raw_b
     
-    # 8. Bootloader symlinks
+    # Bootloader symlinks
     symlink /dev/block/by-name/lk1 /dev/block/by-name/bootloader1
     symlink /dev/block/by-name/lk2 /dev/block/by-name/bootloader2
     
-    # 9. ⭐ INICIA SNAPUSERD (antes do mount late!)
+    # ════════════════════════════════════════════════════════════
+    # DYNAMIC PARTITIONS
+    # ════════════════════════════════════════════════════════════
+    
+    # Start snapuserd (Virtual A/B support)
     start snapuserd
     
-    # 10. ⭐ Monta dynamic partitions (late) - DEPOIS do snapuserd
+    # Mount dynamic partitions (late stage)
     mount_all /system/etc/recovery.fstab --late
 
 on boot
+    # ════════════════════════════════════════════════════════════
+    # BACKLIGHT
+    # ════════════════════════════════════════════════════════════
+    
+    chmod 0664 /sys/class/leds/lcd-backlight/brightness
+    chown system system /sys/class/leds/lcd-backlight/brightness
+    write /sys/class/leds/lcd-backlight/brightness 1200
+    
+    # ════════════════════════════════════════════════════════════
+    # SERVICES
+    # ════════════════════════════════════════════════════════════
+    
     # Health HAL
     start health-hal-2-1
     
@@ -78,18 +175,14 @@ on boot
     setprop recovery.booting 1
     start recovery
     
-    # USB
+    # USB/ADB
     setprop sys.usb.config adb
 
-service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
-    class main
-    user root
-    group root system
-    disabled
-    oneshot
-    seclabel u:r:recovery:s0
+# ════════════════════════════════════════════════════════════════
+# SERVICE DEFINITIONS
+# ════════════════════════════════════════════════════════════════
 
-service boot-hal-1-2 /vendor/bin/hw/android.hardware.boot@1.2-service
+service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
     class main
     user root
     group root system
@@ -100,9 +193,9 @@ service boot-hal-1-2 /vendor/bin/hw/android.hardware.boot@1.2-service
 service snapuserd /system/bin/snapuserd
     user root
     group root system
-    seclabel u:r:recovery:s0
-    oneshot
     disabled
+    oneshot
+    seclabel u:r:recovery:s0
 
 service health-hal-2-1 /system/bin/android.hardware.health@2.1-service
     user root
@@ -113,6 +206,6 @@ service health-hal-2-1 /system/bin/android.hardware.health@2.1-service
 service recovery /system/bin/recovery
     user root
     group root
+    disabled
     seclabel u:r:recovery:s0
     capabilities DAC_OVERRIDE SYS_BOOT
-    disabled
