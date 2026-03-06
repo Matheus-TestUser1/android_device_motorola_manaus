@@ -132,6 +132,57 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/init.recovery.usb.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.usb.rc \
     $(DEVICE_PATH)/recovery/root/ueventd.rc:$(TARGET_COPY_OUT_RECOVERY)/root/ueventd.rc
 
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/BT_FW.cfg:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/BT_FW.cfg \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/NFG1000A_battery_parameter_SB18D87942.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/NFG1000A_battery_parameter_SB18D87942.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/NFG1000A_battery_parameter_SB18D87943.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/NFG1000A_battery_parameter_SB18D87943.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/NFG1000A_firmware.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/NFG1000A_firmware.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/WIFI_RAM_CODE_soc7_0_1a_1.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/WIFI_RAM_CODE_soc7_0_1a_1.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/aw882xx_acf.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/aw882xx_acf.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/aw963xx_reg_0.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/aw963xx_reg_0.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/aw963xx_reg_evt_0.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/aw963xx_reg_evt_0.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/boe_goodix_cfg_group.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/boe_goodix_cfg_group.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/boe_goodix_firmware.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/boe_goodix_firmware.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/boe_goodix_test_limits_255.csv:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/boe_goodix_test_limits_255.csv \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/conninfra.cfg:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/conninfra.cfg \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/fm_cust.cfg:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/fm_cust.cfg \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/focaltech_ts_fw_csot.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/focaltech_ts_fw_csot.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/lib3a.ccu:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/lib3a.ccu \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/lib3a.ccu_dummy:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/lib3a.ccu_dummy \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mali_csffw.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mali_csffw.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mali_csffw_reload.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mali_csffw_reload.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mot_dw9781.prog:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mot_dw9781.prog \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6627_fm_v1_coeff.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6627_fm_v1_coeff.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6627_fm_v1_patch.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6627_fm_v1_patch.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6630_fm_v1_coeff.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6630_fm_v1_coeff.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6630_fm_v1_patch.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6630_fm_v1_patch.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6630_fm_v2_coeff.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6630_fm_v2_coeff.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6630_fm_v2_coeff_tx.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6630_fm_v2_coeff_tx.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6630_fm_v2_patch.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6630_fm_v2_patch.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6630_fm_v2_patch_tx.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6630_fm_v2_patch_tx.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6631_fm_v1_coeff.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6631_fm_v1_coeff.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6631_fm_v1_patch.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6631_fm_v1_patch.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6632_fm_v1_coeff.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6632_fm_v1_coeff.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6632_fm_v1_patch.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6632_fm_v1_patch.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6635_fm_v1_coeff.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6635_fm_v1_coeff.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6635_fm_v1_patch.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6635_fm_v1_patch.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/remoteproc_scp:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/remoteproc_scp \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc7_0_ram_bt_1_1_hdr.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc7_0_ram_bt_1_1_hdr.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc7_0_ram_bt_1a_1_hdr.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc7_0_ram_bt_1a_1_hdr.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc7_0_ram_bt_1b_1_hdr.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc7_0_ram_bt_1b_1_hdr.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc7_0_ram_mcu_1_1_hdr.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc7_0_ram_mcu_1_1_hdr.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc7_0_ram_mcu_1a_1_hdr.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc7_0_ram_mcu_1a_1_hdr.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc7_0_ram_mcu_1b_1_hdr.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc7_0_ram_mcu_1b_1_hdr.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc7_0_ram_wmmcu_1a_1_hdr.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc7_0_ram_wmmcu_1a_1_hdr.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc_fm_v1_coeff.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc_fm_v1_coeff.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc_fm_v1_patch.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc_fm_v1_patch.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/tm_goodix_cfg_group.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/tm_goodix_cfg_group.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/tm_goodix_firmware.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/tm_goodix_firmware.bin \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/tm_goodix_test_limits_255.csv:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/tm_goodix_test_limits_255.csv \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/txpowerctrl.cfg:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/txpowerctrl.cfg \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/txpowerctrl_na.cfg:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/txpowerctrl_na.cfg \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/valhall-1691526.wa:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/valhall-1691526.wa \
+    $(DEVICE_PATH)/recovery/root/vendor/firmware/wifi.cfg:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/wifi.cfg
 
 # ============================================================================
 # SOONG NAMESPACES
