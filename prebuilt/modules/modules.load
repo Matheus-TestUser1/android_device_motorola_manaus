@@ -97,9 +97,6 @@ mtk-pmic-keys.ko
 mtk-kpd.ko
 regulator-vibrator.ko
 i2c-mt65xx.ko
-touchscreen_mmi.ko
-goodix_mtk_fod.ko
-goodix_brl_mmi.ko
 rtc-mt6685.ko
 emi.ko
 emi-mpu.ko
@@ -185,3 +182,6 @@ load_track.ko
 sec.ko
 cache-parity.ko
 emi-mpu-hook-v1.ko
+touchscreen_mmi.ko
+goodix_mtk_fod.ko
+goodix_brl_mmi.ko
