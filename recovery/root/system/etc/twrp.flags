@@ -4,7 +4,7 @@
 
 #<mnt_point>        <type>    <device>                                                              <mnt_flags and options>
 /metadata           ext4      /dev/block/by-name/metadata                                           flags=display="metadata";backup=1
-/data               f2fs      /dev/block/by-name/userdata                                           flags=fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,keydirectory=/metadata/vold/metadata_encryption
+/data               f2fs      /dev/block/by-name/userdata  flags=display="Data";usermrf;backup=1;settingsstorage;wipeingui;wipeduringfactoryreset;formattable
 /boot               emmc      /dev/block/by-name/boot                                               flags=display="boot";slotselect;backup=1;flashimg=1
 /dtbo               emmc      /dev/block/by-name/dtbo                                               flags=display="dtbo";backup=1
 /vendor_boot        emmc      /dev/block/by-name/vendor_boot                                        flags=display="vendor_boot";slotselect;backup=1;flashimg=1
