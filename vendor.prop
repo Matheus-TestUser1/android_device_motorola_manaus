@@ -16,6 +16,8 @@ ro.vendor.mtk_f2fs_enable=1
 ro.vendor.mtk_emmc_support=1
 ro.vendor.mtk_ufs_support=1
 
+# Crypto
+ro.crypto.volume.filenames_mode=aes-256-cts
 # ════════════════════════════════════════════════════════════════════════
 # USB
 # Confirmado: vendor.usb.use_ffs_mtp=1 no vendor.prop original
