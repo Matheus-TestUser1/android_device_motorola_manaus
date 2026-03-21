@@ -226,3 +226,6 @@ service recovery /system/bin/recovery
     disabled
     seclabel u:r:recovery:s0
     capabilities DAC_OVERRIDE SYS_BOOT
+
+#on property:twrp.modules.loaded=true
+  #  start vibratorfeature-hal-service
