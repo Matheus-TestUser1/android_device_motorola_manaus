@@ -2,13 +2,6 @@
 # TWRP Recovery - Vendor Boot
 
 # ════════════════════════════════════════════════════════════════════════
-# MEDIATEK PLATFORM
-# ════════════════════════════════════════════════════════════════════════
-ro.vendor.mediatek.platform=MT6879
-ro.hardware.soc.manufacturer=mtk
-ro.board.platform=mt6879
-
-# ════════════════════════════════════════════════════════════════════════
 # STORAGE
 # Confirmado: ro.vendor.mtk_f2fs_enable=1 no vendor.prop original
 # ════════════════════════════════════════════════════════════════════════
@@ -18,6 +11,7 @@ ro.vendor.mtk_ufs_support=1
 
 # Crypto
 #ro.crypto.volume.filenames_mode=aes-256-cts
+
 # ════════════════════════════════════════════════════════════════════════
 # USB
 # Confirmado: vendor.usb.use_ffs_mtp=1 no vendor.prop original
@@ -25,8 +19,6 @@ ro.vendor.mtk_ufs_support=1
 # ════════════════════════════════════════════════════════════════════════
 persist.vendor.usb.config=mtp
 persist.vendor.usb.config.extra=none
-sys.usb.controller=11201000.usb0
-sys.usb.ffs.aio_compat=true
 vendor.usb.use_ffs_mtp=1
 
 # ════════════════════════════════════════════════════════════════════════
@@ -42,14 +34,3 @@ ro.vendor.mtk_gpu_support=1
 # ════════════════════════════════════════════════════════════════════════
 ro.vendor.boot.warranty_bit=0
 ro.vendor.warranty_bit=0
-ro.debuggable=1
-
-# ════════════════════════════════════════════════════════════════════════
-# VIRTUAL A/B
-# ADICIONADO: ro.virtual_ab.userspace.snapshots.enabled
-# Presente no vendor.prop original do dispositivo, estava faltando aqui
-# ════════════════════════════════════════════════════════════════════════
-ro.boot.dynamic_partitions=true
-ro.virtual_ab.enabled=true
-ro.virtual_ab.compression.enabled=true
-ro.virtual_ab.userspace.snapshots.enabled=true
