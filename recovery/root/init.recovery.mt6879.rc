@@ -7,224 +7,235 @@
 import /init.recovery.usb.rc
 
 on init
-    # USB configuration
-    setprop sys.usb.configfs 1
-    setprop sys.usb.controller "11201000.usb0"
-    setprop sys.usb.ffs.aio_compat 1
-    
-    # Environment
-    export PATH /system/bin:/sbin:/vendor/bin
-    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/system/lib:/vendor/lib:/vendor/lib64/hw:/sbin
-    
-    # Temporary filesystem
-    mount tmpfs tmpfs /tmp mode=0755
-    
-    # Basic directories
-    mkdir /system 0755 root root
-    mkdir /data 0771 system system
-    mkdir /cache 0770 system cache
-    mkdir /metadata 0771 system system
-    mkdir /mnt 0755 root system
-    
-    # Block device directories
-    mkdir /dev/block 0755 root root
-    mkdir /dev/block/by-name 0755 root root
-    mkdir /dev/block/mapper 0755 root root
-    
-    # Graphics/Display directories
-    mkdir /dev/graphics 0755 root graphics
-    mkdir /dev/dri 0755 root graphics
-    
-    # Input directory
-    mkdir /dev/input 0755 root input
-   # Permissoes para o touch Goodix
-    chmod 0664 /dev/gtp_tools
-    
-    # Permissoes base do painel MediaTek
-    chmod 0664 /sys/module/tpd_setting/parameters/tpd_calmat
-    chmod 0664 /sys/module/tpd_setting/parameters/tpd_em_debounce_time
+    # USB configuration
+    setprop sys.usb.configfs 1
+    setprop sys.usb.controller "11201000.usb0"
+    setprop sys.usb.ffs.aio_compat 1
+    
+    # Environment
+    export PATH /system/bin:/sbin:/vendor/bin
+    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/system/lib:/vendor/lib:/vendor/lib64/hw:/sbin
+    
+    # Temporary filesystem
+    mount tmpfs tmpfs /tmp mode=0755
+    
+    # Basic directories
+    mkdir /system 0755 root root
+    mkdir /data 0771 system system
+    mkdir /cache 0770 system cache
+    mkdir /metadata 0771 system system
+    mkdir /mnt 0755 root system
+    
+    # Block device directories
+    mkdir /dev/block 0755 root root
+    mkdir /dev/block/by-name 0755 root root
+    mkdir /dev/block/mapper 0755 root root
+    
+    # Graphics/Display directories
+    mkdir /dev/graphics 0755 root graphics
+    mkdir /dev/dri 0755 root graphics
+    
+    # 1. Carrega os módulos (a ordem é importante!)
+    insmod /vendor/lib/modules/touchscreen_mmi.ko
+    insmod /vendor/lib/modules/goodix_brl_mmi.ko
+    insmod /vendor/lib/modules/focaltech_v3.ko
 
 on fs
-    # Mount metadata (early stage)
-     mount_all /first_stage_ramdisk/fstab.mt6879 --late
+    # Mount metadata (early stage)
+     mount_all /first_stage_ramdisk/fstab.mt6879 --late
 
 on post-fs
-    # Wait for boot device
-    wait /dev/block/mmcblk0boot0 2
-    
-    # ════════════════════════════════════════════════════════════
-    # BOOT HAL SERVICE (A/B compatibility - igual stock/Xaga)
-    # ════════════════════════════════════════════════════════════
-    
-    start boot-hal-1-2
-    
-    # ════════════════════════════════════════════════════════════
-    # BLOCK DEVICE SYMLINKS
-    # ════════════════════════════════════════════════════════════
-    
-    # Hardware symlinks (UFS → eMMC compatibility)
-    symlink /dev/block/sda /dev/block/mmcblk0boot0
-    symlink /dev/block/sdb /dev/block/mmcblk0boot1
-    
-    # Preloader symlinks
-    symlink /dev/block/mmcblk0boot0 /dev/block/by-name/preloader_a
-    symlink /dev/block/mmcblk0boot1 /dev/block/by-name/preloader_b
-    
-    # Combo compatibility (eMMC + UFS)
-    symlink /dev/block/by-name/preloader_a /dev/block/by-name/preloader_emmc_a
-    symlink /dev/block/by-name/preloader_b /dev/block/by-name/preloader_emmc_b
-    symlink /dev/block/by-name/preloader_a /dev/block/by-name/preloader_ufs_a
-    symlink /dev/block/by-name/preloader_b /dev/block/by-name/preloader_ufs_b
-    
-    # Bootdevice symlink
-    symlink /dev/block/platform/bootdevice /dev/block/bootdevice
-    
-    # ════════════════════════════════════════════════════════════
-    # BLOCK DEVICE PERMISSIONS (Motorola specific)
-    # ════════════════════════════════════════════════════════════
-    
-    chmod 0660 /dev/block/by-name/utags
-    chmod 0660 /dev/block/by-name/utagsBackup
-    chown root system /dev/block/by-name/utags
-    chown root system /dev/block/by-name/utagsBackup
-    chmod 0660 /dev/block/by-name/hob
-    chmod 0660 /dev/block/by-name/dhob
-    chmod 0660 /dev/block/by-name/cid
-    chmod 0660 /dev/block/by-name/clogo
-    chmod 0640 /dev/block/by-name/logs
-    
-    # ════════════════════════════════════════════════════════════
-    # DISPLAY/GRAPHICS PERMISSIONS
-    # ════════════════════════════════════════════════════════════
-    
-    chmod 0660 /dev/graphics/fb0
-    chown system graphics /dev/graphics/fb0
-    chmod 0660 /dev/mtk_disp_mgr
-    chown system graphics /dev/mtk_disp_mgr
-    chmod 0660 /dev/mtkfb_vsync
-    chown system graphics /dev/mtkfb_vsync
-    chmod 0660 /dev/sw_sync
-    chown system graphics /dev/sw_sync
-    chmod 0444 /dev/mtk_disp
-    chown system graphics /dev/mtk_disp
-    chmod 0660 /dev/dri/card0
-    chown system system /dev/dri/card0
-    
-    # ════════════════════════════════════════════════════════════
-    # GPU PERMISSIONS
-    # ════════════════════════════════════════════════════════════
-    
-    chmod 0666 /dev/ion
-    chown system graphics /dev/ion
-    chmod 0666 /dev/mali0
-    chown system graphics /dev/mali0
-    
-    # ════════════════════════════════════════════════════════════
-    # VENDOR PARTITIONS
-    # ════════════════════════════════════════════════════════════
-    
-    # Create directories
-    mkdir /mnt/vendor/protect_f 0770 system system
-    mkdir /mnt/vendor/protect_s 0770 system system
-    mkdir /mnt/vendor/nvdata 0771 root system
-    mkdir /mnt/vendor/nvcfg 0771 system system
-    
-    # Set permissions
-    chown system system /mnt/vendor/protect_f
-    chmod 0770 /mnt/vendor/protect_f
-    chown system system /mnt/vendor/protect_s
-    chmod 0770 /mnt/vendor/protect_s
-    chown root system /mnt/vendor/nvdata
-    chmod 0771 /mnt/vendor/nvdata
-    chown system system /mnt/vendor/nvcfg
-    chmod 0771 /mnt/vendor/nvcfg
-    
-    # ════════════════════════════════════════════════════════════
-    # MEDIATEK PLPATH (Preloader mapper)
-    # ════════════════════════════════════════════════════════════
-    
-    exec u:r:recovery:s0 root root -- /system/bin/mtk_plpath_utils
-    start mtk.plpath.utils.link
-    
-    # Wait for mapper devices
-    wait /dev/block/mapper/pl_a 2
-    
-    # Create preloader_raw symlinks
-    symlink /dev/block/mapper/pl_a /dev/block/by-name/preloader_raw_a
-    symlink /dev/block/mapper/pl_b /dev/block/by-name/preloader_raw_b
-    
-    # Bootloader symlinks
-    symlink /dev/block/by-name/lk1 /dev/block/by-name/bootloader1
-    symlink /dev/block/by-name/lk2 /dev/block/by-name/bootloader2
-    
-    # ════════════════════════════════════════════════════════════
-    # DYNAMIC PARTITIONS
-    # ════════════════════════════════════════════════════════════
-    
-    # Start snapuserd (Virtual A/B support)
-    start snapuserd
-    
-    # Mount dynamic partitions (late stage)
-    mount_all /system/etc/recovery.fstab --late
+    # Wait for boot device
+    wait /dev/block/mmcblk0boot0 2
+    
+    # ════════════════════════════════════════════════════════════
+    # BOOT HAL SERVICE (A/B compatibility - igual stock/Xaga)
+    # ════════════════════════════════════════════════════════════
+    
+    start boot-hal-1-2
+    
+    # ════════════════════════════════════════════════════════════
+    # BLOCK DEVICE SYMLINKS
+    # ════════════════════════════════════════════════════════════
+    
+    # Hardware symlinks (UFS → eMMC compatibility)
+    symlink /dev/block/sda /dev/block/mmcblk0boot0
+    symlink /dev/block/sdb /dev/block/mmcblk0boot1
+    
+    # Preloader symlinks
+    symlink /dev/block/mmcblk0boot0 /dev/block/by-name/preloader_a
+    symlink /dev/block/mmcblk0boot1 /dev/block/by-name/preloader_b
+    
+    # Combo compatibility (eMMC + UFS)
+    symlink /dev/block/by-name/preloader_a /dev/block/by-name/preloader_emmc_a
+    symlink /dev/block/by-name/preloader_b /dev/block/by-name/preloader_emmc_b
+    symlink /dev/block/by-name/preloader_a /dev/block/by-name/preloader_ufs_a
+    symlink /dev/block/by-name/preloader_b /dev/block/by-name/preloader_ufs_b
+    
+    # Bootdevice symlink
+    symlink /dev/block/platform/bootdevice /dev/block/bootdevice
+    
+    # ════════════════════════════════════════════════════════════
+    # BLOCK DEVICE PERMISSIONS (Motorola specific)
+    # ════════════════════════════════════════════════════════════
+    
+    chmod 0660 /dev/block/by-name/utags
+    chmod 0660 /dev/block/by-name/utagsBackup
+    chown root system /dev/block/by-name/utags
+    chown root system /dev/block/by-name/utagsBackup
+    chmod 0660 /dev/block/by-name/hob
+    chmod 0660 /dev/block/by-name/dhob
+    chmod 0660 /dev/block/by-name/cid
+    chmod 0660 /dev/block/by-name/clogo
+    chmod 0640 /dev/block/by-name/logs
+    
+    # ════════════════════════════════════════════════════════════
+    # DISPLAY/GRAPHICS PERMISSIONS
+    # ════════════════════════════════════════════════════════════
+    
+    chmod 0660 /dev/graphics/fb0
+    chown system graphics /dev/graphics/fb0
+    chmod 0660 /dev/mtk_disp_mgr
+    chown system graphics /dev/mtk_disp_mgr
+    chmod 0660 /dev/mtkfb_vsync
+    chown system graphics /dev/mtkfb_vsync
+    chmod 0660 /dev/sw_sync
+    chown system graphics /dev/sw_sync
+    chmod 0444 /dev/mtk_disp
+    chown system graphics /dev/mtk_disp
+    chmod 0660 /dev/dri/card0
+    chown system system /dev/dri/card0
+    
+    # ════════════════════════════════════════════════════════════
+    # GPU PERMISSIONS
+    # ════════════════════════════════════════════════════════════
+    
+    chmod 0666 /dev/ion
+    chown system graphics /dev/ion
+    chmod 0666 /dev/mali0
+    chown system graphics /dev/mali0
+    
+    # ════════════════════════════════════════════════════════════
+    # VENDOR PARTITIONS
+    # ════════════════════════════════════════════════════════════
+    
+    # Create directories
+    mkdir /mnt/vendor/protect_f 0770 system system
+    mkdir /mnt/vendor/protect_s 0770 system system
+    mkdir /mnt/vendor/nvdata 0771 root system
+    mkdir /mnt/vendor/nvcfg 0771 system system
+    
+    # Set permissions
+    chown system system /mnt/vendor/protect_f
+    chmod 0770 /mnt/vendor/protect_f
+    chown system system /mnt/vendor/protect_s
+    chmod 0770 /mnt/vendor/protect_s
+    chown root system /mnt/vendor/nvdata
+    chmod 0771 /mnt/vendor/nvdata
+    chown system system /mnt/vendor/nvcfg
+    chmod 0771 /mnt/vendor/nvcfg
+    
+    # ════════════════════════════════════════════════════════════
+    # MEDIATEK PLPATH (Preloader mapper)
+    # ════════════════════════════════════════════════════════════
+    
+    exec u:r:recovery:s0 root root -- /system/bin/mtk_plpath_utils
+    start mtk.plpath.utils.link
+    
+    # Wait for mapper devices
+    wait /dev/block/mapper/pl_a 2
+    
+    # Create preloader_raw symlinks
+    symlink /dev/block/mapper/pl_a /dev/block/by-name/preloader_raw_a
+    symlink /dev/block/mapper/pl_b /dev/block/by-name/preloader_raw_b
+    
+    # Bootloader symlinks
+    symlink /dev/block/by-name/lk1 /dev/block/by-name/bootloader1
+    symlink /dev/block/by-name/lk2 /dev/block/by-name/bootloader2
+    
+    # ════════════════════════════════════════════════════════════
+    # DYNAMIC PARTITIONS
+    # ════════════════════════════════════════════════════════════
+    
+    # Start snapuserd (Virtual A/B support)
+    start snapuserd
+    
+    # Mount dynamic partitions (late stage)
+    mount_all /system/etc/recovery.fstab --late
 
 on boot
-    # ════════════════════════════════════════════════════════════
-    # BACKLIGHT
-    # ════════════════════════════════════════════════════════════
-    
-    chmod 0664 /sys/class/leds/lcd-backlight/brightness
-    chown system system /sys/class/leds/lcd-backlight/brightness
-    write /sys/class/leds/lcd-backlight/brightness 1200
-    
-    # ════════════════════════════════════════════════════════════
-    # SERVICES
-    # ════════════════════════════════════════════════════════════
-    
-    # Health HAL
-    start health-hal-2-1
-    
-    # Recovery
-    setprop recovery.booting 1
-    start recovery
-    
-    # USB/ADB
-    setprop sys.usb.config adb
+    # ════════════════════════════════════════════════════════════
+    # BACKLIGHT
+    # ════════════════════════════════════════════════════════════
+
+    # 2. Permissões
+    chmod 0664 /dev/gtp_tools
+    chown root diag /sys/module/tpd_setting/parameters/tpd_calmat
+    
+    # 3. Permissão e execução do script da Motorola
+    chmod 0755 /vendor/bin/init.mmi.touch.sh
+    start vendor.mmi-touch-sh
+
+    chmod 0664 /sys/class/leds/lcd-backlight/brightness
+    chown system system /sys/class/leds/lcd-backlight/brightness
+    write /sys/class/leds/lcd-backlight/brightness 1200
+    
+    # ════════════════════════════════════════════════════════════
+    # SERVICES
+    # ════════════════════════════════════════════════════════════
+    
+    # Health HAL
+    start health-hal-2-1
+    
+    # Recovery
+    setprop recovery.booting 1
+    start recovery
+    
+    # USB/ADB
+    setprop sys.usb.config adb
 
 # ════════════════════════════════════════════════════════════════
 # SERVICE DEFINITIONS
 # ════════════════════════════════════════════════════════════════
 
 service boot-hal-1-2 /system/bin/android.hardware.boot@1.2-service
-    user root
-    group root system
-    disabled
-    oneshot
-    seclabel u:r:recovery:s0
+    user root
+    group root system
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
 
 service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
-    class main
-    user root
-    group root system
-    disabled
-    oneshot
-    seclabel u:r:recovery:s0
+    class main
+    user root
+    group root system
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
 
 service snapuserd /system/bin/snapuserd
-    user root
-    group root system
-    disabled
-    oneshot
-    seclabel u:r:recovery:s0
+    user root
+    group root system
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
 
 service health-hal-2-1 /system/bin/android.hardware.health@2.1-service
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
 
 service recovery /system/bin/recovery
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
-    capabilities DAC_OVERRIDE SYS_BOOT
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+    capabilities DAC_OVERRIDE SYS_BOOT
+
+service vendor.mmi-touch-sh /vendor/bin/init.mmi.touch.sh
+    class core
+    user root
+    oneshot
+    seclabel u:r:recovery:s0
+ 
