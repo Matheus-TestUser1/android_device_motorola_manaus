@@ -77,6 +77,14 @@ subsystem dma_heap
 /dev/block/by-name/otp                           0660   root    system
 /dev/block/by-name/*                             0660   root    system
 
+/sys/devices/virtual/input/input*   enable      0660  root   input
+/sys/devices/virtual/input/input*   poll_delay  0660  root   input
+
+# Goodix Touch sysfs
+/sys/devices/platform/soc/*/i2c*/i2c-*/*/input/input*   enable       0660   root     input
+/sys/devices/platform/soc/*/i2c*/i2c-*/*/goodix_ts      reset        0660   system   input
+/sys/devices/platform/soc/*/i2c*/i2c-*/*/goodix_ts      irq_enabled  0660   system   input
+
 # ════════════════════════════════════════════════════════════════
 # GRAPHICS / DISPLAY / GPU
 # ════════════════════════════════════════════════════════════════
@@ -250,15 +258,6 @@ subsystem dma_heap
 /sys/devices/platform/leds-mt65xx/leds/red     delay_off             0664   system   system
 /sys/devices/platform/leds-mt65xx/leds/blue    delay_on              0664   system   system
 /sys/devices/platform/leds-mt65xx/leds/blue    delay_off             0664   system   system
-
-# Input sysfs
-/sys/devices/virtual/input/input*   enable                            0660   root     input
-/sys/devices/virtual/input/input*   poll_delay                        0660   root     input
-
-# Goodix Touch sysfs
-/sys/devices/platform/soc/*/i2c*/i2c-*/*/input/input*   enable       0660   root     input
-/sys/devices/platform/soc/*/i2c*/i2c-*/*/goodix_ts      reset        0660   system   input
-/sys/devices/platform/soc/*/i2c*/i2c-*/*/goodix_ts      irq_enabled  0660   system   input
 
 # CCCI sysfs
 /sys/kernel/ccci   modem_info                                         0644   radio    radio
