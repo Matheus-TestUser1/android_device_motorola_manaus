@@ -278,7 +278,7 @@ TW_USB_PRODUCT_ID := 0x2e81
 TW_USB_PRODUCT_ID_FASTBOOT := 0x2e80
 
 TW_EXCLUDE_DEFAULT_USB_INIT := true
-TARGET_USE_CUSTOM_LUN_FILE_PATH := "/config/usb_gadget/g1/functions/mass_storage.usb0/lun.%d/file"
+TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.usb0/lun.%d/file
 
 # ============================================================================
 # TWRP - UI & FEATURES
