@@ -87,9 +87,6 @@ on post-fs
     chmod 0660 /dev/block/by-name/clogo
     chmod 0640 /dev/block/by-name/logs
     
-    # Input devices permissions
-    chown system input /dev/input/event*
-    chmod 0660 /dev/input/event*
     # ════════════════════════════════════════════════════════════
     # DISPLAY/GRAPHICS PERMISSIONS
     # ════════════════════════════════════════════════════════════
@@ -172,8 +169,7 @@ on boot
     chmod 0664 /sys/class/leds/lcd-backlight/brightness
     chown system system /sys/class/leds/lcd-backlight/brightness
     write /sys/class/leds/lcd-backlight/brightness 1200
-       
-  
+    
     # ════════════════════════════════════════════════════════════
     # SERVICES
     # ════════════════════════════════════════════════════════════
@@ -226,6 +222,3 @@ service recovery /system/bin/recovery
     disabled
     seclabel u:r:recovery:s0
     capabilities DAC_OVERRIDE SYS_BOOT
-
-#on property:twrp.modules.loaded=true
-  #  start vibratorfeature-hal-service
