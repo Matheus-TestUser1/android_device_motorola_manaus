@@ -79,7 +79,9 @@ subsystem dma_heap
 
 /sys/devices/virtual/input/input*   enable      0660  root   input
 /sys/devices/virtual/input/input*   poll_delay  0660  root   input
-
+# Touch Panel Motorola/Goodix
+/dev/touch                0660   root       system
+/dev/gtp_tools            0664   root       system
 # Goodix Touch sysfs
 /sys/devices/platform/soc/*/i2c*/i2c-*/*/input/input*   enable       0660   root     input
 /sys/devices/platform/soc/*/i2c*/i2c-*/*/goodix_ts      reset        0660   system   input
