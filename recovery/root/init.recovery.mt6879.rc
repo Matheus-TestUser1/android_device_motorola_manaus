@@ -37,6 +37,12 @@ on init
     
     # Input directory
     mkdir /dev/input 0755 root input
+   # Permissoes para o touch Goodix
+    chmod 0664 /dev/gtp_tools
+    
+    # Permissoes base do painel MediaTek
+    chmod 0664 /sys/module/tpd_setting/parameters/tpd_calmat
+    chmod 0664 /sys/module/tpd_setting/parameters/tpd_em_debounce_time
 
 on fs
     # Mount metadata (early stage)
