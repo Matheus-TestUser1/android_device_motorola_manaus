@@ -82,10 +82,10 @@ PRODUCT_COPY_FILES += \
 
 # fallback 
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/prebuilt/init.mmi.touch.sh:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/init.mmi.touch.sh 
+    $(DEVICE_PATH)/recovery/root/vendor/bin/init.mmi.touch.sh:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/init.mmi.touch.sh 
 
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/prebuilt/init.mmi.touch.sh:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/root/vendor/bin/init.mmi.touch.sh 
+    $(DEVICE_PATH)/recovery/root/vendor/bin/init.mmi.touch.sh:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/root/vendor/bin/init.mmi.touch.sh 
 
 
 PRODUCT_COPY_FILES += \
