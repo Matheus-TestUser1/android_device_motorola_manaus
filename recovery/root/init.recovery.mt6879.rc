@@ -160,7 +160,13 @@ on post-fs
 	mount_all /system/etc/recovery.fstab --late
 
 on boot
-	# ════════════════════════════════════════════════════════════
+
+	modprobe touchscreen_mmi
+	modprobe goodix_brl_mmi
+	modprobe focaltech_v3
+
+
+# ════════════════════════════════════════════════════════════
 	# BACKLIGHT
 	# ════════════════════════════════════════════════════════════
 
