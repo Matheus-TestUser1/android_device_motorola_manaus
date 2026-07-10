@@ -77,11 +77,15 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/modules/goodix_brl_mmi.ko:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/root/vendor/lib/modules/goodix_brl_mmi.ko \
     $(LOCAL_PATH)/prebuilt/modules/focaltech_v3.ko:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/root/vendor/lib/modules/focaltech_v3.ko
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/init.mmi.touch.sh:recovery/root/vendor/bin/init.mmi.touch.sh
+
 # fallback 
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/init.mmi.touch.sh:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/init.mmi.touch.sh 
+
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/prebuilt/init.mmi.touch.sh:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/root/vendor/bin/init.mmi.touch.sh 
+
+
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/modules/touchscreen_mmi.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules/touchscreen_mmi.ko \
     $(LOCAL_PATH)/prebuilt/modules/goodix_brl_mmi.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules/goodix_brl_mmi.ko \
