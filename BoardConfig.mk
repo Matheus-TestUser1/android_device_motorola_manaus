@@ -115,7 +115,7 @@ TW_INCLUDE_BOOT_HAL := true
 
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES := $(wildcard $(DEVICE_PATH)/prebuilt/modules/*.ko)
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilt/modules/modules.load 2>/dev/null))
-
+BOARD_VENDOR_BOOT_RAMDISK_KERNEL_MODULES := $(filter-out $(RECOVERY_RAMDISK_KERNEL_MODULES), $(VENDOR_BOOT_RAMDISK_KERNEL_MODULES))
 # ============================================================================
 # VIRTUAL A/B (VAB)
 # ============================================================================
