@@ -168,14 +168,6 @@ on boot
 	# BACKLIGHT
 	# ════════════════════════════════════════════════════════════
 
-	# 2. Permissões
-	chmod 0664 /dev/gtp_tools
-	chown root diag /sys/module/tpd_setting/parameters/tpd_calmat
-
-	# 3. Permissão e execução do script da Motorola
-	chmod 0755 /vendor/bin/init.mmi.touch.sh
-	start vendor.mmi-touch-sh
-
 	chmod 0664 /sys/class/leds/lcd-backlight/brightness
 	chown system system /sys/class/leds/lcd-backlight/brightness
 	write /sys/class/leds/lcd-backlight/brightness 1200
@@ -186,6 +178,13 @@ on boot
 
 	# Health HAL
 	start health-hal-2-1
+	# 2. Permissões
+	chmod 0664 /dev/gtp_tools
+	chown root diag /sys/module/tpd_setting/parameters/tpd_calmat
+
+	# 3. Permissão e execução do script da Motorola
+	chmod 0755 /vendor/bin/init.mmi.touch.sh
+	start vendor.mmi-touch-sh
 
 	# Recovery
 	setprop recovery.booting 1
