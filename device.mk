@@ -73,9 +73,9 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/vendor/bin/hw/android.hardware.boot@1.2-service:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/hw/android.hardware.boot@1.2-service
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/modules/touchscreen_mmi.ko:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/lib/modules/touchscreen_mmi.ko \
-    $(LOCAL_PATH)/prebuilt/modules/goodix_brl_mmi.ko:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/lib/modules/goodix_brl_mmi.ko \
-    $(LOCAL_PATH)/prebuilt/modules/focaltech_v3.ko:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/lib/modules/focaltech_v3.ko
+    $(LOCAL_PATH)/prebuilt/modules/touchscreen_mmi.ko:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/vendor/lib/modules/touchscreen_mmi.ko \
+    $(LOCAL_PATH)/prebuilt/modules/goodix_brl_mmi.ko:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/vendor/lib/modules/goodix_brl_mmi.ko \
+    $(LOCAL_PATH)/prebuilt/modules/focaltech_v3.ko:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/vendor/lib/modules/focaltech_v3.ko
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/init.mmi.touch.sh:recovery/root/vendor/bin/init.mmi.touch.sh
