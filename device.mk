@@ -77,6 +77,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/modules/goodix_brl_mmi.ko:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/lib/modules/goodix_brl_mmi.ko \
     $(LOCAL_PATH)/prebuilt/modules/focaltech_v3.ko:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/lib/modules/focaltech_v3.ko
 
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/init.mmi.touch.sh:recovery/root/vendor/bin/init.mmi.touch.sh
+
 # ============================================================================
 # VIRTUAL A/B — SNAPUSERD
 # ============================================================================
