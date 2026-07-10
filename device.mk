@@ -77,6 +77,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/modules/goodix_brl_mmi.ko:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/root/vendor/lib/modules/goodix_brl_mmi.ko \
     $(LOCAL_PATH)/prebuilt/modules/focaltech_v3.ko:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/root/vendor/lib/modules/focaltech_v3.ko
 
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/bin/modprobe:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/modprobe
 
 # fallback 
 PRODUCT_COPY_FILES += \
