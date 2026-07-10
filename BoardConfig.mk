@@ -124,7 +124,7 @@ TW_LOAD_VENDOR_BOOT_MODULES := true
 
 # Copia todos os módulos .ko do prebuilt/modules/
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES := $(wildcard $(DEVICE_PATH)/prebuilt/modules/*.ko)
-
+BOARD_INCLUDE_RECOVERY_RAMDISK_IN_VENDOR_BOOT := true
 # Lê a ordem de carregamento do arquivo modules.load
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/prebuilt/modules/modules.load 2>/dev/null))
 TW_INCLUDE_BOOT_HAL := true
