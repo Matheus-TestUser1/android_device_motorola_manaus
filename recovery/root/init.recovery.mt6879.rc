@@ -21,7 +21,6 @@ on init
 
 	# Basic directories
 	mkdir /system 0755 root root
-	mkdir /data 0771 system system
 	mkdir /cache 0770 system cache
 	mkdir /metadata 0771 system system
 	mkdir /mnt 0755 root system
