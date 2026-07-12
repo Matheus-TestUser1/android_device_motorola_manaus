@@ -214,11 +214,6 @@ service snapuserd /system/bin/snapuserd
 	oneshot
 	seclabel u:r:recovery:s0
 
-service health-hal-2-1 /system/bin/android.hardware.health@2.1-service
-	user root
-	group root
-	disabled
-	seclabel u:r:recovery:s0
 
 service recovery /system/bin/recovery
 	user root
