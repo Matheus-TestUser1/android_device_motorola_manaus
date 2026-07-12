@@ -262,6 +262,10 @@ TARGET_SURFACE_FLINGER_MAX_FRAME_BUFFERS := 4
 # ============================================================================
 TARGET_OTA_ASSERT_DEVICE := manaus,manaus_g,edge40neo
 
+TW_LOAD_VENDOR_MODULES := \
+    $(DEVICE_PATH)/prebuilt/modules/touchscreen_mmi.ko \
+    $(DEVICE_PATH)/prebuilt/modules/goodix_brl_mmi.ko \
+    $(DEVICE_PATH)/prebuilt/modules/focaltech_v3.ko
 # ============================================================================
 # VERSIONS
 # ============================================================================
