@@ -153,9 +153,6 @@ on post-fs
 	# Start snapuserd (Virtual A/B support)
 	start snapuserd
 
-	# Mount dynamic partitions (late stage)
-	mount_all /system/etc/recovery.fstab --late
-
 on boot
 
  exec_background u:r:recovery:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules touchscreen_mmi goodix_brl_mmi focaltech_v3
