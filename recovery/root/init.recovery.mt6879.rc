@@ -20,9 +20,7 @@ on init
 	mount tmpfs tmpfs /tmp mode=0755
 
 	# Basic directories
-	mkdir /system 0755 root root
 	mkdir /cache 0770 system cache
-	mkdir /metadata 0771 system system
 	mkdir /mnt 0755 root system
 
 	# Block device directories
