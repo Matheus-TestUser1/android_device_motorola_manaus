@@ -145,7 +145,20 @@ subsystem dma_heap
 /dev/ttyUSB3                                     0660   radio      radio
 /dev/ttyUSB4                                     0660   radio      radio
 /dev/ttyACM0                                     0660   radio      radio
-
+# these should not be world writable
+/dev/uhid                 0660   uhid       uhid
+/dev/uinput               0660   uhid       uhid
+/dev/rtc0                 0640   system     system
+/dev/tty0                 0660   root       system
+/dev/graphics/*           0660   root       graphics
+/dev/input/*              0660   root       input
+/dev/v4l-touch*           0660   root       input
+/dev/snd/*                0660   system     audio
+/dev/bus/usb/*            0660   root       usb
+/dev/mtp_usb              0660   root       mtp
+/dev/usb_accessory        0660   root       usb
+/dev/tun                  0660   system     vpn
+/dev/hidraw*              0660   system     system
 # ════════════════════════════════════════════════════════════════
 # CONNECTIVITY
 # ════════════════════════════════════════════════════════════════
@@ -260,6 +273,15 @@ subsystem dma_heap
 /sys/devices/platform/leds-mt65xx/leds/red     delay_off             0664   system   system
 /sys/devices/platform/leds-mt65xx/leds/blue    delay_on              0664   system   system
 /sys/devices/platform/leds-mt65xx/leds/blue    delay_off             0664   system   system
+# sysfs properties
+/sys/devices/platform/trusty.*      trusty_version        0440  root   log
+/sys/devices/virtual/input/input*   enable      0660  root   input
+/sys/devices/virtual/input/input*   poll_delay  0660  root   input
+/sys/devices/virtual/usb_composite/*   enable      0664  root   system
+/sys/devices/system/cpu/cpu*   cpufreq/scaling_max_freq   0664  system system
+/sys/devices/system/cpu/cpu*   cpufreq/scaling_min_freq   0664  system system
+/sys/devices/virtual/misc/uhid/*/leds/* brightness   0664  system system
+/sys/devices/virtual/misc/uhid/*/leds/* multi_intensity   0664  system system
 
 # CCCI sysfs
 /sys/kernel/ccci   modem_info                                         0644   radio    radio
