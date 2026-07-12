@@ -186,7 +186,7 @@ BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 # ============================================================================
 BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_HAS_NO_REAL_SDCARD := true
-RECOVERY_SDCARD_ON_DATA := true
+#RECOVERY_SDCARD_ON_DATA := true
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 
@@ -219,14 +219,14 @@ TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_MAX_BRIGHTNESS := 2047
 TW_DEFAULT_BRIGHTNESS := 1200
 
-TW_HAS_MTP := true
+#TW_HAS_MTP := true
 
-TW_INTERNAL_STORAGE_PATH := "/data/media/0"
-TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
+#TW_INTERNAL_STORAGE_PATH := "/data/media/0"
+#TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
 
-TW_EXTERNAL_STORAGE_PATH := "/external_sd"
-TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
-TW_DEFAULT_EXTERNAL_STORAGE := true
+#TW_EXTERNAL_STORAGE_PATH := "/external_sd"
+#TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
+#TW_DEFAULT_EXTERNAL_STORAGE := true
 TW_USE_NEW_MINADBD := true
 TW_USE_TOOLBOX := true
 TW_INCLUDE_RESETPROP := true
@@ -239,7 +239,7 @@ TW_NO_FASTBOOT_BOOT := true
 TW_NO_BIND_SYSTEM := true
 TW_HAS_NO_RECOVERY_PARTITION := true
 
-TW_CUSTOM_CPU_TEMP_PATH := /sys/class/thermal/thermal_zone3/temp
+TW_CUSTOM_CPU_TEMP_PATH := /sys/class/thermal/thermal_zone53/temp
 BOARD_UFS_SUPPORT := true
 
 TW_OVERRIDE_SYSTEM_PROPS :=   "ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental"
@@ -247,9 +247,9 @@ TW_OVERRIDE_SYSTEM_PROPS :=   "ro.build.fingerprint=ro.system.build.fingerprint;
 # ============================================================================
 # SECURITY - CRYPTO DESABILITADO
 # ============================================================================
-#TW_INCLUDE_CRYPTO := false
-#TW_INCLUDE_CRYPTO_FBE := false
-#TW_INCLUDE_FBE_METADATA_DECRYPT := false
+TW_INCLUDE_CRYPTO := false
+TW_INCLUDE_CRYPTO_FBE := false
+TW_INCLUDE_FBE_METADATA_DECRYPT := false
 
 # ============================================================================
 # DISPLAY/GRAPHICS
