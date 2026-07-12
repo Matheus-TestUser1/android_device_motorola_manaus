@@ -155,8 +155,10 @@ on post-fs
 
 on boot
 
- exec_background u:r:recovery:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules touchscreen_mmi goodix_brl_mmi focaltech_v3
-exec_background u:r:recovery:s0 root root -- /system/bin/modprobe -a -d /vendor/lib/modules touchscreen_mmi goodix_brl_mmi focaltech_v3
+on boot
+    # Método à prova de falhas: carrega os módulos isolados em segundo plano
+    exec_background u:r:recovery:s0 root root -- /system/bin/sh -c "insmod /vendor/lib/modules/touchscreen_mmi.ko && insmod /vendor/lib/modules/goodix_brl_mmi.ko && insmod /vendor/lib/modules/focaltech_v3.ko"
+
 # ════════════════════════════════════════════════════════════
 	# BACKLIGHT
 	# ════════════════════════════════════════════════════════════
