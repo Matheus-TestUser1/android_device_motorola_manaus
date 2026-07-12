@@ -31,7 +31,8 @@ on init
 	# Graphics/Display directories
 	mkdir /dev/graphics 0755 root graphics
 	mkdir /dev/dri 0755 root graphics
-
+mkdir /tmp/modules 0770 root root
+    exec u:r:recovery:s0 root root -- /system/bin/sh -c "cp /vendor/lib/modules/*.ko /tmp/modules/"
 
 on fs
 	# Mount metadata (early stage)
