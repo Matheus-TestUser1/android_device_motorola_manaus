@@ -172,7 +172,7 @@ on boot
 	# ════════════════════════════════════════════════════════════
 
 	# Health HAL
-	start health-hal-2-1
+	#start health-hal-2-1
 	# 2. Permissões
 	chmod 0664 /dev/gtp_tools
 	chown root diag /sys/module/tpd_setting/parameters/tpd_calmat
