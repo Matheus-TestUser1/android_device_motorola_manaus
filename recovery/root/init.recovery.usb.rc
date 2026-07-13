@@ -1,7 +1,7 @@
 # init.recovery.usb.rc
 # USB configuration for Motorola Edge 40 Neo (manaus) - MT6879
 # TWRP 11+ com ffs.mtp (FunctionFS MTP - Obrigatório no TWRP)
-# Corrigido: linha flutuante, 2>/dev/null, fastboot/sideload completo
+# Corrigido: linha flutuante, 2>/dev/null removido, fastboot/sideload completo
 
 on early-init
     setprop sys.usb.configfs 1
@@ -83,10 +83,10 @@ on property:sys.usb.config=none
     stop adbd
     stop fastbootd
     setprop sys.usb.ffs.ready 0
-    write /config/usb_gadget/g1/UDC "none" 2>/dev/null
-    rm /config/usb_gadget/g1/configs/b.1/f1 2>/dev/null
-    rm /config/usb_gadget/g1/configs/b.1/f2 2>/dev/null
-    rm /config/usb_gadget/g1/configs/b.1/f3 2>/dev/null
+    write /config/usb_gadget/g1/UDC "none"
+    rm /config/usb_gadget/g1/configs/b.1/f1
+    rm /config/usb_gadget/g1/configs/b.1/f2
+    rm /config/usb_gadget/g1/configs/b.1/f3
     write /sys/class/android_usb/android0/enable 0
     setprop sys.usb.state ${sys.usb.config}
 
@@ -96,9 +96,9 @@ on property:sys.usb.config=none
 on property:sys.usb.config=adb
     stop fastbootd
     setprop sys.usb.ffs.ready 0
-    write /config/usb_gadget/g1/UDC "none" 2>/dev/null
-    rm /config/usb_gadget/g1/configs/b.1/f1 2>/dev/null
-    rm /config/usb_gadget/g1/configs/b.1/f2 2>/dev/null
+    write /config/usb_gadget/g1/UDC "none"
+    rm /config/usb_gadget/g1/configs/b.1/f1
+    rm /config/usb_gadget/g1/configs/b.1/f2
     start adbd
 
 on property:sys.usb.ffs.ready=1 && property:sys.usb.config=adb && property:sys.usb.android_old=1
@@ -123,9 +123,9 @@ on property:sys.usb.ffs.ready=1 && property:sys.usb.config=adb && property:sys.u
 on property:sys.usb.config=mtp,adb
     stop fastbootd
     setprop sys.usb.ffs.ready 0
-    write /config/usb_gadget/g1/UDC "none" 2>/dev/null
-    rm /config/usb_gadget/g1/configs/b.1/f1 2>/dev/null
-    rm /config/usb_gadget/g1/configs/b.1/f2 2>/dev/null
+    write /config/usb_gadget/g1/UDC "none"
+    rm /config/usb_gadget/g1/configs/b.1/f1
+    rm /config/usb_gadget/g1/configs/b.1/f2
     start adbd
 
 on property:sys.usb.ffs.ready=1 && property:sys.usb.config=mtp,adb && property:sys.usb.android_old=1
@@ -151,9 +151,9 @@ on property:sys.usb.ffs.ready=1 && property:sys.usb.config=mtp,adb && property:s
 on property:sys.usb.config=fastboot
     stop adbd
     setprop sys.usb.ffs.ready 0
-    write /config/usb_gadget/g1/UDC "none" 2>/dev/null
-    rm /config/usb_gadget/g1/configs/b.1/f1 2>/dev/null
-    rm /config/usb_gadget/g1/configs/b.1/f2 2>/dev/null
+    write /config/usb_gadget/g1/UDC "none"
+    rm /config/usb_gadget/g1/configs/b.1/f1
+    rm /config/usb_gadget/g1/configs/b.1/f2
     start fastbootd
 
 on property:sys.usb.ffs.ready=1 && property:sys.usb.config=fastboot && property:sys.usb.android_old=1
@@ -178,9 +178,9 @@ on property:sys.usb.ffs.ready=1 && property:sys.usb.config=fastboot && property:
 on property:sys.usb.config=sideload
     stop fastbootd
     setprop sys.usb.ffs.ready 0
-    write /config/usb_gadget/g1/UDC "none" 2>/dev/null
-    rm /config/usb_gadget/g1/configs/b.1/f1 2>/dev/null
-    rm /config/usb_gadget/g1/configs/b.1/f2 2>/dev/null
+    write /config/usb_gadget/g1/UDC "none"
+    rm /config/usb_gadget/g1/configs/b.1/f1
+    rm /config/usb_gadget/g1/configs/b.1/f2
     start adbd
 
 on property:sys.usb.ffs.ready=1 && property:sys.usb.config=sideload && property:sys.usb.android_old=1
@@ -206,9 +206,9 @@ on property:sys.usb.config=mtp
     stop adbd
     stop fastbootd
     setprop sys.usb.ffs.ready 0
-    write /config/usb_gadget/g1/UDC "none" 2>/dev/null
-    rm /config/usb_gadget/g1/configs/b.1/f1 2>/dev/null
-    rm /config/usb_gadget/g1/configs/b.1/f2 2>/dev/null
+    write /config/usb_gadget/g1/UDC "none"
+    rm /config/usb_gadget/g1/configs/b.1/f1
+    rm /config/usb_gadget/g1/configs/b.1/f2
 
 on property:sys.usb.ffs.ready=1 && property:sys.usb.config=mtp && property:sys.usb.android_old=1
     write /sys/class/android_usb/android0/enable 0
