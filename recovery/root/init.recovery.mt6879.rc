@@ -156,11 +156,20 @@ on post-fs
 
 
 on boot
-    # Método à prova de falhas: carrega os módulos isolados em segundo plano
-    # Carrega os módulos de touch antes que o TWRP os oculte
-    exec u:r:recovery:s0 root root -- /system/bin/sh -c "insmod /vendor/lib/modules/touchscreen_mmi.ko"
-    exec u:r:recovery:s0 root root -- /system/bin/sh -c "insmod /vendor/lib/modules/goodix_brl_mmi.ko"
-    exec u:r:recovery:s0 root root -- /system/bin/sh -c "insmod /vendor/lib/modules/focaltech_v3.ko"
+    
+exec u:r:recovery:s0 root root -- /system/bin/sh -c "cp /vendor_ramdisk/lib/modules/*.ko /tmp/modules/ 2>/dev/null || true"
+
+# I2C base driver (PRIMEIRO!)
+    exec u:r:recovery:s0 root root -- /system/bin/sh -c "insmod /vendor_ramdisk/lib/modules/i2c-mt65xx.ko || insmod /tmp/modules/i2c-mt65xx.ko || true"
+    
+    # Touchscreen wrapper
+    exec u:r:recovery:s0 root root -- /system/bin/sh -c "insmod /vendor_ramdisk/lib/modules/touchscreen_mmi.ko || insmod /tmp/modules/touchscreen_mmi.ko || true"
+    
+    # Goodix driver
+    exec u:r:recovery:s0 root root -- /system/bin/sh -c "insmod /vendor_ramdisk/lib/modules/goodix_brl_mmi.ko || insmod /tmp/modules/goodix_brl_mmi.ko || true"
+    
+    # Goodix FOD (fingerprint on display)
+    exec u:r:recovery:s0 root root -- /system/bin/sh -c "insmod /vendor_ramdisk/lib/modules/goodix_mtk_fod.ko || insmod /tmp/modules/goodix_mtk_fod.ko || true"
 # ════════════════════════════════════════════════════════════
 	# BACKLIGHT
 	# ════════════════════════════════════════════════════════════
@@ -172,16 +181,9 @@ on boot
 	# ════════════════════════════════════════════════════════════
 	# SERVICES
 	# ════════════════════════════════════════════════════════════
-
-	# Health HAL
-	#start health-hal-2-1
 	# 2. Permissões
 	chmod 0664 /dev/gtp_tools
 	chown root diag /sys/module/tpd_setting/parameters/tpd_calmat
-
-	# 3. Permissão e execução do script da Motorola
-	chmod 0755 /vendor/bin/init.mmi.touch.sh
-	start vendor.mmi-touch-sh
 
 	# Recovery
 	setprop recovery.booting 1
@@ -223,9 +225,3 @@ service recovery /system/bin/recovery
 	disabled
 	seclabel u:r:recovery:s0
 	capabilities DAC_OVERRIDE SYS_BOOT
-
-service vendor.mmi-touch-sh /vendor/bin/init.mmi.touch.sh
-	class core
-	user root
-	oneshot
-	seclabel u:r:recovery:s0
