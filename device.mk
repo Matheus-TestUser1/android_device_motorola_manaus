@@ -72,10 +72,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/vendor/bin/hw/android.hardware.boot@1.2-service:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/hw/android.hardware.boot@1.2-service
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/modules/touchscreen_mmi.ko:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/root/vendor/lib/modules/touchscreen_mmi.ko \
-    $(LOCAL_PATH)/prebuilt/modules/goodix_brl_mmi.ko:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/root/vendor/lib/modules/goodix_brl_mmi.ko \
-    $(LOCAL_PATH)/prebuilt/modules/focaltech_v3.ko:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/root/vendor/lib/modules/focaltech_v3.ko
 
 # I2C base driver (IMPORTANTE: deve ser primeiro!)
 PRODUCT_COPY_FILES += \
