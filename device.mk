@@ -94,6 +94,13 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/modules/focaltech_v3.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor_ramdisk/lib/modules/focaltech_v3.ko
 
 PRODUCT_COPY_FILES += \
+   $(LOCAL_PATH)/prebuilt/modules/i2c-mt65xx.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor_ramdisk/lib/modules/i2c-mt65xx.ko
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/modules/goodix_mtk_fod.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor_ramdisk/lib/modules/goodix_mtk_fod.ko
+
+
+PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/bin/modprobe:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/modprobe
 
 
