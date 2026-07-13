@@ -219,7 +219,7 @@ TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_MAX_BRIGHTNESS := 2047
 TW_DEFAULT_BRIGHTNESS := 1200
 
-#TW_HAS_MTP := true
+TW_HAS_MTP := true
 
 #TW_INTERNAL_STORAGE_PATH := "/data/media/0"
 #TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
