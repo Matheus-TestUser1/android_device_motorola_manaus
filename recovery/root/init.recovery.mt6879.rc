@@ -157,19 +157,6 @@ on post-fs
 
 on boot
     
-exec u:r:recovery:s0 root root -- /system/bin/sh -c "cp /vendor_ramdisk/lib/modules/*.ko /tmp/modules/ 2>/dev/null || true"
-
-# I2C base driver (PRIMEIRO!)
-    exec u:r:recovery:s0 root root -- /system/bin/sh -c "insmod /vendor_ramdisk/lib/modules/i2c-mt65xx.ko || insmod /tmp/modules/i2c-mt65xx.ko || true"
-    
-    # Touchscreen wrapper
-    exec u:r:recovery:s0 root root -- /system/bin/sh -c "insmod /vendor_ramdisk/lib/modules/touchscreen_mmi.ko || insmod /tmp/modules/touchscreen_mmi.ko || true"
-    
-    # Goodix driver
-    exec u:r:recovery:s0 root root -- /system/bin/sh -c "insmod /vendor_ramdisk/lib/modules/goodix_brl_mmi.ko || insmod /tmp/modules/goodix_brl_mmi.ko || true"
-    
-    # Goodix FOD (fingerprint on display)
-    exec u:r:recovery:s0 root root -- /system/bin/sh -c "insmod /vendor_ramdisk/lib/modules/goodix_mtk_fod.ko || insmod /tmp/modules/goodix_mtk_fod.ko || true"
 # ════════════════════════════════════════════════════════════
 	# BACKLIGHT
 	# ════════════════════════════════════════════════════════════
