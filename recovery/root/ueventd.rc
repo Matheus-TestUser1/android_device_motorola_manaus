@@ -191,7 +191,8 @@ subsystem dma_heap
 /sys/devices/virtual/misc/uhid/*/leds/* multi_intensity          0664 system system
 
 /sys/devices/platform/trusty.* trusty_version                    0440 root log
-
+   /sys/devices/platform/11ed1000.i2c/i2c-5/5-0034/input/input* enable  0660 root input
+   /sys/devices/platform/11ed1000.i2c/i2c-5/5-0034/input/input* poll_delay 0660 root input
 /sys/kernel/ccci modem_info                                      0644 radio radio
 /sys/kernel/ccci md1_postfix                                     0644 radio radio
 /sys/kernel/ccci md2_postfix                                     0644 radio radio
