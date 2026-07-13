@@ -4,7 +4,7 @@
 
 #<mnt_point>        <type>    <device>                                                              <mnt_flags and options>
 /metadata           ext4      /dev/block/by-name/metadata                                           flags=display="metadata";backup=1
-/data  f2fs  /dev/block/by-name/userdata  flags=display="Data";usermrf;backup=1;settingsstorage;wipeingui;wipeduringfactoryreset;formattable
+/data               f2fs      /dev/block/by-name/userdata                                           flags=display="Data";usermrf;backup=1;settingsstorage;wipeingui;wipeduringfactoryreset;formattable
 /boot               emmc      /dev/block/by-name/boot                                               flags=display="boot";slotselect;backup=1;flashimg=1
 /dtbo               emmc      /dev/block/by-name/dtbo                                               flags=display="dtbo";backup=1
 /vendor_boot        emmc      /dev/block/by-name/vendor_boot                                        flags=display="vendor_boot";slotselect;backup=1;flashimg=1
@@ -43,13 +43,11 @@
 /scp1               emmc      /dev/block/by-name/scp1                                               flags=display="scp1"
 /scp2               emmc      /dev/block/by-name/scp2                                               flags=display="scp2"
 /sspm_1             emmc      /dev/block/by-name/sspm_1                                             flags=display="sspm_1"
-/sspm_2             emmc      /dev/block/by-name/sspm_2                                             flags=display="sspm_1"
+/sspm_2             emmc      /dev/block/by-name/sspm_2                                             flags=display="sspm_2"
 /dpm_1              emmc      /dev/block/by-name/dpm_1                                              flags=display="dpm_1"
 /dpm_2              emmc      /dev/block/by-name/dpm_2                                              flags=display="dpm_2"
 /md1img             emmc      /dev/block/by-name/md1img                                             flags=display="md1arm7"
 /spmfw              emmc      /dev/block/by-name/spmfw                                              flags=display="spmfw"
 /pi_img             emmc      /dev/block/by-name/pi_img                                             flags=display="pi_img"
 
-/devices/platform/soc/11201000.usb0/11200000.xhci* auto    vfat    defaults    voldmanaged=usbotg:auto,flags=storage;wipeingui;removable;fsflags="utf8"
-# removable
-/devices/platform/usb_xhci* auto    vfat    defaults    voldmanaged=usbotg:auto,flags=storage;wipeingui;removable;fsflags="utf8"
+/devices/platform/soc/11201000.usb0/11200000.xhci auto vfat defaults voldmanaged=usbotg:auto,flags=storage;wipeingui;removable
