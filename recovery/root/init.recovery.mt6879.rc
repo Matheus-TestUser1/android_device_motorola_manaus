@@ -8,7 +8,7 @@ import /init.recovery.usb.rc
 
 on init
 # Selinux Permissive
-    setenforce 0
+     write /sys/fs/selinux/enforce 0
 	# USB configuration
 	setprop sys.usb.configfs 1
 	setprop sys.usb.controller "11201000.usb0"
