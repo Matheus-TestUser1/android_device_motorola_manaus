@@ -7,8 +7,6 @@
 import /init.recovery.usb.rc
 
 on init
-# Selinux Permissive
-     write /sys/fs/selinux/enforce 0
 	# USB configuration
 	setprop sys.usb.configfs 1
 	setprop sys.usb.controller "11201000.usb0"
@@ -156,7 +154,8 @@ on post-fs
 
 
 on boot
-    
+     # SELinux permissive
+    write /sys/fs/selinux/enforce 0
 # ════════════════════════════════════════════════════════════
 	# BACKLIGHT
 	# ════════════════════════════════════════════════════════════
