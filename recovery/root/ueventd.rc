@@ -57,6 +57,8 @@ subsystem dma_heap
 
 /dev/input/*             0660 system input
 /dev/touch               0660 root system
+/dev/gtp_tools           0660 root diag
+/dev/goodix_fw           0660 system system
 /dev/goodix_ts           0660 system input
 /dev/goodix_fp           0660 system system
 /dev/hotknot             0660 root system
