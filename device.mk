@@ -105,6 +105,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/modules/modules.load.recovery:recovery/root/lib/modules/modules.load.recovery
 
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/modules/modules.load.recovery:$(TARGET_COPY_OUT_RECOVERY)/root/vendor_ramdisk/lib/modules/modules.load.recovery
+
 #PRODUCT_COPY_FILES += \
  #   $(LOCAL_PATH)/prebuilt/modules/touchscreen_mmi.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules/touchscreen_mmi.ko \
  #   $(LOCAL_PATH)/prebuilt/modules/goodix_brl_mmi.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules/goodix_brl_mmi.ko \
