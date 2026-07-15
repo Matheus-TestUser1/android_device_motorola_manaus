@@ -102,7 +102,8 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/bin/modprobe:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/modprobe
-
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/modules/modules.load.recovery$(TARGET_COPY_OUT_RECOVERY)/recovery/root/lib/modules/modules.load.recovery
 
 #PRODUCT_COPY_FILES += \
  #   $(LOCAL_PATH)/prebuilt/modules/touchscreen_mmi.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules/touchscreen_mmi.ko \
