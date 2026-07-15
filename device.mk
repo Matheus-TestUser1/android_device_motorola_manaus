@@ -108,6 +108,15 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/modules/modules.load.recovery:$(TARGET_COPY_OUT_RECOVERY)/root/vendor_ramdisk/lib/modules/modules.load.recovery
 
+# Copy prebuilt modules to recovery ramdisk
+$(foreach module,$(wildcard $(DEVICE_PATH)/prebuilt/modules/*.ko),\
+  $(eval PRODUCT_COPY_FILES += $(module):$(TARGET_COPY_OUT_RECOVERY)/root/lib/modules/$(notdir $(module))))
+
+# Também copia modules.load.recovery
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/recovery/root/vendor_ramdisk/lib/modules/modules.load.recovery:$(TARGET_COPY_OUT_RECOVERY)/root/lib/modules/modules.load.recovery \
+    $(DEVICE_PATH)/recovery/root/vendor_ramdisk/lib/modules/modules.dep:$(TARGET_COPY_OUT_RECOVERY)/root/lib/modules/modules.dep
+
 #PRODUCT_COPY_FILES += \
  #   $(LOCAL_PATH)/prebuilt/modules/touchscreen_mmi.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules/touchscreen_mmi.ko \
  #   $(LOCAL_PATH)/prebuilt/modules/goodix_brl_mmi.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules/goodix_brl_mmi.ko \
