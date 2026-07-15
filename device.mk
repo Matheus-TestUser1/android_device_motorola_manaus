@@ -114,8 +114,8 @@ $(foreach module,$(wildcard $(DEVICE_PATH)/prebuilt/modules/*.ko),\
 
 # Também copia modules.load.recovery
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/recovery/root/vendor_ramdisk/lib/modules/modules.load.recovery:$(TARGET_COPY_OUT_RECOVERY)/root/lib/modules/modules.load.recovery \
-    $(DEVICE_PATH)/recovery/root/vendor_ramdisk/lib/modules/modules.dep:$(TARGET_COPY_OUT_RECOVERY)/root/lib/modules/modules.dep
+    $(DEVICE_PATH)/prebuilt/modules/modules.load.recovery:$(TARGET_COPY_OUT_RECOVERY)/root/lib/modules/modules.load.recovery \
+    $(DEVICE_PATH)/prebuilt/modules/modules.dep:$(TARGET_COPY_OUT_RECOVERY)/root/lib/modules/modules.dep
 
 #PRODUCT_COPY_FILES += \
  #   $(LOCAL_PATH)/prebuilt/modules/touchscreen_mmi.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules/touchscreen_mmi.ko \
