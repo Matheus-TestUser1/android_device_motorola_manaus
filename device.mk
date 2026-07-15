@@ -73,33 +73,6 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/vendor/bin/hw/android.hardware.boot@1.2-service:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/hw/android.hardware.boot@1.2-service
 
 
-# I2C base driver (IMPORTANTE: deve ser primeiro!)
-#PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/modules/i2c-mt65xx.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor_ramdisk/lib/modules/i2c-mt65xx.ko
-
-# Touchscreen wrapper (Motorola MMI)
-#PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/modules/touchscreen_mmi.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor_ramdisk/lib/modules/touchscreen_mmi.ko
-
-# Goodix driver
-#PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/modules/goodix_brl_mmi.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor_ramdisk/lib/modules/goodix_brl_mmi.ko
-
-# Goodix FOD (fingerprint on display)
-#PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/modules/goodix_mtk_fod.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor_ramdisk/lib/modules/goodix_mtk_fod.ko
-
-# Focaltech touchscreen (fallback)
-#PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/modules/focaltech_v3.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor_ramdisk/lib/modules/focaltech_v3.ko
-
-#PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/prebuilt/modules/i2c-mt65xx.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor_ramdisk/lib/modules/i2c-mt65xx.ko
-
-#PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/modules/goodix_mtk_fod.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor_ramdisk/lib/modules/goodix_mtk_fod.ko
-
-
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/bin/modprobe:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/modprobe
 PRODUCT_COPY_FILES += \
@@ -117,10 +90,6 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/modules/modules.load.recovery:$(TARGET_COPY_OUT_RECOVERY)/root/lib/modules/modules.load.recovery \
     $(DEVICE_PATH)/prebuilt/modules/modules.dep:$(TARGET_COPY_OUT_RECOVERY)/root/lib/modules/modules.dep
 
-#PRODUCT_COPY_FILES += \
- #   $(LOCAL_PATH)/prebuilt/modules/touchscreen_mmi.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules/touchscreen_mmi.ko \
- #   $(LOCAL_PATH)/prebuilt/modules/goodix_brl_mmi.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules/goodix_brl_mmi.ko \
- #   $(LOCAL_PATH)/prebuilt/modules/focaltech_v3.ko:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/lib/modules/focaltech_v3.ko
 
 # ============================================================================
 # VIRTUAL A/B — SNAPUSERD
