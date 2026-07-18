@@ -15,18 +15,18 @@ on init
 	
 	# Exportar GPIOs do touchscreen
 	# Reset GPIO (0x9f = 159)
-	write /sys/class/gpio/export 159
-	write /sys/class/gpio/gpio159/direction out
-	write /sys/class/gpio/gpio159/value 0
+	#write /sys/class/gpio/export 159
+	#write /sys/class/gpio/gpio159/direction out
+	#write /sys/class/gpio/gpio159/value 0
 	
 	# IRQ GPIO (0x16 = 22)
-	write /sys/class/gpio/export 22
-	write /sys/class/gpio/gpio22/direction in
+	#write /sys/class/gpio/export 22
+	#write /sys/class/gpio/gpio22/direction in
 	
 	# AVDD GPIO (0xa7 = 167)
-	write /sys/class/gpio/export 167
-	write /sys/class/gpio/gpio167/direction out
-	write /sys/class/gpio/gpio167/value 0
+	#write /sys/class/gpio/export 167
+	#write /sys/class/gpio/gpio167/direction out
+	#write /sys/class/gpio/gpio167/value 0
 
 	# Environment
 	export PATH /system/bin:/sbin:/vendor/bin
