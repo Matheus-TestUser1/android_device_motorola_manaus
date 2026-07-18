@@ -81,6 +81,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/modules/modules.load.recovery:$(TARGET_COPY_OUT_RECOVERY)/root/vendor_ramdisk/lib/modules/modules.load.recovery
 
+# Script de debug
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/recovery/root/system/bin/check_touch.sh:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/check_touch.sh
+
 # Copy prebuilt modules to recovery ramdisk
 $(foreach module,$(wildcard $(DEVICE_PATH)/prebuilt/modules/*.ko),\
   $(eval PRODUCT_COPY_FILES += $(module):$(TARGET_COPY_OUT_RECOVERY)/root/lib/modules/$(notdir $(module))))
