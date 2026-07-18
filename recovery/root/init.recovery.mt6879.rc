@@ -61,14 +61,11 @@ on post-fs
 	# ════════════════════════════════════════════════════════════
 	
 	# Ligar AVDD (alimentação do touch)
-	write /sys/class/gpio/gpio167/value 1
-	sleep 0.05
+#	write /sys/class/gpio/gpio167/value 1
 	
 	# Reset sequence Goodix
-	write /sys/class/gpio/gpio159/value 0
-	sleep 0.01
-	write /sys/class/gpio/gpio159/value 1
-	sleep 0.1
+	#write /sys/class/gpio/gpio159/value 0
+	#write /sys/class/gpio/gpio159/value 1
 	# ════════════════════════════════════════════════════════════
 	# BOOT HAL SERVICE (A/B compatibility - igual stock/Xaga)
 	# ════════════════════════════════════════════════════════════
