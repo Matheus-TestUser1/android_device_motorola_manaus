@@ -193,33 +193,31 @@ on boot
   # SPI (comunicação com o touch)
     exec u:r:recovery:s0 root root -- /vendor/bin/modprobe -d /lib/modules spi-mt65xx
     exec u:r:recovery:s0 root root -- /vendor/bin/modprobe -d /lib/modules i2c-mt65xx
-    sleep 0.05
     
     # Pin control (GPIOs)
     exec u:r:recovery:s0 root root -- /vendor/bin/modprobe -d /lib/modules pinctrl-mt6879
-    sleep 0.05
 
     # ════════════════════════════════════════════════════════════
     # LOAD TOUCHSCREEN MODULES
     # ════════════════════════════════════════════════════════════
     exec u:r:recovery:s0 root root -- /vendor/bin/modprobe -d /lib/modules touchscreen_mmi
-    sleep 0.2
+
     
     exec u:r:recovery:s0 root root -- /vendor/bin/modprobe -d /lib/modules goodix_brl_mmi
-    sleep 0.3
+    
     
     exec u:r:recovery:s0 root root -- /vendor/bin/modprobe -d /lib/modules goodix_mtk_fod 2>/dev/null || true
-    sleep 0.1
+    
 
     # Touch permissions
     wait /dev/input/event0 2
 	chmod 0660 /dev/input/event0
 	chown system input /dev/input/event0
-	chmod 0660 /dev/goodix_ts 2>/dev/null || true
-	chown system input /dev/goodix_ts 2>/dev/null || true
+	chmod 0660 /dev/goodix_ts 
+	chown system input /dev/goodix_ts 
    # Failsafe de permissão para o barramento I2C
-    chmod 0660 /dev/i2c-* 2>/dev/null || true
-    chown system system /dev/i2c-* 2>/dev/null || true
+    chmod 0660 /dev/i2c-5
+    chown system system /dev/i2c-5
 # ════════════════════════════════════════════════════════════
 	# BACKLIGHT
 	# ════════════════════════════════════════════════════════════
