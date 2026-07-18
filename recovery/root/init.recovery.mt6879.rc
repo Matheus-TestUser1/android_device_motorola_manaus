@@ -217,6 +217,9 @@ on boot
 	chown system input /dev/input/event0
 	chmod 0660 /dev/goodix_ts 2>/dev/null || true
 	chown system input /dev/goodix_ts 2>/dev/null || true
+   # Failsafe de permissão para o barramento I2C
+    chmod 0660 /dev/i2c-* 2>/dev/null || true
+    chown system system /dev/i2c-* 2>/dev/null || true
 # ════════════════════════════════════════════════════════════
 	# BACKLIGHT
 	# ════════════════════════════════════════════════════════════
