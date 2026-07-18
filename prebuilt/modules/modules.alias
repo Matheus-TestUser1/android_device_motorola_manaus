@@ -1017,3 +1017,5 @@ alias of:N*T*Cmediatek,mt6855-mdpm mtk_mdpm
 alias of:N*T*Cmediatek,mt6855-mdpmC* mtk_mdpm
 alias of:N*T*Cmediatek,mt6789-mdpm mtk_mdpm
 alias of:N*T*Cmediatek,mt6789-mdpmC* mtk_mdpm
+alias of:N*T*Cgoodix,gt9916S goodix_brl_mmi
+alias of:N*T*Cgoodix,gt9916SC* goodix_brl_mmi
