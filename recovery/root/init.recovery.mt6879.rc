@@ -12,8 +12,6 @@ on init
 	setprop sys.usb.controller "11201000.usb0"
 	setprop sys.usb.ffs.aio_compat 1
 
-	mkdir /lib 0755 root root
-	symlink /vendor/lib/modules /lib/modules
 	
 	# Exportar GPIOs do touchscreen
 	# Reset GPIO (0x9f = 159)
