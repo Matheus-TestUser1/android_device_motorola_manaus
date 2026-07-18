@@ -192,6 +192,7 @@ on boot
 
   # SPI (comunicação com o touch)
     exec u:r:recovery:s0 root root -- /vendor/bin/modprobe -d /lib/modules spi-mt65xx
+    exec u:r:recovery:s0 root root -- /vendor/bin/modprobe -d /lib/modules i2c-mt65xx
     sleep 0.05
     
     # Pin control (GPIOs)
