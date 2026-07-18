@@ -203,8 +203,11 @@ on boot
     # Load touch and platform modules
     exec u:r:recovery:s0 root root -- /system/bin/sh -c "for mod in /lib/modules/*.ko; do modprobe \${mod%.ko} 2>/dev/null || true; done"
     # Touch permissions
-    chmod 0660 /dev/goodix_ts
-    chown system input /dev/goodix_ts
+    wait /dev/input/event0 2
+	chmod 0660 /dev/input/event0
+	chown system input /dev/input/event0
+	chmod 0660 /dev/goodix_ts 2>/dev/null || true
+	chown system input /dev/goodix_ts 2>/dev/null || true
 # ════════════════════════════════════════════════════════════
 	# BACKLIGHT
 	# ════════════════════════════════════════════════════════════
@@ -226,6 +229,9 @@ on boot
 
 	# USB/ADB
 	setprop sys.usb.config adb
+
+
+start check-touch
 
 # ════════════════════════════════════════════════════════════════
 # SERVICE DEFINITIONS
@@ -260,3 +266,10 @@ service recovery /system/bin/recovery
 	disabled
 	seclabel u:r:recovery:s0
 	capabilities DAC_OVERRIDE SYS_BOOT
+
+service check-touch /system/bin/check_touch.sh
+	user root
+	group root
+	disabled
+	oneshot
+	seclabel u:r:recovery:s0
