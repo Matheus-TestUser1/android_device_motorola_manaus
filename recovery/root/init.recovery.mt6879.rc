@@ -227,9 +227,8 @@ on boot
 
 	# USB/ADB
 	setprop sys.usb.config adb
-
-
-start check-touch
+  # Services
+    start check-touch
 
 # ════════════════════════════════════════════════════════════════
 # SERVICE DEFINITIONS
