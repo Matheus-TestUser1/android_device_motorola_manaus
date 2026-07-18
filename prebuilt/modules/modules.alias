@@ -1022,3 +1022,11 @@ alias spi:gt9916 goodix_brl_mmi
 alias spi:gt9916S goodix_brl_mmi
 alias of:N*T*Cgoodix,gt9916 goodix_brl_mmi
 alias of:N*T*Cgoodix,gt9916C* goodix_brl_mmi
+alias i2c:goodix_ts goodix_brl_mmi
+alias platform:goodix_ts goodix_brl_mmi
+alias spi:fts focaltech_v3
+alias of:N*T*Cfocaltech,fts focaltech_v3
+alias spi:gf_spi goodix_mtk_fod
+alias of:N*T*Cgoodix,goodix-fp goodix_mtk_fod
+alias i2c:focaltech focaltech_v3
+alias of:N*T*Cfocaltech,focaltech focaltech_v3
