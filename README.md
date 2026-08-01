@@ -26,7 +26,7 @@ Device tree to compile TWRP (Team Win Recovery Project) for the Motorola Edge 40
 - ✅ F2FS filesystem support
 - ✅ Virtual A/B with snapuserd
 - ✅ MTP/ADB working
-- ✅ Touch working (I2C MT65XX)
+- ✅ Touch working (SPI3 MT65XX)       
 - ✅ Display working (MediaTek DRM)
 - ✅ Adjustable brightness
 - ✅ Backup/Restore partitions
