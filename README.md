@@ -1,6 +1,6 @@
 # Device Tree for Motorola Edge 40 Neo
 
-TWRP for the Motorola Edge 40 Neo (manaus)
+TWRP Device Tree for the Motorola Edge 40 Neo (manaus)
 
 Basic          | Spec Sheet
 --------------:|:-------------------------
