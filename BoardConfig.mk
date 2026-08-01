@@ -127,13 +127,10 @@ TW_INCLUDE_SNAPUSERD := true
 # ============================================================================
 BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
-
 BOARD_SUPER_PARTITION_SIZE := 7507804160
-
 BOARD_SUPER_PARTITION_GROUPS := motorola_dynamic_partitions
 BOARD_MOTOROLA_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext product vendor vendor_dlkm
 BOARD_MOTOROLA_DYNAMIC_PARTITIONS_SIZE := 7503609856
-
 BOARD_USES_METADATA_PARTITION := true
 BOARD_ROOT_EXTRA_FOLDERS += metadata
 TW_INCLUDE_REPACKTOOLS_AB := true
@@ -195,7 +192,6 @@ TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 # ============================================================================
 AB_OTA_UPDATER := true
 TW_INCLUDE_REPACKTOOLS := true
-
 AB_OTA_PARTITIONS :=     boot     vendor_boot     system     system_ext     product     vendor     vendor_dlkm     dtbo     vbmeta     vbmeta_system     vbmeta_vendor
 
 # ============================================================================
@@ -213,20 +209,12 @@ TW_EXTRA_LANGUAGES := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 TW_NO_SCREEN_TIMEOUT := true
-TW_DEVICE_VERSION := Twrptestuser_manaus
+TW_DEVICE_VERSION := _Matheus-TestUser1
 
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_MAX_BRIGHTNESS := 2047
 TW_DEFAULT_BRIGHTNESS := 1200
-
 TW_HAS_MTP := true
-
-#TW_INTERNAL_STORAGE_PATH := "/data/media/0"
-#TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
-
-#TW_EXTERNAL_STORAGE_PATH := "/external_sd"
-#TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
-#TW_DEFAULT_EXTERNAL_STORAGE := true
 TW_USE_NEW_MINADBD := true
 TW_USE_TOOLBOX := true
 TW_INCLUDE_RESETPROP := true
@@ -239,7 +227,7 @@ TW_NO_FASTBOOT_BOOT := true
 TW_NO_BIND_SYSTEM := true
 TW_HAS_NO_RECOVERY_PARTITION := true
 
-TW_CUSTOM_CPU_TEMP_PATH := /sys/class/thermal/thermal_zone53/temp
+TW_CUSTOM_CPU_TEMP_PATH := /sys/class/thermal/thermal_zone0/temp
 BOARD_UFS_SUPPORT := true
 
 TW_OVERRIDE_SYSTEM_PROPS :=   "ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental"
