@@ -18,11 +18,14 @@ ro.postinstall.fstab.prefix=/system
 
 # USB MTP
 ro.sys.usb.storage.type=mtp
+
 # ════════════════════════════════════════════════════════════════════════
 # BOOT
 # ════════════════════════════════════════════════════════════════════════
-ro.boot.dynamic_partitions=true
-ro.boot.bootdevice=bootdevice
+# ro.boot.* removidas: ja vem do cmdline do kernel (confirmado no recovery.log
+# real - ro.boot.bootdevice, ro.boot.verifiedbootstate, ro.boot.vbmeta.device_state
+# ja aparecem prontas antes do system.prop ser lido). ro. e write-once, essas
+# linhas nunca tiveram efeito.
 ro.build.ab_update=true
 
 # ════════════════════════════════════════════════════════════════════════
@@ -38,26 +41,28 @@ ro.virtual_ab.userspace.snapshots.enabled=true
 ro.adb.secure=0
 ro.secure=0
 ro.debuggable=1
-ro.boot.verifiedbootstate=orange
-ro.boot.vbmeta.device_state=unlocked
+# TODO: confirmar se algum codigo do TWRP le essa prop antes de manter
 ro.twrp.vendor_boot=true
+
 # ════════════════════════════════════════════════════════════════════════
-# USB — confirm vendor.usb.use_ffs_mtp=1 on vendor.prop Stock
+# USB
 # ════════════════════════════════════════════════════════════════════════
+# sys.usb.controller / sys.usb.configfs / sys.usb.ffs.aio_compat removidas
+# daqui: duplicavam o setprop do init.recovery.mt6879.rc (on init), que roda
+# DEPOIS do system.prop e sobrescreve estes valores de qualquer forma.
+# Fonte de verdade fica so no .rc.
 persist.sys.usb.config=mtp,adb
-sys.usb.controller=11201000.usb0
-sys.usb.configfs=1
-sys.usb.ffs.aio_compat=true
 
 # ════════════════════════════════════════════════════════════════════════
 # DISPLAY — Defined Here, removed from vendor.prop (Without Duplicate)
 # Confirmed: ro.sf.lcd_density=400 on vendor.prop Stock
 # ════════════════════════════════════════════════════════════════════════
 ro.sf.lcd_density=400
+# NOTA: recovery.log real mostrou DRM_FORMAT_XBGR8888 / GGL_PIXEL_FORMAT_RGBA_8888
+# durante o setup real de display - nomes diferentes de BGRA_8888. Display ja
+# confirmado funcionando nos testes, mas se um dia der problema de cor, comeca
+# a debugar por aqui.
 ro.minui.pixel_format=BGRA_8888
 
-# ════════════════════════════════════════════════════════════════════════
-# MEMORY
-# ════════════════════════════════════════════════════════════════════════
-dalvik.vm.heapgrowthlimit=256m
-dalvik.vm.heapsize=512m
+# dalvik.vm.heapgrowthlimit / dalvik.vm.heapsize removidas: TWRP e binario C++
+# nativo, nao sobe Zygote nem ART/Dalvik. Props sem efeito em recovery.
