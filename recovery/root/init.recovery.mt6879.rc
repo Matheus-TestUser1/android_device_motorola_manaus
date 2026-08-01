@@ -12,22 +12,6 @@ on init
 	setprop sys.usb.controller "11201000.usb0"
 	setprop sys.usb.ffs.aio_compat 1
 
-	
-	# Exportar GPIOs do touchscreen
-	# Reset GPIO (0x9f = 159)
-	#write /sys/class/gpio/export 159
-	#write /sys/class/gpio/gpio159/direction out
-	#write /sys/class/gpio/gpio159/value 0
-	
-	# IRQ GPIO (0x16 = 22)
-	#write /sys/class/gpio/export 22
-	#write /sys/class/gpio/gpio22/direction in
-	
-	# AVDD GPIO (0xa7 = 167)
-	#write /sys/class/gpio/export 167
-	#write /sys/class/gpio/gpio167/direction out
-	#write /sys/class/gpio/gpio167/value 0
-
 	# Environment
 	export PATH /system/bin:/sbin:/vendor/bin
 	export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/system/lib:/vendor/lib:/vendor/lib64/hw:/sbin
@@ -212,7 +196,8 @@ on boot
 	chown system input /dev/input/event0
 	chmod 0660 /dev/goodix_ts 
 	chown system input /dev/goodix_ts 
-   # Failsafe de permissão para o barramento I2C
+  
+# Failsafe de permissão para o barramento I2C
     chmod 0660 /dev/i2c-5
     chown system system /dev/i2c-5
     exec u:r:recovery:s0 root root -- \
