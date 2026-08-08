@@ -1,7 +1,6 @@
 #
 # Copyright (C) 2024 TeamWin Recovery Project
 # Motorola Edge 40 Neo (manaus) - MT6879
-# VERSÃO FINAL COM BOOT HAL SERVICE
 #
 
 import /init.recovery.usb.rc
