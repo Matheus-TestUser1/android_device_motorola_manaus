@@ -25,7 +25,7 @@ PRODUCT_TARGET_VNDK_VERSION := 31
 # ============================================================================
 AB_OTA_UPDATER := true
 
-#  POSTINSTALL COM mtk_plpath_utils (SPECIFIC FOR MEDIATEK!)
+#  POSTINSTALL WITH mtk_plpath_utils (SPECIFIC FOR MEDIATEK!)
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
     POSTINSTALL_PATH_system=system/bin/mtk_plpath_utils \
@@ -49,7 +49,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # BOOT CONTROL HAL (A/B slot management)
 # ============================================================================
 
-#  SÓ bootctrl genérico (fallback)
+#  Generic bootctrl only (fallback)
 PRODUCT_PACKAGES += \
    bootctrl.default \
    bootctrl.default.recovery
@@ -75,11 +75,8 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/bin/modprobe:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/bin/modprobe
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/prebuilt/modules/modules.load.recovery:recovery/root/lib/modules/modules.load.recovery
 
-
-# Script de debug
+# Debug script
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/system/bin/check_touch.sh:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/check_touch.sh
 
@@ -87,7 +84,9 @@ PRODUCT_COPY_FILES += \
 $(foreach module,$(wildcard $(DEVICE_PATH)/prebuilt/modules/*.ko),\
   $(eval PRODUCT_COPY_FILES += $(module):$(TARGET_COPY_OUT_RECOVERY)/root/lib/modules/$(notdir $(module))))
 
-# Também copia modules.load.recovery
+# modules.load.recovery + modules.dep: load manifest read automatically by
+# first-stage init (GetModuleLoadList/LoadKernelModules) before partitions
+# are mounted. Must live under root/lib/modules to match the .ko files above.
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/modules/modules.load.recovery:$(TARGET_COPY_OUT_RECOVERY)/root/lib/modules/modules.load.recovery \
     $(DEVICE_PATH)/prebuilt/modules/modules.dep:$(TARGET_COPY_OUT_RECOVERY)/root/lib/modules/modules.dep
@@ -101,7 +100,7 @@ PRODUCT_PACKAGES += \
     snapuserd.recovery
 
 # ============================================================================
-# MTK PATH UTILS - 2 LOCAIS (CRITICAL!)
+# MTK PATH UTILS - 2 LOCATIONS (CRITICAL!)
 # ============================================================================
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/bin/mtk_plpath_utils:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/mtk_plpath_utils \
@@ -153,57 +152,10 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/init.recovery.usb.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.usb.rc \
     $(DEVICE_PATH)/recovery/root/ueventd.rc:$(TARGET_COPY_OUT_RECOVERY)/root/ueventd.rc
 
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/BT_FW.cfg:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/BT_FW.cfg \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/NFG1000A_battery_parameter_SB18D87942.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/NFG1000A_battery_parameter_SB18D87942.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/NFG1000A_battery_parameter_SB18D87943.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/NFG1000A_battery_parameter_SB18D87943.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/NFG1000A_firmware.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/NFG1000A_firmware.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/WIFI_RAM_CODE_soc7_0_1a_1.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/WIFI_RAM_CODE_soc7_0_1a_1.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/aw882xx_acf.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/aw882xx_acf.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/aw963xx_reg_0.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/aw963xx_reg_0.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/aw963xx_reg_evt_0.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/aw963xx_reg_evt_0.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/boe_goodix_cfg_group.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/boe_goodix_cfg_group.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/boe_goodix_firmware.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/boe_goodix_firmware.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/boe_goodix_test_limits_255.csv:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/boe_goodix_test_limits_255.csv \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/conninfra.cfg:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/conninfra.cfg \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/fm_cust.cfg:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/fm_cust.cfg \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/focaltech_ts_fw_csot.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/focaltech_ts_fw_csot.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/lib3a.ccu:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/lib3a.ccu \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/lib3a.ccu_dummy:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/lib3a.ccu_dummy \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mali_csffw.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mali_csffw.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mali_csffw_reload.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mali_csffw_reload.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mot_dw9781.prog:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mot_dw9781.prog \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6627_fm_v1_coeff.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6627_fm_v1_coeff.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6627_fm_v1_patch.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6627_fm_v1_patch.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6630_fm_v1_coeff.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6630_fm_v1_coeff.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6630_fm_v1_patch.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6630_fm_v1_patch.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6630_fm_v2_coeff.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6630_fm_v2_coeff.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6630_fm_v2_coeff_tx.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6630_fm_v2_coeff_tx.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6630_fm_v2_patch.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6630_fm_v2_patch.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6630_fm_v2_patch_tx.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6630_fm_v2_patch_tx.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6631_fm_v1_coeff.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6631_fm_v1_coeff.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6631_fm_v1_patch.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6631_fm_v1_patch.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6632_fm_v1_coeff.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6632_fm_v1_coeff.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6632_fm_v1_patch.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6632_fm_v1_patch.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6635_fm_v1_coeff.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6635_fm_v1_coeff.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/mt6635_fm_v1_patch.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/mt6635_fm_v1_patch.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/remoteproc_scp:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/remoteproc_scp \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc7_0_ram_bt_1_1_hdr.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc7_0_ram_bt_1_1_hdr.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc7_0_ram_bt_1a_1_hdr.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc7_0_ram_bt_1a_1_hdr.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc7_0_ram_bt_1b_1_hdr.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc7_0_ram_bt_1b_1_hdr.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc7_0_ram_mcu_1_1_hdr.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc7_0_ram_mcu_1_1_hdr.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc7_0_ram_mcu_1a_1_hdr.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc7_0_ram_mcu_1a_1_hdr.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc7_0_ram_mcu_1b_1_hdr.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc7_0_ram_mcu_1b_1_hdr.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc7_0_ram_wmmcu_1a_1_hdr.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc7_0_ram_wmmcu_1a_1_hdr.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc_fm_v1_coeff.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc_fm_v1_coeff.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/soc_fm_v1_patch.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/soc_fm_v1_patch.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/tm_goodix_cfg_group.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/tm_goodix_cfg_group.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/tm_goodix_firmware.bin:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/tm_goodix_firmware.bin \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/tm_goodix_test_limits_255.csv:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/tm_goodix_test_limits_255.csv \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/txpowerctrl.cfg:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/txpowerctrl.cfg \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/txpowerctrl_na.cfg:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/txpowerctrl_na.cfg \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/valhall-1691526.wa:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/valhall-1691526.wa \
-    $(DEVICE_PATH)/recovery/root/vendor/firmware/wifi.cfg:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/wifi.cfg
+# Firmware blobs (MediaTek/vendor) — every file under recovery/root/vendor/firmware/
+# is copied 1:1 into the recovery ramdisk; no need to list each one by hand.
+$(foreach fw,$(wildcard $(DEVICE_PATH)/recovery/root/vendor/firmware/*),\
+  $(eval PRODUCT_COPY_FILES += $(fw):$(TARGET_COPY_OUT_RECOVERY)/root/vendor/firmware/$(notdir $(fw))))
 
 # ============================================================================
 # SOONG NAMESPACES
