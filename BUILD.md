@@ -1,169 +1,169 @@
-# Instruções de Build - TWRP para Motorola Edge 40 Neo
+# Build Instructions - TWRP for Motorola Edge 40 Neo
 
-## Resumo Rápido
+## Quick Summary
 
 ```bash
-# 1. Preparar ambiente
+# 1. Prepare environment
 sudo apt-get update
 sudo apt-get install -y git-core gnupg flex bison build-essential zip curl \
     zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev \
     x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev libxml2-utils \
     xsltproc unzip fontconfig
 
-# 2. Configurar repo
+# 2. Set up repo
 mkdir -p ~/.bin
 export PATH="${HOME}/.bin:${PATH}"
 curl https://storage.googleapis.com/git-repo-downloads/repo > ~/.bin/repo
 chmod a+rx ~/.bin/repo
 
-# 3. Download do código fonte TWRP
+# 3. Download TWRP source code
 mkdir -p ~/twrp && cd ~/twrp
 repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1
 repo sync -c --force-sync --no-tags --no-clone-bundle -j$(nproc --all)
 
-# 4. Adicionar device tree
+# 4. Add device tree
 mkdir -p device/motorola
-cp -r /caminho/para/este/device/tree device/motorola/manaus
+cp -r /path/to/this/device/tree device/motorola/manaus
 
-# 5. Compilar
+# 5. Build
 source build/envsetup.sh
 lunch twrp_manaus-eng
 mka vendorbootimage -j$(nproc --all)
 
-# 6. Arquivos de saída
+# 6. Output files
 # out/target/product/manaus/vendor_boot.img
 # out/target/product/manaus/recovery.img
 ```
 
-## Preparação do Kernel (Importante!)
+## Kernel Preparation (Important!)
 
-Antes de compilar, você precisa dos arquivos de kernel:
+Before building, you need the kernel files:
 
-### 1. Extrair do firmware original
+### 1. Extract from original firmware
 
 ```bash
-# Extrair kernel do boot.img original
+# Extract kernel from original boot.img
 magiskboot unpack boot.img
-# Copiar: kernel -> device/motorola/manaus/prebuilt/Image
-# Copiar: dtb -> device/motorola/manaus/prebuilt/dtb.img
+# Copy: kernel -> device/motorola/manaus/prebuilt/Image
+# Copy: dtb -> device/motorola/manaus/prebuilt/dtb.img
 
-# Extrair dtbo do dtbo.img original
-# Copiar: dtbo -> device/motorola/manaus/prebuilt/dtbo.img
+# Extract dtbo from original dtbo.img
+# Copy: dtbo -> device/motorola/manaus/prebuilt/dtbo.img
 ```
 
-### 2. Ou usar kernel pré-compilado
+### 2. Or use a prebuilt kernel
 
-Baixe o kernel compatível com o Edge 40 Neo e coloque em:
+Download a kernel compatible with the Edge 40 Neo and place it in:
 - `prebuilt/Image` - Kernel Image
 - `prebuilt/dtb.img` - Device Tree Blob
 - `prebuilt/dtbo.img` - Device Tree Blob Overlay
 
-## Comandos de Build
+## Build Commands
 
-### Build completo
+### Full build
 ```bash
 source build/envsetup.sh
 lunch twrp_manaus-eng
 mka vendorbootimage -j8
 ```
 
-### Build apenas do recovery
+### Recovery-only build
 ```bash
 mka recoveryimage -j8
 ```
 
-### Build limpo (clean build)
+### Clean build
 ```bash
 make clean
 mka vendorbootimage -j8
 ```
 
-### Build com logs detalhados
+### Build with detailed logs
 ```bash
 mka vendorbootimage -j8 2>&1 | tee build.log
 ```
 
-## Solução de Erros de Build
+## Build Error Troubleshooting
 
-### Erro: "No rule to make target 'vendorbootimage'"
+### Error: "No rule to make target 'vendorbootimage'"
 ```bash
-# Use recoveryimage em vez de vendorbootimage
+# Use recoveryimage instead of vendorbootimage
 mka recoveryimage -j8
 ```
 
-### Erro: "Cannot find kernel config"
+### Error: "Cannot find kernel config"
 ```bash
-# Verifique se TARGET_PREBUILT_KERNEL está apontando para um arquivo existente
+# Check that TARGET_PREBUILT_KERNEL points to an existing file
 ls -la device/motorola/manaus/prebuilt/Image
 ```
 
-### Erro: "DTB not found"
+### Error: "DTB not found"
 ```bash
-# Verifique se o DTB existe
+# Check that the DTB exists
 ls -la device/motorola/manaus/prebuilt/dtb.img
 ```
 
-### Erro: "Out of memory"
+### Error: "Out of memory"
 ```bash
-# Reduza o número de threads
+# Reduce the number of threads
 mka vendorbootimage -j4
 
-# Ou aumente o swap
+# Or increase swap
 sudo fallocate -l 8G /swapfile
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
 ```
 
-## Verificação do Build
+## Build Verification
 
-Após compilar, verifique os arquivos:
+After building, check the files:
 
 ```bash
-# Verificar vendor_boot.img
+# Check vendor_boot.img
 ls -lh out/target/product/manaus/vendor_boot.img
 file out/target/product/manaus/vendor_boot.img
 
-# Extrair e verificar conteúdo
+# Extract and check contents
 cd out/target/product/manaus
 magiskboot unpack vendor_boot.img
 ls -la
 
-# Verificar ramdisk
+# Check ramdisk
 cd ramdisk.cpio
 cpio -ivt < ../ramdisk.cpio 2>/dev/null | head -20
 ```
 
-## Instalação do Build
+## Installing the Build
 
 ### Via Fastboot
 ```bash
-# Reiniciar em fastboot
+# Reboot into fastboot
 adb reboot bootloader
 
-# Flash do vendor_boot
+# Flash vendor_boot
 fastboot flash vendor_boot out/target/product/manaus/vendor_boot.img
 
-# Reiniciar em recovery
+# Reboot into recovery
 fastboot reboot recovery
 ```
 
-### Boot temporário (para teste)
+### Temporary boot (for testing)
 ```bash
 fastboot boot out/target/product/manaus/vendor_boot.img
 ```
 
-## Dicas
+## Tips
 
-1. **Sempre faça backup** do vendor_boot original antes de flashar
-2. **Teste com boot temporário** primeiro antes de flashar permanentemente
-3. **Mantenha o kernel atualizado** com patches de segurança
-4. **Verifique os logs** se algo der errado: `adb logcat` ou `fastboot oem get_logs`
+1. **Always back up** the original vendor_boot before flashing
+2. **Test with temporary boot** first before flashing permanently
+3. **Keep the kernel updated** with security patches
+4. **Check the logs** if something goes wrong: `adb logcat` or `fastboot oem get_logs`
 
-## Arquivos Importantes
+## Important Files
 
-- `BoardConfig.mk` - Configuração principal do dispositivo
-- `device.mk` - Configuração de produto
-- `init.recovery.mt6879.rc` - Script de inicialização do recovery
-- `recovery.fstab` - Tabela de partições
-- `prebuilt/` - Kernel, DTB e DTBO
+- `BoardConfig.mk` - Main device configuration
+- `device.mk` - Product configuration
+- `init.recovery.mt6879.rc` - Recovery init script
+- `recovery.fstab` - Partition table
+- `prebuilt/` - Kernel, DTB and DTBO
