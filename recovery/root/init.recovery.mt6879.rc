@@ -162,11 +162,10 @@ on post-fs
 	# Start snapuserd (Virtual A/B support)
 	start snapuserd
 
-
 on boot
+
      # SELinux permissive
     write /sys/fs/selinux/enforce 0
-
 
   # Load touch and platform modules
     exec u:r:recovery:s0 root root -- /system/bin/sh -c "for mod in /lib/modules/*.ko; do modprobe \${mod%.ko} 2>/dev/null || true; done"
@@ -182,13 +181,8 @@ on boot
     # LOAD TOUCHSCREEN MODULES
     # ════════════════════════════════════════════════════════════
     exec u:r:recovery:s0 root root -- /vendor/bin/modprobe -d /lib/modules touchscreen_mmi
-
-    
     exec u:r:recovery:s0 root root -- /vendor/bin/modprobe -d /lib/modules goodix_brl_mmi
-    
-    
     exec u:r:recovery:s0 root root -- /vendor/bin/modprobe -d /lib/modules goodix_mtk_fod
-    
 
     # Touch permissions
     wait /dev/input/event0 2
@@ -196,12 +190,7 @@ on boot
 	chown system input /dev/input/event0
 	chmod 0660 /dev/goodix_ts 
 	chown system input /dev/goodix_ts 
-  
-# Failsafe de permissão para o barramento I2C
-    chmod 0660 /dev/i2c-5
-    chown system system /dev/i2c-5
-    exec u:r:recovery:s0 root root -- \
-    /system/bin/sh -c "chmod 0660 /dev/i2c-*"
+
 # ════════════════════════════════════════════════════════════
 	# BACKLIGHT
 	# ════════════════════════════════════════════════════════════
@@ -213,7 +202,7 @@ on boot
 	# ════════════════════════════════════════════════════════════
 	# SERVICES
 	# ════════════════════════════════════════════════════════════
-	# 2. Permissões
+	# 2. Permissions
 	chmod 0664 /dev/gtp_tools
 	chown root diag /sys/module/tpd_setting/parameters/tpd_calmat
 
@@ -260,9 +249,3 @@ service recovery /system/bin/recovery
 	seclabel u:r:recovery:s0
 	capabilities DAC_OVERRIDE SYS_BOOT
 
-service check-touch /system/bin/check_touch.sh
-	user root
-	group root
-	disabled
-	oneshot
-	seclabel u:r:recovery:s0
