@@ -1,7 +1,6 @@
 # init.recovery.usb.rc
 # USB configuration for Motorola Edge 40 Neo (manaus) - MT6879
-# TWRP 11+ com ffs.mtp (FunctionFS MTP - Obrigatório no TWRP)
-# Corrigido: linha flutuante, 2>/dev/null removido, fastboot/sideload completo
+# TWRP 11+ with ffs.mtp (FunctionFS MTP - Required for TWRP)
 
 on early-init
     setprop sys.usb.configfs 1
