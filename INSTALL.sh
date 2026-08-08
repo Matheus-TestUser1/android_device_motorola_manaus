@@ -6,7 +6,7 @@
 
 set -e
 
-# Cores
+# Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -66,20 +66,20 @@ check_device() {
     # Verify if device is connected
     DEVICE=$(adb devices | grep -v "List" | grep "device" | awk '{print $1}')
     if [ -z "$DEVICE" ]; then
-        print_error "Nothing Found device. Please Connect your device via ADB."
+        print_error "No device found. Please connect your device via ADB."
         exit 1
     fi;
     
     print_success "Device is Found: $DEVICE"
     
-    # Verify codinome
+    # Verify codename
     CODENAME=$(adb shell getprop ro.product.device 2>/dev/null || echo "unknown")
     if [ "$CODENAME" != "$DEVICE_CODENAME" ]; then
         print_warning "Codename Device: $CODENAME"
         print_warning "Wait: $DEVICE_CODENAME"
-        read -p "Continue Anyway? (s/N): " -n 1 -r
+        read -p "Continue Anyway? (y/N): " -n 1 -r
         echo
-        if [[ ! $REPLY =~ ^[Ss]$ ]]; then
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
             exit 1
         fi
     fi
@@ -88,7 +88,7 @@ check_device() {
 }
 
 check_image() {
-    print_info "Cheking image..."
+    print_info "Checking image..."
     
     if [ ! -f "$VENDOR_BOOT_IMG" ]; then
         print_error "Image not Found: $VENDOR_BOOT_IMG"
@@ -100,7 +100,7 @@ check_image() {
 }
 
 backup_original() {
-    print_info "Creating backup original vendor_boot..."
+    print_info "Attempting to back up original vendor_boot..."
     
     BACKUP_DIR="twrp_backup_$(date +%Y%m%d_%H%M%S)"
     mkdir -p "$BACKUP_DIR"
@@ -111,8 +111,19 @@ backup_original() {
     fastboot getvar current-slot 2>&1 | tee "$BACKUP_DIR/slot_info.txt"
     fastboot oem get_logs 2>&1 | tee "$BACKUP_DIR/logs.txt" || true
     
-    print_success "Backup created in: $BACKUP_DIR"
-    print_warning "Save backup so you can restore it if needed!"
+    # Best-effort real image dump. Most locked retail bootloaders don't
+    # implement "fetch", even though the host fastboot binary supports
+    # issuing it — so this can legitimately fail. If it does, be honest
+    # about it instead of pretending a real backup exists.
+    if fastboot fetch:vendor_boot "$BACKUP_DIR/vendor_boot_original.img" 2>"$BACKUP_DIR/fetch_error.txt"; then
+        print_success "Original vendor_boot.img saved to: $BACKUP_DIR/vendor_boot_original.img"
+        print_info "To restore later: fastboot flash vendor_boot $BACKUP_DIR/vendor_boot_original.img"
+    else
+        rm -f "$BACKUP_DIR/vendor_boot_original.img" 2>/dev/null
+        print_warning "This bootloader doesn't support pulling the partition image (fastboot fetch)."
+        print_warning "No flashable backup was created — only slot info and logs were saved in: $BACKUP_DIR"
+        print_warning "If something goes wrong, you'll need the stock vendor_boot from Motorola's official firmware for this device."
+    fi
 }
 
 flash_image() {
@@ -142,7 +153,7 @@ boot_temp() {
     print_success "Temporary boot started!"
 }
 
-# Menu principal
+# Main menu
 main() {
     print_header
     
@@ -175,7 +186,7 @@ echo
             exit 0
             ;;
         *)
-            print_error "Ivalid option"
+            print_error "Invalid option"
             exit 1
             ;;
     esac
