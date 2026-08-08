@@ -54,11 +54,11 @@ subsystem dma_heap
 # -------------------------------------------------------
 # INPUT
 # -------------------------------------------------------
-# Permissões para dispositivos de input
+# Permissions for input devices
 /dev/input/event*     0660   system     input
 /dev/input/*          0660   root       input
 
-# Se o driver expõe sysfs específico
+# If the driver exposes device-specific sysfs
 /sys/devices/virtual/input/input*   enable   0660  system  input
 /sys/devices/platform/goodix_ts.0/*  0660  system  input
 /sys/devices/platform/focaltech_ts/* 0660  system  input
