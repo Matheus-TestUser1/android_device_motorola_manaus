@@ -1,5 +1,5 @@
 service snapuserd /system/bin/snapuserd
-    socket snapuserd stream 0666 system system  # ← CORRIGIDO: 0666
+    socket snapuserd stream 0666 system system  
     user root
     group root  
     class core
