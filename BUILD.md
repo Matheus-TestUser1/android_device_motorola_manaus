@@ -148,11 +148,6 @@ fastboot flash vendor_boot out/target/product/manaus/vendor_boot.img
 fastboot reboot recovery
 ```
 
-### Temporary boot (for testing)
-```bash
-fastboot boot out/target/product/manaus/vendor_boot.img
-```
-
 ## Tips
 
 1. **Always back up** the original vendor_boot before flashing
