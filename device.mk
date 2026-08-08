@@ -78,8 +78,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/prebuilt/modules/modules.load.recovery:recovery/root/lib/modules/modules.load.recovery
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/modules/modules.load.recovery:$(TARGET_COPY_OUT_RECOVERY)/root/vendor_ramdisk/lib/modules/modules.load.recovery
 
 # Script de debug
 PRODUCT_COPY_FILES += \
