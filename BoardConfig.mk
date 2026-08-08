@@ -227,7 +227,7 @@ TW_NO_FASTBOOT_BOOT := true
 TW_NO_BIND_SYSTEM := true
 TW_HAS_NO_RECOVERY_PARTITION := true
 
-TW_CUSTOM_CPU_TEMP_PATH := /sys/class/thermal/thermal_zone0/temp
+TW_CUSTOM_CPU_TEMP_PATH := "/sys/class/thermal/thermal_zone0/temp"
 BOARD_UFS_SUPPORT := true
 
 TW_OVERRIDE_SYSTEM_PROPS :=   "ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental"
@@ -244,11 +244,6 @@ TW_INCLUDE_FBE_METADATA_DECRYPT := false
 # ============================================================================
 BOARD_SURFACE_FLINGER_USE_PHASE_OFFSETS := false
 TARGET_SURFACE_FLINGER_MAX_FRAME_BUFFERS := 4
-
-# ============================================================================
-# ASSERT
-# ============================================================================
-TARGET_OTA_ASSERT_DEVICE := manaus,manaus_g,edge40neo
 
 # ============================================================================
 # VERSIONS
